@@ -1,0 +1,37 @@
+Como adicionar APPS ?
+
+1) Adicione o link no menu de aplicativos:
+
+    Adicione um link do seguinte tipo:
+
+    <li><a href="" id="lnk-publicacoes">Publica&ccedil;&otilde;es</a></li>
+
+    na lista abaixo do comentário a seguir:
+
+    <!-- #################### --> 
+    <!-- MENU APPS            --> 
+    <!-- #################### --> 
+
+    Observe que o link deve seguir o padrão:
+    lnk-<nome_do_app>
+
+2) Adicione uma pagina com a extensão php na pasta apps, que esta na raiz:
+
+O padrão é o seguinte:
+
+<div id="<nome_do_app>" class="app">
+
+    <h1> NOME DO APLICATIVO <span><a href="#" class="lnk-minimizar">&nbsp;---&nbsp;</a> <a href="#" class="lnk-remover">&nbsp;X&nbsp;</a></span></h1>
+    
+    <div class="app-conteudo">
+        CONTEUDO DO APLICATIVO
+    </div>
+    
+</div>
+
+
+    
+
+    
+
+

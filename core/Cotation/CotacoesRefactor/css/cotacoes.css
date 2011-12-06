@@ -1,0 +1,108 @@
+body{
+    font-size: 12px;
+}
+div.corpoCotacao{
+    width: auto;
+    height: auto;
+}
+#cotacoes { 
+    width: 200px;
+    /*height: 300px;*/
+    height: auto;
+    border: 1px solid #666;
+    background-color: #EEE;
+    color: #333;
+}
+#tituloCotacoes{
+    width: 97%;
+    height: auto;
+    margin: 0 auto;
+    background-color: #006633;
+    color: #FFFFFF;
+    font-size: 1.05em;
+    font-weight: bold;
+    text-align: center;
+    border: outset gray 1px;
+}
+#aba{
+    height: 20px;
+    width: 97%;
+    margin: 5px auto;
+    border-bottom: 1px solid #666;
+    padding-bottom: 1px;
+}
+#aba ul{
+    display: inline;
+    padding: 0;
+    margin: 0;
+    height: auto;
+    width: auto;
+    list-style-type: none;
+    list-style-position:inside;
+}
+#aba ul li{
+    /*height: 20px;*/
+    height: 17px;
+    width: auto;
+    margin-right: 5px;
+    padding: 0;
+    padding-top: 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #666;
+    border-bottom-color: #EEE;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    cursor:pointer;
+}
+#aba ul li.unselected{
+    border-bottom: black;
+}
+#aba ul li.selected{    
+    background-color:#013042;    
+    border-bottom-color:#013042;
+    color: white;
+}
+#abaPreco{
+    display: none;
+    height: auto;
+    width: auto;
+}
+#abaVariacao{
+    height: auto;
+    width: auto;
+}
+.tabelaCotacoes{
+    /*width: 95%;*/
+    width: 99%;
+    height: auto;
+    margin: 2px auto;
+    background-color: #FFF;
+    color: #013042;    
+    text-align:left;
+    border: solid #CCC 1px;
+    display: table;
+}
+.par{
+   background-color: #DEF3FE;
+}
+.separador{
+    font-size: 10px;
+    margin-left: 5px;
+    color: #013043;
+    font-weight: bold;
+    font-family: arial;
+}
+/**************tabela**************/
+table.cotacoesLista{
+    width: 100%;
+    border-collapse: collapse;    
+    font-family:Arial, Verdana, Helvetica, sans-serif;
+    font-size: 10px;
+    color: #222;
+}
+table.cotacoesLista td.values{
+    text-align: center;
+}

@@ -1,0 +1,48 @@
+table.list-publications{
+    width: 85%;
+    border-collapse: collapse;
+    border: 1px solid #CCC;
+    border: 0;
+    margin: 0 auto;
+    font-family: Helvetica;
+    font-size: 14px;
+    color: #333;
+    font-weight: normal;
+    text-align: center;
+}
+
+table.list-publications a{
+    color: blue;
+    text-decoration: underline;
+}
+
+table.list-publications a:hover{
+    text-decoration: underline;
+}
+
+table.list-publications thead tr th{
+    background-color: #b34e4e;
+    color: white;
+    padding: 5px;
+    border: 1px solid #CCC;/*#921B1B;*/
+    border-bottom: 0px solid #921B1B;
+
+}
+
+table.list-publications tfoot tr td{
+    background-color: #EEE;
+    padding: 10px;
+}
+
+table.list-publications tbody tr{
+    cursor: pointer;
+}
+
+table.list-publications tbody tr td{
+    padding: 10px;
+    border-bottom: 1px solid #EEE;
+}
+
+.tr-odd{
+    background-color: #FEFEEE;
+}

@@ -1,0 +1,219 @@
+/* 
+    Document   : admin
+    Created on : 11/03/2011, 11:57:31
+    Author     : RAMONox
+    Description:
+        Purpose of the stylesheet follows.
+*/
+textarea{
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    font: 0 !important;
+    float: none !important;
+    background: none !important;    
+}
+
+textarea#text{
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+h1.titleadmin {
+    border:1px solid #be0202;
+    background: url(../../images/bg-apps.jpg) repeat;
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-top:2px;
+    text-align: center;
+}
+
+#content-middle{
+    width: 960px;
+    height: auto;
+    border: 1px solid #CCC;
+    border: 0;
+    margin: 20px auto;
+    padding-top: 10px;
+    padding-left: 10px;
+    text-align: center;
+    color: #333;
+}
+
+.main-message{
+    color: #9e1414;
+    font-size: 14px;
+}
+
+a.link-goback{
+    font-size: 14px;
+    font-weight: bold;
+    color: #9e1414 !important;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#welcome{
+    text-align: center;
+}
+
+form fieldset .field{
+    width: 90%;    
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+button.button-insert{
+    cursor: pointer;
+}
+
+.field label{
+    font-weight: bold;
+    margin-right: 10px;    
+}
+
+.field input{
+    /*width: 65%;*/
+    width: 85%;
+    font-size: 20px;
+    background-color: #EFEFEF;
+    border: 1px solid #CCC;
+}
+.field  input:focus{
+    background-color: #FFF;
+}
+
+.infofield{
+    margin-left: 130px;
+    color: red;
+    float: left;
+    font-size: 11px
+}
+.error{
+    border-color: #9e1414 !important;
+    background-color: #ebc0c0 !important;
+    width: 65% !important;
+}
+
+div.erro{    
+    margin-left: 5px;
+    color: #CC0000;
+    width: 165px;
+    border: 1px solid white;
+    text-align: left;
+    float: right;
+}
+
+.inside-item-admin{
+    font-size: 14px;
+    font-weight: bold;
+    /*color: #9E1414;*/
+    color: #666;
+}
+.inside-item-admin ul{
+    list-style: none inside none;
+    display: inline;    
+}
+
+.inside-item-admin ul li{
+    display: inline;    
+}
+
+.inside-item-admin ul li a{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/**loading**/
+div#loading{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity:0.65;
+    filter: alpha(opacity=65);
+    z-index: 1000;
+    text-align: center;    
+}
+
+div#loading img{
+    margin: 10% auto;    
+}
+
+div.user-header{
+    text-align: right;
+    display: inline-block;
+    width: 100%;
+}
+
+div.user-header span, div.user-header span a{
+
+}
+div.user-header a{
+    font-weight: bold !important;
+    color: #9e1414 !important;
+}
+
+div#list-results{    
+    height: auto;
+}
+
+div.pagination{
+    margin: 10px auto;
+    width: 100%;
+    /*width: 600px;*/
+    border: 1px solid #CCC;    
+    border: 0;
+    text-align: center;
+    padding: 5px 0;    
+}
+div.pagination a, div.pagination strong{
+    border:1px solid #CCC;
+    padding: 1.5px 5px;
+    margin-right: 5px;
+}
+div.pagination a{
+    color: #921B1B;
+    font-weight: normal;
+    background-color:#F8FAFB;
+    cursor: pointer;    
+}
+div.pagination a:hover{
+    border-color: #666;
+}
+strong.current{
+    background-color: #921B1B;
+    color: white;
+    font-weight: bold;
+}
+div.pagination a.prev-page, div.pagination a.next-page{    
+    
+}
+div.pagination a.prev-page:hover, div.pagination a.next-page:hover{
+    
+}
+
+.highlight{    
+    background-color: #B34E4E;
+    color: white;
+    font-weight: bold;
+}
+
+ul.list-events-type{
+    list-style: none none outside;
+}
+ul.list-events-type li{
+    text-align: right;
+}
+
+ul.list-events-type li label{
+    font-weight: normal;
+}
+.radio_button{
+    width: 20px !important;
+}

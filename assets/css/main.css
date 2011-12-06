@@ -1,0 +1,393 @@
+/*
+ * Estilos GLOBAIS
+ */
+
+a.l1:link, a.l1:visited, a.l1:active   {
+    color: #9c0808;
+    font-weight:bold;
+    text-decoration:underline;
+}
+
+a.l1:hover {
+    color: #c50a0a;
+}
+
+a:link, a:visited, a:active {
+    color:#666666;
+    text-decoration:none;
+}
+
+a:hover {
+    color:#000;
+}
+
+#carregando {
+   background-color:#404040;
+   color:#fff;
+   top:0px;
+   left:45%;
+   height:23px;
+   position:fixed;
+   font-weight:bold;
+   -moz-border-radius-bottomleft:4px;-webkit-border-bottom-left-radius:4px;
+   -moz-border-radius-bottomright:4px;-webkit-border-bottom-right-radius:4px;
+   clear: both;
+   padding: 1px 8px;
+   font-size: 13px;
+   display:none;
+}
+
+/*
+ * Estilos TOPO
+ */
+
+.topo {
+    height:143px;
+    border:1px solid #ccc;
+    /*border-top: 3px solid #bb0404;*/
+    border-top: 3px solid #600B0B;
+    background: url(../../images/bg-topo.jpg) repeat-x;
+    margin-top: 10px;
+    -moz-box-shadow: 1px 1px 2px #ccc;
+    -webkit-box-shadow: 1px 1px 2px #ccc;
+    box-shadow: 1px 1px 2px #ccc;
+    overflow:hidden;
+}
+#topo-banner{
+    display: inline-block;
+}
+
+#banner-on-right{
+    display: inline-block;
+    float: right !important;
+    width: 42% !important;
+    text-align: right;
+}
+
+#on-right{
+    /*display: inline-block;
+    border: 1px solid black;
+    width: 400px;*/    
+}
+
+#form-login-main{
+    float: right;
+    width: 300px;
+}
+
+#form-login-main input{
+    color: #333;
+}
+
+#apoios{
+    width: auto;
+    float: right;
+}
+
+#logo {
+    margin-top:14px;
+    margin-left:9px;
+    float:left;
+}
+
+#box-logo{
+    /*width: 47% !important;*/
+    width: 54% !important;
+}
+.box-logo {
+    float:left;
+    background:url(../../images/bg-logo.gif) no-repeat;
+    height:131px;
+    margin-top:5px;    
+}
+
+.box-logo #escrito {
+    margin: 33px 0 0 25px;
+}
+
+.box-logo img {
+    float:left;
+    margin-top: 6px;
+}
+
+.menu-superior {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-align:right;
+    width: auto !important;
+    float: right;
+}
+
+.apoios {
+    margin-top:17px;
+}
+
+.apoios span {
+    font-size: 12px;
+    color: #ccc;
+}
+
+#imgs-apoios {
+    width:83px;
+    height:36px;
+    float:right;
+    background:white;
+    border:1px solid #e8e8e8;
+    -moz-box-shadow: inset 0px 0px 4px #e8e8e8;
+    -webkit-box-shadow: inset 0px 0px 4px #e8e8e8;
+    box-shadow: inset 0px 0px 4px #e8e8e8;
+}
+
+#imgs-apoios img {
+    margin:1px 0 0 2px;
+}
+
+.form-login {
+    text-align:right;
+    margin-top:10px;
+    overflow:hidden;
+ }
+
+.inpt-txt {
+    width:70%;
+    font-size: 14px;
+    padding:2px;
+    margin:0 0 6px 0;
+    color: #ccc;
+    border:1px solid #e8e8e8;
+    -moz-box-shadow: inset 0px 0px 4px #e8e8e8;
+    -webkit-box-shadow: inset 0px 0px 4px #e8e8e8;
+    box-shadow: inset 0px 0px 4px #e8e8e8;
+}
+
+.form-login #bt-logar {
+    /*background: #bd0101;*/
+    background-color: #600B0B;
+    border:1px solid #333;
+    color:white;
+    padding:0 10px;
+}
+
+/*
+ * Estilos Menu de Funcionalidades (APPS)
+ */
+
+.app {
+    border:1px solid #ccc;
+    margin-bottom:20px;
+}
+
+.apps {
+    padding:0;
+    text-align:center;
+    border-bottom:1px solid #e8e8e8;
+}
+
+.apps ul {
+    margin:0;
+    border-bottom:1px solid #ccc;
+}
+
+.apps li {
+    margin:0;
+    padding:0 15px 0 10px;
+    display:inline;
+    border-right:1px solid #999;
+}
+
+.apps li.ultimo {
+    border-right:none;
+}
+
+.apps li a {
+    color:#333;
+}
+
+.apps li a:hover {
+    color:#9e1414;
+}
+
+.apps ul li {
+    list-style:none;
+}
+
+/*
+ * Estilos Menu de Funcionalidades (APPS)
+ */
+ .updating-all{
+     /*margin-left: 150px;*/
+     /*float: right;*/
+     margin-right: 25px;
+ }
+ .updating-all img{
+     /*width: 24px;
+     height: 24px;*/
+ }
+ 
+ #updateAll{
+     color: #286628;
+     cursor: pointer;
+     font-size: 17px;
+ }
+ 
+.menu-apps {
+    text-align:center;
+    border-bottom:1px solid #e8e8e8;
+    font-weight:bold;
+}
+
+.menu-apps ul {
+    margin-bottom:0;
+    border-bottom:1px solid #ccc;
+    padding-bottom:5px;
+    padding-top:5px;
+}
+
+.menu-apps li {
+    margin:0;
+    padding:0 1.8% 0 1.8%;
+    display:inline;
+    border-right:1px solid #999;
+}
+
+.menu-apps li.ultimo {
+    border-right:none;
+}
+
+.menu-apps li a {
+    color:#666666;
+    letter-spacing:0px;
+    -moz-text-shadow: 1px 1px 2px #ccc;
+    -webkit-text-shadow: 1px 1px 2px #ccc;
+    text-shadow: 1px 1px 2px #ccc;
+}
+
+.menu-apps li a:hover {
+    color:#9e1414;
+}
+
+.menu-apps li a.desabilitado {
+    color: #ccc;
+    text-decoration:none;
+    cursor: default;
+    -moz-text-shadow: none;
+    -webkit-text-shadow: none;
+    text-shadow: none;    
+}
+
+.menu-apps ul li {
+    list-style:none;
+}
+
+/*
+ * Estilos das Funcionalidades (APPS)
+ */
+
+.box-app {
+    font-family:Tahoma, Sans-Serif;
+}
+
+.box-app li {
+    list-style-type:none;
+    margin:0;
+    margin-bottom:15px;
+    border:1px solid #e8e8e8;
+    background:white;
+}
+
+.box-app h1 {
+    /*border:1px solid #be0202;*/
+    border: 1px solid #710E0E;
+    /*background: url(../../images/bg-apps.jpg) repeat-x;*/
+    background-color: #600B0B;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    padding-left: 5px;
+    padding-top:2px;
+    cursor:move;
+}
+
+.box-app .app-movimentacao {
+    height:100px;
+    background:#e8e8e8;
+    border:1px dashed #ccc;
+}
+
+.app  h1 img {
+    float:right;
+    padding-top:4px;
+    padding-right:5px;
+    cursor:default;
+}
+
+.app {
+    background:#fff;
+}
+
+.app h1 span {
+    float:right;
+    margin: -3px 5px 0 0;
+}
+
+.app h1 a.lnk-minimizar, .app h1 a.lnk-remover {
+    border:1px solid #f5f5f5;
+    height:5px;
+    color:#f5f5f5;
+    padding:0;
+    margin:0;
+    font-size: 8px;
+    font-weight:bold;
+	cursor:default;
+}
+
+.app h1 a.lnk-minimizar {
+    letter-spacing: -1px;
+    padding-right:1px;
+}
+
+/*
+ * Estilos Rodape
+ */
+
+.rodape p {
+    border:1px solid #ccc;
+    /*border-top: 3px solid #bb0404;*/
+    border-top: 3px solid #600B0B;
+    text-align:center;
+    padding-top: 5px;
+    padding-bottom:5px;
+    -moz-box-shadow: 1px 1px 2px #ccc;
+    -webkit-box-shadow: 1px 1px 2px #ccc;
+    box-shadow: 1px 1px 2px #ccc;
+    color:#9e1414;
+    font-weight:bold;
+    -moz-text-shadow: 1px 1px 2px #ccc;
+    -webkit-text-shadow: 1px 1px 2px #ccc;
+    text-shadow: 1px 1px 2px #ccc;
+}
+.error{
+    color:#bd0101;
+}
+
+#window-forgetPassword div.fields{
+    width: 95%;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+#window-forgetPassword div.fields label{
+    
+}
+
+/*
+ * Hacks
+ */
+
+/*
+ * Hack para o Plugin JQuery funcionar corretamente
+ * com colunas vazias. (Drag and Drop)
+ */
+.hack1 {
+    border-top:15px solid #fff;
+}

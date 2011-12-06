@@ -1,0 +1,180 @@
+/* 
+    Document   : read-analysis
+    Created on : May 19, 2011, 1:52:36 PM
+    Author     : ramon
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.content-analysis{    
+    width: 98.5%;
+    height: auto;
+    color: #333;    
+    margin: 10px auto;
+    display: inline-block;
+    border: 1px solid #CCC;    
+    text-align: center;
+}
+
+.body-analysis{    
+    height: auto;
+    width: 95%;        
+    margin: 10px auto;
+    margin-bottom: 0;
+    text-align: left;
+    display: inline-block;
+}
+
+.title-analysis{
+    margin: 10px 0;    
+}
+.title-analysis h1{
+    font-size: 38.5px;    
+    letter-spacing: -1px;
+    font-weight: bold;
+    margin: 0; 
+    padding: 0;
+}
+
+.text-analysis{    
+    font-size: 13px;
+    text-align: left;
+    letter-spacing: 0.3px;
+    line-height: 30px;
+}
+
+#div-comment-form{
+    display:none;
+    border: 1px solid #CCC;
+    border: 0;
+    width: 400px !important;   
+    height: auto;    
+    margin-bottom: 10px;
+    margin-left: 30px;
+    float: left;
+}
+#box-comment-form{
+    width: 100%;
+    min-height: 250px;
+    left: 0;    
+}
+.fields{
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.fields input#title{
+    width: 92.3%;
+}
+.fields textarea{
+    width: 98.9%; height: 150px; 
+}
+.button-field{
+    text-align: right !important;
+    margin-bottom: 0 !important;
+}
+button.button-comment, #sendEmail{
+    background: url("../../images/comment-button.png") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    letter-spacing:-0.05em;
+    height: 34px;
+    width: 61px;
+    padding: 0 0 3px;
+    outline: 0 none;
+    line-height: 1;
+    border: medium none;
+    color: white;
+    font-weight: bold;
+}
+button.button-comment:hover{
+    background-position: 0 -34px;
+}
+
+#comments-list{
+    width: 95%;
+    height: auto;
+    margin: 10px auto;
+    padding: 10px;
+    border-top: 1px solid #CCC;
+}
+
+#comentsList-header{
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+#do-comment{
+    margin-left: 50px;
+    color: #9C0808;
+    font-weight: bold;
+    cursor: pointer;
+}
+#comments{    
+    width: 100%;
+    height: auto;    
+    text-align: left;
+}
+
+#comments dl dt{
+    margin-bottom: 10px;
+}
+#comments dl dd{
+    border-bottom: 1px solid #CCC;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+span.comment-author{
+    font-weight: bold;
+    color: #9C0808;
+}
+p.text-comment{
+    margin: 0;
+    margin-bottom: 10px;
+    text-align: justify;
+}
+span.time-comment{
+    font-weight: bold;
+    font-size: 10px;
+}
+
+.email_false{
+    color: red;
+}
+
+.email_true{
+    color: green;
+}
+
+#actions{
+    display: block;    
+    border: 1px dotted #CCC;
+    border-left: 0;
+    border-right: 0;
+    height: 30px;
+    /*padding: 5px 0;*/    
+}
+
+#actions ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#actions ul li{
+    display: inline-block;
+    height: 30px;
+    margin: 0;
+    margin-right: 10px;
+    padding: 0;
+    border-right: 1px dotted #CCC;
+}
+#actions img{    
+    margin-top: 5px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+

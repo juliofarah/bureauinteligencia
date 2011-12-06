@@ -1,0 +1,66 @@
+/* 
+    Document   : subscribe
+    Created on : May 29, 2011, 11:52:50 PM
+    Author     : ramon
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+div#subscribe{
+    width: 100%;
+    height: auto;
+    display: inline-block;
+}
+
+#subscribe-content{
+    width: 90%;
+    height: auto;
+    margin: 0 auto;    
+}
+#form-subscribe{
+    width: 80%;
+    height: auto;
+    margin: 10px auto;
+}
+
+#toSubscribe{
+    width: 100%;
+    height: auto;
+    text-align: left;
+}
+.fields{
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+.fields input{
+    width: 60%;
+}
+
+button#submit-subscribe{
+    position: relative;
+    left: 50%;
+    margin-left: -80.5px;
+    cursor: pointer;
+    background-image: url(../../images/but_cadastrar.gif);
+    background-repeat: no-repeat;
+    width: 192px;
+    height: 27px;
+    border: 0;    
+}
+
+.error{
+    border-color: #9e1414 !important;
+    background-color: #ebc0c0 !important;
+    width: 65% !important;
+}
+
+div.erro{    
+    margin-left: 5px;
+    color: #CC0000;
+    width: 165px;
+    border: 1px solid white;
+    text-align: left;
+    float: right;
+}

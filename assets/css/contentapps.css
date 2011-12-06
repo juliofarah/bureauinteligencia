@@ -1,0 +1,436 @@
+/* 
+    Document   : contentapss
+    Created on : 20/03/2011, 12:37:00
+    Author     : RAMONox
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+div.app h1{
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+label.label-font{
+    color: #9e1414;
+    font-weight: bold;
+    margin-left: 10px;
+}
+div.loading-apps{
+    text-align: center;
+}
+
+div.must-do-login{
+    width: 90%;
+    height: auto;
+    margin: 0 auto;
+    /*background-color: #feffcf;
+    color: #c12121;*/
+    background-color: #600B0B;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: normal;
+    padding: 10px;
+}
+div.must-do-login a{    
+    color: #9CD168;
+    text-decoration: underline;
+    cursor: pointer !important;
+    font-weight: bold;
+}
+
+span.refresh img{
+    cursor: pointer !important;
+}
+/** toolbars to jquery TAb**/
+div.toolbars ul.items-toolbars{
+    /*background: url("images/ui-bg_flat_100_921b1b_40x100.png") repeat-x scroll 50% 50% #921B1B;*/
+    background: none repeat-x scroll 50% 50% #EEEEEE !important;
+    /*border: 0 !important;*/
+}
+
+div.toolbar{
+    height: 30px;
+    width: 100%;    
+    background-color: #EEE;
+    display: inline-block;
+}
+
+ul.items-toolbar{
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    list-style: inside none none;
+    border-top: 1px solid #EEE;
+    color: #333;
+}
+
+ul.items-toolbar li{
+    float: left;
+    height: 100%;
+    background-color: transparent;
+    margin: 0;
+    padding-top: 5px;
+    padding-left: 10px;;
+    border: 0;    
+    cursor: pointer;
+}
+
+li.item-selected{
+    background-color: #FFF !important;
+    border-top: 1px solid #EEE;
+}
+
+/*******************/
+#news-items{
+    width: 95%;
+    height: auto;
+    margin: 0 auto;
+    margin-top: 10px;
+    font-size: 11.5px;
+}
+#news-items .pubdate{
+    color: #9e1414;
+}
+
+#news-items .title-rss{
+    color: #333;
+    font-weight: bold;
+}
+
+#news-items a:hover{
+    text-decoration: underline;
+    color: inherit;
+}
+
+#news-items .description-rss{
+    margin-top: 8px;
+}
+
+/****weather****/
+div#weatherforecast h2, #h2-rss{
+    font-size: 13px;
+    margin: 0;
+    background-color: #EEE;
+    color: #333;
+    /*padding: 5px 0;*/
+}
+select#weather-city, select#change-rss{
+    width: 100%;
+    height: 30px;
+    border: 0;
+    background-color: transparent;
+    font-size: 20px;
+}
+
+div#weatherforecast h2 span{
+    margin-left: 20px;
+}
+table.weather-table{    
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+table.weather-table tbody tr td{
+    padding: 10px;
+}
+div.td-weather{
+    display: inline-block;
+}
+
+.weather-info{
+    width: auto;
+    height: auto;
+    text-align: center;
+    margin-top: 10px;
+}
+div.td-weather .img-weather{
+    width: auto;
+    height: auto;
+    float: left;    
+}
+div.td-weather .weather-data{
+    float: left;
+    margin-left: 10px;    
+}
+
+/**video**/
+#show-videos{
+    width: 90%;
+    height: auto;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    text-align: right;
+}
+a.openSearch{
+    cursor: pointer;
+    color: #9C0808;
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 13px;
+}
+ul#video-list{
+    list-style: inside none none;
+    display: inline-block;
+    text-align: center;
+    margin: 0;
+    width: 100%;
+}
+ul#video-list li{
+    display: inline-block;    
+    width: 95%;
+    height: auto;
+    margin: 5px auto;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+div.img-video{
+    float: left;
+    margin: 0;
+    margin-right: 15px;
+    height: auto;    
+}
+
+div.img-video img{
+    /*width: 150px;*/
+    width: 115px;
+    /*height: 100px;*/
+    height: 80px;
+}
+div.video-description{    
+    float: left;
+    width: 150px;
+    height: auto;
+    text-align: left;    
+    font-size: 12px;
+    color: blue;
+    font-size: 10px;
+    color: #666;
+}
+
+div.video-description h1{
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    color: #333;
+    cursor: pointer;
+}
+div.video-description a{
+    color: #333;
+}
+
+div.video-description a:hover{
+    text-decoration: underline;
+}
+
+span.video-date{
+    color: #9C0808;
+    font-weight: bold;
+}
+
+/**publication**/
+img.pdf{
+    width: 40px;
+    height: 40px;
+    border: 0;
+}
+div.show-publications{
+    width: 96%;
+    margin: 0 auto;
+    text-align: right;
+}
+div.show-publications ul li{
+    border: 0;
+}
+
+div#show-analysis ul{
+    text-align: left;
+}
+
+div#show-analysis li a:hover{
+    text-decoration: underline;
+}
+
+span.number-comments{
+    color: #9e1414;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+span.date-publication{
+    margin-right: 5px !important;
+    font-size: 10px;
+    color: #9C0808;
+}
+
+table.table-papers{
+    border-collapse: collapse;        
+    border-color: #CCC;
+    border: 0;
+    width: 100%;    
+    height: auto;
+    text-align: center;
+    color: #333;
+}
+
+.table-papers tbody{
+    border: 1px solid #CCC;
+    border: 0;
+}
+
+.table-papers tbody tr td.name-paper{
+    text-align: left;
+    padding-left: 5px;
+    width: 80%;
+}
+
+/**Cotations**/
+#cotations-div{
+    border: 1px solid red;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border: 0;
+}
+.content-cotations{
+    width: 100%;
+    height: auto;
+    margin-bottom: 5px;
+    border: 1px solid blue;
+    border: 0;
+}
+
+#fisicas, #indicadores{
+    /*display: none;*/
+}
+
+#futuras, #fisicas, #indicadores{
+    padding: 0 !important;
+}
+
+#chart-cotation{
+    width: 100%;
+    height: 50px;
+    border: 1px solid orange;
+    border: 0;
+    display: none;
+}
+.table-cotation{
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;    
+}
+
+.last{
+    margin-bottom: 5px;
+}
+
+h3.options-opened{
+   background: url("../images/options-opened.gif") no-repeat scroll left center transparent;
+}
+
+.title-closed{
+    background: url("../../images/options-closed.gif") no-repeat scroll left center transparent;
+}
+
+div.title-cot{
+    background: url("../../images/options-opened.gif") no-repeat scroll 10px center transparent;    
+    width: 100%;
+    border: 1px solid #CCC;
+    border-left: 0;
+    border-right: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.table-hidden{
+    /*background-color: #EEE;*/
+    background: url("../../images/options-closed.gif") no-repeat scroll 10px center #EEE !important;
+}
+
+span.title-cotation{    
+    font-weight: bold;
+    color: #9C0808;
+    margin: 0;
+    margin-left: 25px;    
+}
+
+div.close-values{
+    display: inline-block;
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
+    padding: 0;
+    border: 1px solid black;
+    height: 20px;
+    width: 20px;
+    font-size: 10px;    
+    text-align: center;    
+}
+
+div.close-values a{
+    width: 20px;
+    margin-top: -10px;
+    padding: 0 1px;
+    background-color: red;
+}
+
+table.table-values{
+    border-collapse: collapse;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    border-color: white;
+    margin: 0;
+}
+.table-values tbody{
+    color: #666;
+    font-weight: normal;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+th.first{
+    width: 100px;
+}
+table.arabica tbody{
+    font-size: 10px;
+}
+table.arabica th.first{
+    width: 250px !important;
+    padding-left: 3px;
+}
+
+table.arabica td.first-arabica{
+    text-align: left;
+    padding-left: 5px;
+}
+
+td.first-indicador{
+    text-align: left;
+    padding-left: 5px;
+}
+
+.negative{
+    color: red;
+    font-weight: bold;
+}
+.positive{
+    color: green;
+    font-weight: bold;
+}
+
+a.open-chart-window{
+    color: blue;    
+    cursor: pointer;
+}
+a.open-chart-window:hover{
+    text-decoration: underline;        
+}

@@ -1,0 +1,70 @@
+/* 
+    Document   : login
+    Created on : Dec 4, 2010, 5:33:21 PM
+    Author     : ramon
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+div.login-div{
+    width: 450px;
+    height: auto;
+    margin: 35px auto;
+    margin-top: 0;
+    color: #595959;
+    padding: 0 20px 10px;
+}
+div.body-login-div{
+    background: url(../../images/login/login-case.png) no-repeat scroll left top transparent;
+    padding:20px 35px 1px 27px;    
+}
+div.body-login-div h1 {
+    font-size: 24px;
+    line-height: 26px;
+    margin: 7px 0 8px;
+    padding: 0 0 12px;
+    text-align: left;
+}
+#login-form dl{
+    margin: 15px 0;
+}
+#login-form dt{
+    color: #A5A5A5;
+    float: left;
+    font-size: 14px;
+    line-height: 24px;
+    padding-top: 5px;
+    width: 80px;
+}
+#login-form dd  {
+    color: #A5A5A5;
+    font-size: 12px;
+    line-height: 24px;
+    margin: 0 0 10px 80px;
+}
+input.input {
+    -moz-border-radius: 4px 4px 4px 4px;
+    border: 1px solid #DCDCDC;
+    color: #444444;
+    font: 14px arial,helvetica,sans-serif;
+    padding: 8px 5px;
+    width: 280px;
+}
+#login-button{
+    float: left;
+}
+#formFooter {
+    background:url(../../images/login/login-footer.png) no-repeat scroll left top transparent;
+    height:18px;
+}
+p.error-login  {
+    color: #CC2A2A;
+    padding-bottom: 5px;
+}
+
+p {
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 18px;
+    text-align: left;
+}

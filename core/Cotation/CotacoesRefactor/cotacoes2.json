@@ -1,0 +1,49 @@
+{"0":
+{"codigo":"ICFK11","valor":367,"diff":9.5,"abertura":367,"fechamento":357.5,"min":364,"max":367,"CAberto":1027},
+"1":
+{"codigo":"ICFU11","valor":349.1,"diff":6.2,"abertura":350.65,"fechamento":342.9,"min":341.25,"max":352.5,"CAberto":1536},
+"2":
+{"codigo":"ICFZ11","valor":351,"diff":7.7,"abertura":351,"fechamento":343.3,"min":350,"max":351.2,"CAberto":1563},
+"3":
+{"codigo":"KCK1","valor":279.4,"diff":5.6,"abertura":273.25,"fechamento":273.8,"min":272.35,"max":281.9,"CAberto":"27,417"},
+"4":
+{"codigo":"KCU1","valor":284.65,"diff":5.2,"abertura":278.45,"fechamento":279.45,"min":278.45,"max":287.05,"CAberto":"16,792"},
+"5":
+{"codigo":"KCZ1","valor":287.55,"diff":5.95,"abertura":280.35,"fechamento":281.6,"min":280.35,"max":288.9,"CAberto":"15,719"},
+"6":
+{"codigo":"RCK11","valor":"2,475","diff":44,"abertura":"2,435","fechamento":"2,431","min":"2,435","max":"2,479","CAberto":"53,166"},
+"7":
+{"codigo":"RCN11","valor":"2,473","diff":47,"abertura":"2,432","fechamento":"2,426","min":"2,432","max":"2,479","CAberto":"78,146"},
+"8":
+{"codigo":"RCU11","valor":"2,498","diff":49,"abertura":"2,449","fechamento":"2,449","min":"2,449","max":"2,498","CAberto":"22,828"},
+"9":
+{"codigo":"RCX11","valor":"2,500","diff":37,"abertura":"2,472","fechamento":"2,463","min":"2,472","max":"2,507","CAberto":"9,363"},
+"10":
+{"codigo":"CFDUR5 SMG","valor":525,"diff":null,"abertura":525,"fechamento":525,"min":525,"max":525,"CAberto":null},
+"11":
+{"codigo":"CFDUR6 CER","valor":520,"diff":null,"abertura":520,"fechamento":520,"min":520,"max":520,"CAberto":null},
+"12":
+{"codigo":"CFDUR6 GAR","valor":515,"diff":null,"abertura":515,"fechamento":515,"min":515,"max":515,"CAberto":null},
+"13":
+{"codigo":"CFDESP BAH","valor":550,"diff":null,"abertura":550,"fechamento":550,"min":550,"max":550,"CAberto":null},
+"14":
+{"codigo":"CFDUR6 MOG","valor":520,"diff":null,"abertura":520,"fechamento":520,"min":520,"max":520,"CAberto":null},
+"15":
+{"codigo":"CFDUR6 PIN","valor":520,"diff":null,"abertura":520,"fechamento":520,"min":520,"max":520,"CAberto":null},
+"16":
+{"codigo":"CFDUR6 SMG","valor":520,"diff":null,"abertura":520,"fechamento":520,"min":520,"max":520,"CAberto":null},
+"17":
+{"codigo":"CFDUR6 ZOM","valor":460,"diff":-5,"abertura":460,"fechamento":465,"min":460,"max":460,"CAberto":null},
+"18":
+{"codigo":"CFDUR7 BAH","valor":485,"diff":null,"abertura":485,"fechamento":485,"min":485,"max":485,"CAberto":null},
+"19":
+{"codigo":"CFDUR7 PRN","valor":480,"diff":-10,"abertura":480,"fechamento":490,"min":480,"max":480,"CAberto":null},
+"20":
+{"codigo":"CFDURI ZOM","valor":430,"diff":-20,"abertura":430,"fechamento":450,"min":430,"max":430,"CAberto":null},
+"21":
+{"codigo":"DOL COM","valor":1.594,"diff":0.001,"abertura":1.588,"fechamento":1.593,"min":1.581,"max":1.595,"CAberto":null},
+"22":
+{"codigo":"EUROCOM","valor":2.3044,"diff":-0.0026,"abertura":2.2931,"fechamento":2.307,"min":2.2931,"max":2.3052,"CAberto":null},
+"23":
+{"codigo":"WINJ11","valor":"66,425","diff":-375,"abertura":"67,270","fechamento":"66,800","min":"66,390","max":"67,630","CAberto":15603}
+}
