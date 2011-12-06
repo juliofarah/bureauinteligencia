@@ -6,12 +6,12 @@
  */
 class DataBaseConfig {
 
-    public static $HOST = "mysql11.agrocim.com.br";
+    public static $HOST = "localhsot";
 
-    public static $USER = "agrocim11";
+    public static $USER = "root";
 
-    public static $PASSWORD = "edu07F20lg40";
+    public static $PASSWORD = "";
 
-    public static $DB_NAME = "agrocim11";
+    public static $DB_NAME = "bureau_inteligencia";
 }
 ?>
