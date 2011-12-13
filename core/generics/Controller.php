@@ -57,6 +57,11 @@ class Controller {
         return $this->returnJson($publicationTypes);
     }
     
+    public function groups(){
+        $groups = $this->dao->getGroups();
+        return $this->returnJson($groups);  
+    }
+    
     private function returnJson(ArrayObject $listResults){
         $json = '[';
         if($listResults->count() > 0){
@@ -66,7 +71,7 @@ class Controller {
             }
             $json = substr($json, 0, -1);            
         }
-        $json .= ']';
+        $json .= ']';        
         return $json;
     }
 }

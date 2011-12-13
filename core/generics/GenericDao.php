@@ -117,5 +117,19 @@ class GenericDao {
         }
         return $response;
     }
+    
+    public function getGroups(){
+        $statement = "SELECT * FROM groups ORDER BY id ASC";
+        $query = $this->session->prepare($statement);
+        $query->execute();
+        $response = new ArrayObject();
+        if($query->rowCount() > 0){
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($result as $group){
+                $response->append(new Group($group['name'], $group['id']));
+            }
+        }
+        return $response;
+    }
 }
 ?>
