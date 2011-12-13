@@ -19,7 +19,6 @@ class Controller {
     
     public function areas(){
         $areas = $this->dao->getAreas();
-        
         if($areas->count() > 0){
             return $this->returnJson($areas);
         }
@@ -62,6 +61,10 @@ class Controller {
         return $this->returnJson($groups);  
     }
     
+    public function subgroups($groupId) {
+        $subgroups = $this->dao->getSubgroups($groupId);
+        return $this->returnJson($subgroups);
+    }
     private function returnJson(ArrayObject $listResults){
         $json = '[';
         if($listResults->count() > 0){

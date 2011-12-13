@@ -21,18 +21,7 @@ class GenericDao {
      * @return ArrayObject
      */
     public function getAreas(){
-        $statement = "SELECT * FROM area ORDER BY name ASC";
-        $query = $this->session->prepare($statement);
-        $query->execute();
-
-        $response = new ArrayObject();
-        if($query->rowCount() > 0){            
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            foreach($result as $area){
-                $response->append(new Area($area['name'], $area['id']));
-            }            
-        }
-        return $response;
+        return $this->getObject("area");
     }
 
     /**
@@ -41,95 +30,98 @@ class GenericDao {
      * @return ArrayObject 
      */
     public function getSubareas($id){
-        $statement = "SELECT * FROM subarea WHERE area_id = :id ORDER BY name ASC";
-        $query = $this->session->prepare($statement);
-        $query->bindParam(':id', $id);
-
-        $query->execute();
-
-        $response = new ArrayObject();
-        if($query->rowCount() > 0){
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            foreach($result as $subarea){
-                $response->append(new SubArea($subarea['name'], $subarea['id']));
-            }
-        }
-        return $response;
+        return $this->getObject("subarea", true, "area_id", $id);
     }
 
     /**
      * @return ArrayObject
      */
     public function getStates(){
-        $statment = "SELECT * FROM estados ORDER BY nome ASC";
-        $query = $this->session->prepare($statment);
-        $query->execute();
-        $response = new ArrayObject();
-        if($query->rowCount() > 0){
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            foreach($result as $state){
-                $response->append(new State($state['id'], $state['uf'], $state['nome']));
-            }
-        }
-        return $response;
+        return $this->getObject("estados");
     }
     
     public function getCities($state){
-        $statement = "SELECT * FROM city WHERE estado = :state ORDER BY nome ASC";
-        $query = $this->session->prepare($statement);
-        $query->bindParam(":state", $state);
-        $query->execute();
-        $response = new ArrayObject();
-        if($query->rowCount() > 0){
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            foreach($result as $city){
-                $response->append(new City($city['nome'], $city['id']));
-            }
-        }
-        return $response;
+        return $this->getObject("city", true, "estado", $state);
     }
     
     public function getActivities(){
-        $statement = "SELECT * FROM activities ORDER BY id ASC";
-        $query = $this->session->prepare($statement);
-        $query->execute();
-        $response = new ArrayObject();
-        if($query->rowCount() > 0){
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            foreach($result as $activity){
-                $activity = new Activity($activity['name'], $activity['id']);
-                $response->append($activity);
-            }
-        }
-        return $response;
+        return $this->getObject("activities");
     }
     
     public function getPublicationType(){
-        $statement = "SELECT * FROM publication_type ORDER BY id ASC";
-        $query = $this->session->prepare($statement);       
-        $query->execute();
-        $response = new ArrayObject();        
-        if($query->rowCount() > 0){
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);            
-            foreach($result as $publicatonType){                
-                $response->append(new PublicationType($publicatonType['name'], $publicatonType['id']));
-            }
-        }
-        return $response;
+        return $this->getObject("publication_type");
     }
     
     public function getGroups(){
-        $statement = "SELECT * FROM groups ORDER BY id ASC";
-        $query = $this->session->prepare($statement);
-        $query->execute();
-        $response = new ArrayObject();
-        if($query->rowCount() > 0){
-            $result = $query->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($result as $group){
-                $response->append(new Group($group['name'], $group['id']));
-            }
-        }
-        return $response;
+        return $this->getObject("groups");
     }
+    
+    public function getSubgroups($groupId) {        
+        return $this->getObject("subgroup", true, "group_id", $groupId);
+    }
+    
+    /**
+     * @return ArrayObject
+     */
+    private function getObject($type, $join = false, $dependenceName = '', $dependenceValue = ''){
+        $statement = "SELECT * FROM $type ";        
+        if($join){
+            $query = $this->buildSqlWithWhere($statement, $dependenceName, $dependenceValue);            
+        }else{
+            $statement .= "ORDER BY id ASC";
+            $query = $this->session->prepare($statement);
+        }
+        $query->execute();
+        return $this->returnObject($query, $type);
+    }
+    
+    /**    
+     * @param PDOStatement $query
+     * @param type $type
+     * @return ArrayObject 
+     */
+    private function returnObject(PDOStatement $query, $type){
+       $response = new ArrayObject();
+       if($query->rowCount() > 0){
+           $result = $query->fetchAll(PDO::FETCH_ASSOC);
+           foreach($result as $object){
+               $response->append($this->buildObject($type, $object));
+           }
+       }       
+       return $response;
+    }
+    
+    /**     
+     * @return PDOStatement 
+     */
+    private function buildSqlWithWhere($statement, $dependenceName, $dependenceValue){
+        $statement .= $this->addWhereClause($dependenceName);        
+        $query = $this->session->prepare($statement);
+        $query->bindParam(":value", $dependenceValue);
+        return $query;
+    }
+    
+    private function addWhereClause($dependenceName){
+        $sql = "WHERE $dependenceName = :value ";
+        if($dependenceName == 'estado')
+            $sql .= "ORDER BY nome ASC";
+        elseif($dependenceName == 'area_id')
+            $sql .= "ORDER BY name ASC";
+        return $sql;
+    }
+    
+    private function buildObject($type, $object){
+        switch($type){
+            case "area": return new Area($object['name'], $object['id']); break;
+            case "subarea": return new SubArea($object['name'], $object['id']); break;
+            case "estados": return new State($object['id'], $object['uf'], $object['nome']); break;
+            case "city": return new City($object['nome'], $object['id']); break;
+            case "activities": return new Activity($object['name'], $object['id']); break;
+            case "publication_type": return new PublicationType($object['name'], $object['id']); break;
+            case "groups": return new Group($object['name'], $object['id']); break;
+            case "subgroup": return new Subgroup($object['name'], $object['id']); break;
+        }
+    }
+    
 }
 ?>

@@ -10,8 +10,7 @@
     assertEquals($controller->groups(), jsonExpected());
 ?>
 
-<?
-
+<?php
 function jsonExpected() {
     $json = '[';
     $json .= '{"id":"1","nome":"Com?rcio Internacional"},';
