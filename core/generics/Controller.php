@@ -86,10 +86,24 @@ class Controller {
         return $this->returnJson($countries);
     }
     
-    public function fonts() {
-        $fonts = $this->dao->getFonts();
+    public function fonts($group = null) {        
+        $fonts = $this->dao->getFonts();        
+        if($group != null)
+            $fonts = $this->filterFontsByGroup ($group, $fonts);
         return $this->returnJson($fonts);
     }
+    
+    /**     
+     * @param type $groupId
+     * @param ArrayObject $fonts
+     * @return ArrayObject 
+     */
+    private function filterFontsByGroup($groupId, ArrayObject $fonts){
+        $group = new Group();
+        $group->setId($groupId);
+        return $group->filterFontsByGroup($fonts);
+    }
+    
     private function returnJson(ArrayObject $listResults){
         $json = '[';
         if($listResults->count() > 0){
