@@ -65,6 +65,31 @@ class Controller {
         $subgroups = $this->dao->getSubgroups($groupId);
         return $this->returnJson($subgroups);
     }
+    
+    public function varieties() {
+        $varieties = $this->dao->getVarieties();
+        return $this->returnJson($varieties);
+    }
+    
+    public function coffeTypes() {
+        $coffeTypes = $this->dao->getCoffeTypes();
+        return $this->returnJson($coffeTypes);
+    }
+
+    public function origincountries() {
+        $countries = $this->dao->getOriginCountries();
+        return $this->returnJson($countries);
+    }
+
+    public function destinycountries() {
+        $countries = $this->dao->getDestinyCountries();
+        return $this->returnJson($countries);
+    }
+    
+    public function fonts() {
+        $fonts = $this->dao->getFonts();
+        return $this->returnJson($fonts);
+    }
     private function returnJson(ArrayObject $listResults){
         $json = '[';
         if($listResults->count() > 0){

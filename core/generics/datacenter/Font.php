@@ -1,14 +1,13 @@
 <?php
-
 /**
- * Description of Group
+ * Description of Font
  *
  * @author Ramon
  */
-class Group extends Param{
-
+class Font extends Param{
+    
     public function getType() {
-        return "groups";
+        return "font";
     }
 }
 

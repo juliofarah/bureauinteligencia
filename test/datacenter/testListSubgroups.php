@@ -1,10 +1,11 @@
 <?php
     header('Content-Type: text/html; charset=utf-8');
     require_once '../asserts/Asserts.php';
-    require_once '../../core/generics/datacenter/Group.php';
+    //require_once '../../core/generics/datacenter/Group.php';
     require_once '../../core/generics/Controller.php';
     require_once '../../core/generics/GenericDao.php';
     require_once '../../core/DataBase/Connection.php';
+    require_once '../../core/generics/Param.php';
     require_once '../../core/generics/datacenter/Subgroup.php';
     
     $controller = new Controller(new GenericDao(Connection::connect()));

@@ -59,13 +59,32 @@ class GenericDao {
     public function getSubgroups($groupId) {        
         return $this->getObject("subgroup", true, "group_id", $groupId);
     }
+        
+    public function getVarieties() {
+        return $this->getObject("variety");
+    }
     
+    public function getCoffeTypes() {
+        return $this->getObject("coffeType");
+    }
+
+    public function getOriginCountries() {
+        return $this->getObject("country", true, "type_country", "origin");
+    }
+    
+    public function getDestinyCountries() {
+        return $this->getObject("country", true, "type_country", "destiny");
+    }
+    
+    public function getFonts() {
+        return $this->getObject("font");
+    }
     /**
      * @return ArrayObject
      */
-    private function getObject($type, $join = false, $dependenceName = '', $dependenceValue = ''){
+    private function getObject($type, $where = false, $dependenceName = '', $dependenceValue = ''){
         $statement = "SELECT * FROM $type ";        
-        if($join){
+        if($where){
             $query = $this->buildSqlWithWhere($statement, $dependenceName, $dependenceValue);            
         }else{
             $statement .= "ORDER BY id ASC";
@@ -106,11 +125,14 @@ class GenericDao {
         if($dependenceName == 'estado')
             $sql .= "ORDER BY nome ASC";
         elseif($dependenceName == 'area_id')
-            $sql .= "ORDER BY name ASC";
+            $sql .= "ORDER BY name ASC";        
+        else{
+            $sql .= "ORDER BY id ASC";
+        }
         return $sql;
     }
     
-    private function buildObject($type, $object){
+    private function buildObject($type, $object){        
         switch($type){
             case "area": return new Area($object['name'], $object['id']); break;
             case "subarea": return new SubArea($object['name'], $object['id']); break;
@@ -120,8 +142,11 @@ class GenericDao {
             case "publication_type": return new PublicationType($object['name'], $object['id']); break;
             case "groups": return new Group($object['name'], $object['id']); break;
             case "subgroup": return new Subgroup($object['name'], $object['id']); break;
+            case "variety": return new Variety($object['name'], $object['id']); break;
+            case "coffeType": return new CoffeType($object['name'], $object['id']); break;
+            case "country": return new Country($object['name'], $object['id']); break;
+            case "font": return new Font($object['name'], $object['id']); break;
         }
-    }
-    
+    }    
 }
 ?>

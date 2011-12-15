@@ -4,6 +4,7 @@
     require_once '../../core/DataBase/Connection.php';
     require_once '../../core/generics/Controller.php';
     require_once '../../core/generics/GenericDao.php';
+    require_once '../../core/generics/Param.php';
     require_once '../../core/generics/datacenter/Group.php';
 
     $controller = new Controller(new GenericDao(Connection::connect()));
@@ -13,10 +14,10 @@
 <?php
 function jsonExpected() {
     $json = '[';
-    $json .= '{"id":"1","nome":"Com?rcio Internacional"},';
-    $json .= '{"id":"2","nome":"Oferta"},';
-    $json .= '{"id":"3","nome":"Demanda"},';
-    $json .= '{"id":"4","nome":"Indicadores Econ?micos"}';
+    $json .= '{"id":"1","name":"Com?rcio Internacional"},';
+    $json .= '{"id":"2","name":"Oferta"},';
+    $json .= '{"id":"3","name":"Demanda"},';
+    $json .= '{"id":"4","name":"Indicadores Econ?micos"}';
     $json .= ']';
     return $json;
 }
