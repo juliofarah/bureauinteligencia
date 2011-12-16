@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Description of Group
  *
@@ -51,5 +50,4 @@ class Group extends Param{
         return $fontsAvaiableToThisGroup;
     }        
 }
-
 ?>
