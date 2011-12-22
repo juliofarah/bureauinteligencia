@@ -9,6 +9,7 @@ interface DatacenterRepository {
      * @return ArrayIterator
      */
     public function getValuesFromAGroup($group);
+    
 }
 
 ?>
