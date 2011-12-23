@@ -23,10 +23,25 @@ class DatacenterService {
      * @param type $origin
      * @param type $destiny
      * @param type $font
-     * @return ArrayObject 
+     * @return ArrayIterator 
      */
-    public function getValuesByOneSubgroup(array $subgroup, array $variety, array $type, array $origin, array $destiny, array $font) {
-        return $this->repository->getValuesByOneSubgroup($subgroup, $variety, $type, $origin, $destiny, $font);
+    public function getValuesWithSimpleFilter(array $subgroup, array $variety, array $type, array $origin, array $destiny, array $font) {
+        return $this->repository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
+    }
+    
+    /**
+     *
+     * @param array $subgroup
+     * @param array $variety
+     * @param array $type
+     * @param array $origin
+     * @param array $destiny
+     * @param array $font
+     * @return ArrayIterator 
+     */
+    public function getValuesFilteringWithMultipleParams(array $subgroup, array $variety, array $type, array $origin, array $destiny, array $font) {
+        $listValues = $this->repository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);        
+        return $listValues;
     }
 }
 

@@ -60,6 +60,13 @@ class Data {
         $this->value = $value;
     }
     
+    public function getValue(){
+        return $this->value;
+    }
+    
+    public function getVarietyName(){
+        return $this->variety->name();
+    }    
 }
 
 ?>
