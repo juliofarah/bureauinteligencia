@@ -1,0 +1,49 @@
+[1mdiff --git a/test/datacenter/datacenter/DaoRepositoryTest.php b/test/datacenter/datacenter/DaoRepositoryTest.php[m
+[1mindex b03ee10..ad69a48 100644[m
+[1m--- a/test/datacenter/datacenter/DaoRepositoryTest.php[m
+[1m+++ b/test/datacenter/datacenter/DaoRepositoryTest.php[m
+[36m@@ -24,18 +24,12 @@[m [mclass DaoRepositoryTest extends PHPUnit_Framework_TestCase {[m
+         $this->connection = Connection::connect();[m
+         $this->daoRepository = new DatacenterDao($this->connection);[m
+     }[m
+[31m-[m
+[32m+[m[41m    [m
+     /**[m
+      * @test[m
+      */[m
+[31m-    public function generalTests() {[m
+[31m-        $this->populatesDatabase();[m
+[31m-        $this->getValuesWithoutMultiParams();[m
+[31m-        $this->getValuesWithouMultiParamsButWithDiferentsParamsValues();[m
+[31m-        $this->emptyDatabase();[m
+[31m-    }[m
+[31m-[m
+[31m-    private function getValuesWithoutMultiParams() {[m
+[32m+[m[32m    public function getValuesWithoutMultiParams() {[m
+[32m+[m[32m        $this->populatesDatabase();//Insert values on Database in the first test[m
+         $subgroup = $variety = $type = $origin = $destiny = $font = 1;[m
+         $values = $this->daoRepository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);[m
+         $this->assertEquals(2, $values->count());[m
+[36m@@ -43,7 +37,7 @@[m [mclass DaoRepositoryTest extends PHPUnit_Framework_TestCase {[m
+         $this->assertEquals(150, $values->offsetGet(0)->getValue());[m
+     }[m
+ [m
+[31m-        private function persistDataForTest() {[m
+[32m+[m[32m    private function persistDataForTest() {[m
+         //$data = new Data($year, $subgroup, $font, $type, $variety, $origin, $destiny);[m
+         $sql = "INSERT INTO data_test (ano, subgroup_id, font_id, type_id, variety_id, origin_id, destiny_id, value) VALUES ";[m
+         $values1 = "(1990,1,1,1,1,1,1,150), ";[m
+[36m@@ -55,7 +49,10 @@[m [mclass DaoRepositoryTest extends PHPUnit_Framework_TestCase {[m
+         return $sql . $values1 . $values2 . $values3 . $values4 . $values5 . $values6;[m
+     }[m
+ [m
+[31m-    private function getValuesWithouMultiParamsButWithDiferentsParamsValues() {[m
+[32m+[m[32m    /**[m
+[32m+[m[32m     * @test[m
+[32m+[m[32m     */[m
+[32m+[m[32m    public function getValuesWithouMultiParamsButWithDiferentsParamsValues() {[m
+         $subgroup = $font = 1;[m
+         $type = 3;[m
+         $variety = 2;[m
+warning: LF will be replaced by CRLF in test/datacenter/datacenter/DaoRepositoryTest.php.
+The file will have its original line endings in your working directory.

@@ -24,18 +24,12 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $this->connection = Connection::connect();
         $this->daoRepository = new DatacenterDao($this->connection);
     }
-
+    
     /**
      * @test
      */
-    public function generalTests() {
-        $this->populatesDatabase();
-        $this->getValuesWithoutMultiParams();
-        $this->getValuesWithouMultiParamsButWithDiferentsParamsValues();
-        $this->emptyDatabase();
-    }
-
-    private function getValuesWithoutMultiParams() {
+    public function getValuesWithoutMultiParams() {
+        $this->populatesDatabase();//Insert values on Database in the first test
         $subgroup = $variety = $type = $origin = $destiny = $font = 1;
         $values = $this->daoRepository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
         $this->assertEquals(2, $values->count());
@@ -43,7 +37,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(150, $values->offsetGet(0)->getValue());
     }
 
-        private function persistDataForTest() {
+    private function persistDataForTest() {
         //$data = new Data($year, $subgroup, $font, $type, $variety, $origin, $destiny);
         $sql = "INSERT INTO data_test (ano, subgroup_id, font_id, type_id, variety_id, origin_id, destiny_id, value) VALUES ";
         $values1 = "(1990,1,1,1,1,1,1,150), ";
@@ -55,7 +49,10 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         return $sql . $values1 . $values2 . $values3 . $values4 . $values5 . $values6;
     }
 
-    private function getValuesWithouMultiParamsButWithDiferentsParamsValues() {
+    /**
+     * @test
+     */
+    public function getValuesWithouMultiParamsButWithDiferentsParamsValues() {
         $subgroup = $font = 1;
         $type = 3;
         $variety = 2;
