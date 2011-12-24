@@ -77,6 +77,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(2, $values->count());
         $this->assertEquals(200, $values->offsetGet(1)->getValue());
         
+        //change de destiny country
         $destiny = array(1,2);
         $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);
         $this->assertEquals(4, $values->count());

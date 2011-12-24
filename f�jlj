@@ -1,0 +1,14 @@
+[1mdiff --git a/test/datacenter/datacenter/DaoRepositoryTest.php b/test/datacenter/datacenter/DaoRepositoryTest.php[m
+[1mindex 5577605..c375790 100644[m
+[1m--- a/test/datacenter/datacenter/DaoRepositoryTest.php[m
+[1m+++ b/test/datacenter/datacenter/DaoRepositoryTest.php[m
+[36m@@ -77,6 +77,7 @@[m [mclass DaoRepositoryTest extends PHPUnit_Framework_TestCase {[m
+         $this->assertEquals(2, $values->count());[m
+         $this->assertEquals(200, $values->offsetGet(1)->getValue());[m
+         [m
+[32m+[m[32m        //change de destiny country[m
+         $destiny = array(1,2);[m
+         $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);[m
+         $this->assertEquals(4, $values->count());[m
+warning: LF will be replaced by CRLF in test/datacenter/datacenter/DaoRepositoryTest.php.
+The file will have its original line endings in your working directory.
