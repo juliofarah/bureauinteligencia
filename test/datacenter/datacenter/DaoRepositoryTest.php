@@ -48,7 +48,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $values6 = "(1991,1,2,1,1,1,1,250)";
         return $sql . $values1 . $values2 . $values3 . $values4 . $values5 . $values6;
     }
-
+    
     /**
      * @test
      */
@@ -63,8 +63,28 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($values->offsetGet(0) instanceof Data && $values->offsetGet(0) instanceof Data);
         $this->assertEquals(300, $values->offsetGet(1)->getValue());
     }
-
+    /**
+     * @test
+     */
+    public function getValuesWithDifferentVarietiesAndTypes(){
+        //get values of variety 1 and 3 and type 1 e 2
+        $subgroup = $font = (1);
+        $type = array(1,3);
+        $variety = array(1,2);
+        $origin = 1;
+        $destiny = 1;
+        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);
+        $this->assertEquals(2, $values->count());
+        $this->assertEquals(200, $values->offsetGet(1)->getValue());
+        
+        $destiny = array(1,2);
+        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);
+        $this->assertEquals(4, $values->count());
+        $this->assertEquals(300, $values->offsetGet(3)->getValue());
+    }
+    
     private function populatesDatabase() {
+        echo $this->persistDataForTest();
         $this->connection->prepare($this->persistDataForTest())->execute();
     }
 
@@ -75,7 +95,6 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
     public function __destruct() {
         $this->emptyDatabase();
     }
-
 }
 
 ?>
