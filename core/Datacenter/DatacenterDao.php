@@ -29,7 +29,7 @@ class DatacenterDao implements DatacenterRepository{
      */
     public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font) {
         $sql = "SELECT ".$this->allParams();
-        $sql .= " FROM data_test value ";
+        $sql .= " FROM data value ";
         $sql .= $this->leftOuterJoin();
         $sql .= " WHERE ";
         $sql .= "value.subgroup_id = :subgroup ";
@@ -84,7 +84,7 @@ class DatacenterDao implements DatacenterRepository{
         
     public function getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, $year = null) {
         $sql = "SELECT ".$this->allParams();
-        $sql .= "FROM data_test value ";
+        $sql .= "FROM data value ";
         $sql .= $this->leftOuterJoin();
         $sql .= " WHERE ";
         $sql .= $this->in("value.subgroup_id", $subgroup);
@@ -111,6 +111,7 @@ class DatacenterDao implements DatacenterRepository{
         }
         return $sql;
     }
+    
     private function in($property, $values){
         $sql = $property." ";
         if(is_array($values)){

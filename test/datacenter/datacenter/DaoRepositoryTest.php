@@ -21,7 +21,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
     private $connection;
 
     public function DaoRepositoryTest() {
-        $this->connection = Connection::connect();
+        $this->connection = Connection::connectToTest();
         $this->daoRepository = new DatacenterDao($this->connection);
     }
     
@@ -39,7 +39,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
 
     private function persistDataForTest() {
         //$data = new Data($year, $subgroup, $font, $type, $variety, $origin, $destiny);
-        $sql = "INSERT INTO data_test (ano, subgroup_id, font_id, type_id, variety_id, origin_id, destiny_id, value) VALUES ";
+        $sql = "INSERT INTO data (ano, subgroup_id, font_id, type_id, variety_id, origin_id, destiny_id, value) VALUES ";
         $values1 = "(1990,1,1,1,1,1,1,150), ";
         $values2 = "(1991,1,1,1,1,1,1,200), ";
         $values3 = "(1990,1,1,3,2,1,2,250), ";
@@ -99,14 +99,14 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(150,$values->offsetGet(0)->getValue());
         $this->assertEquals(1990,$values->offsetGet(0)->getYear());
     }
-    
+        
     private function populatesDatabase() {
-        echo $this->persistDataForTest();
+        //echo $this->persistDataForTest();
         $this->connection->prepare($this->persistDataForTest())->execute();
     }
 
     private function emptyDatabase() {
-        $this->connection->prepare("TRUNCATE TABLE data_test")->execute();
+        $this->connection->prepare("TRUNCATE TABLE data")->execute();
     }
 
     public function __destruct() {
