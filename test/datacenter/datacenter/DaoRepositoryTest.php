@@ -83,6 +83,22 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(4, $values->count());
         $this->assertEquals(300, $values->offsetGet(3)->getValue());
     }
+   
+    /**
+     * @test
+     */
+    public function getValuesBetweenYears(){
+        $subgroup = $font = 1;
+        $type = array(1,3);
+        $variety = 1;
+        $origin = 1; 
+        $destiny = array(1,2);
+        $year = array(1989, 1990);
+        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, $year);
+        $this->assertEquals(1,$values->count());
+        $this->assertEquals(150,$values->offsetGet(0)->getValue());
+        $this->assertEquals(1990,$values->offsetGet(0)->getYear());
+    }
     
     private function populatesDatabase() {
         echo $this->persistDataForTest();
@@ -97,5 +113,4 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $this->emptyDatabase();
     }
 }
-
 ?>

@@ -82,7 +82,7 @@ class DatacenterDao implements DatacenterRepository{
         return $sql;
     }
         
-    public function getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font) {
+    public function getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, $year = null) {
         $sql = "SELECT ".$this->allParams();
         $sql .= "FROM data_test value ";
         $sql .= $this->leftOuterJoin();
@@ -93,12 +93,24 @@ class DatacenterDao implements DatacenterRepository{
         $sql .= "AND ".$this->in("value.origin_id", $origin);
         $sql .= "AND ".$this->in("value.destiny_id", $destiny);
         $sql .= "AND ".$this->in("value.font_id", $font);
+        if($year != null)
+            $sql .= "AND ".$this->yearCondition($year);
         echo $sql;
         $query = $this->session->prepare($sql);
         $query->execute();
         return $this->buildSimpleObjects($query->fetchAll(PDO::FETCH_ASSOC));
     }
     
+    private function yearCondition($year){
+        $sql = "ano ";
+        if(is_array($year)){
+            if(sizeof($year) == 2)
+                $sql .= "BETWEEN '".$year[0]."' AND '".$year[1]."' ";            
+        }else{
+            $sql .= "<= '".$year."' ";
+        }
+        return $sql;
+    }
     private function in($property, $values){
         $sql = $property." ";
         if(is_array($values)){

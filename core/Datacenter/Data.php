@@ -64,6 +64,10 @@ class Data {
         return $this->value;
     }
     
+    public function getYear(){
+        return $this->year;
+    }
+    
     public function getVarietyName(){
         return $this->variety->name();
     }    
