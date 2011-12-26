@@ -25,23 +25,32 @@ class DatacenterService {
      * @param type $font
      * @return ArrayIterator 
      */
-    public function getValuesWithSimpleFilter(array $subgroup, array $variety, array $type, array $origin, array $destiny, array $font) {
+    public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font) {
         return $this->repository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
     }
     
     /**
      *
-     * @param array $subgroup
-     * @param array $variety
-     * @param array $type
-     * @param array $origin
-     * @param array $destiny
-     * @param array $font
-     * @return ArrayIterator 
+     * @param type $subgroup
+     * @param type $variety
+     * @param type $type
+     * @param type $origin
+     * @param type $destiny
+     * @param type $font
+     * @return ArrayIterator
      */
-    public function getValuesFilteringWithMultipleParams(array $subgroup, array $variety, array $type, array $origin, array $destiny, array $font) {
-        $listValues = $this->repository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);        
-        return $listValues;
+    public function getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font) {
+        if(is_array($subgroup)){
+            $listValues1 = $this->repository->getValuesWithMultipleParamsSelected($subgroup[0], $variety, $type, $origin, $destiny, $font);
+            $listValues2 = $this->repository->getValuesWithMultipleParamsSelected($subgroup[1], $variety, $type, $origin, $destiny, $font);
+            $map = new HashMap();
+            $map->put(0, $listValues1);
+            $map->put(1, $listValues2);
+            return $map;
+        }else{
+            $listValues = $this->repository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);        
+            return $listValues;           
+        }            
     }
 }
 

@@ -9,6 +9,7 @@ require_once '../../core/generics/datacenter/Variety.php';
 require_once '../../core/generics/datacenter/CoffeType.php';
 require_once '../../core/generics/datacenter/Country.php';
 require_once '../../core/Datacenter/Data.php';
+require_once '../../util/Maps/HashMap.php';
 
 /**
  * Description of ServiceTest
@@ -23,6 +24,9 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
      */
     private $repository;
     
+    /**     
+     * @var DatacenterService
+     */
     private $service;
     
     public function ServiceTest(){
@@ -46,7 +50,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
         $subgroup = $variety = $type = $origin = $destiny = $font = array(1);
         //$this->assertEquals(3, $this->repository->getValuesByOneSubgroup($subgroup, $variety, $type, $origin, $destiny, $font)->count());
         $this->assertEquals(3, $this->service->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font)->count());        
-    }
+    }        
     
     /**
      * @test
@@ -54,12 +58,32 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
     public function serviceGetValuesWithMultipleTypeAndVarietiesOfCoffe(){
         $this->repository->expects($this->any())
                          ->method('getValuesWithMultipleParamsSelected')
-                         ->will($this->returnValue($this->listFilteredByOneSubgroupAndDifferentTypesOrVarieties()));
-        
+                         ->will($this->returnValue($this->listFilteredByOneSubgroupAndDifferentTypesOrVarieties()));    
         $subgroup = $font = $origin = $destiny = array(1);
+        $subgroup = 1;
         $variety = $type = array(1,2);
         $this->assertEquals(6, $this->service->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font)->count());
     }   
+    
+    /**
+     * @test
+     */
+    public function getValuesWhenQueryHasTwoSubgroupsSelected(){
+        $this->repository->expects($this->at(0))
+                         ->method('getValuesWithMultipleParamsSelected')
+                         ->with(1, $this->equalTo(array(1,2)), $this->equalTo(array(1,2)), 
+                                 $this->equalTo(1), $this->equalTo(1), $this->equalTo(1))
+                         ->will($this->returnValue($this->listFilteredByOneSubgroup()));
+        $this->repository->expects($this->at(1))
+                         ->method('getValuesWithMultipleParamsSelected')
+                         ->with(8, $this->equalTo(array(1,2)), $this->equalTo(array(1,2)), 
+                                 $this->equalTo(1), $this->equalTo(1), $this->equalTo(1))   
+                         ->will($this->returnValue($this->listFilteredByOtherSubgroup()));
+        $subgroup = array(1,8);
+        $font = $origin = $destiny = 1;
+        $variety = $type = array(1,2);
+        $this->assertTrue($this->service->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font) instanceof HashMap);
+    }
     
     /**************************************************************************/
     /***these methods are used to build the return for the mocked object***/
@@ -91,7 +115,25 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
         $list->append($data2);
         
         return $list;
-    }    
+    }
+    
+    private function listFilteredByOtherSubgroup(){
+        //$valuesSubgroup1 = $this->listFilteredByOneSubgroupAndDifferentTypesOrVarieties();
+        
+        $valuesSubgroup2 = new ArrayObject();
+        $subgroup = new Subgroup('Estoque',8);
+        $font = new Font("USDA");
+        $variety = new Variety("Conilon");
+        $type = new CoffeType("Verde");
+        $origin = new Country("Brasil");
+        $destiny = new Country("USA");
+        $data = new Data(1990, $subgroup, $font, $type, $variety, $origin, $destiny);
+        $valuesSubgroup2->append($data);
+        $data = new Data(1991, $subgroup, $font, $type, $variety, $origin, $destiny);
+        $valuesSubgroup2->append($data);
+        
+        return $valuesSubgroup2;
+    }
 }
 
 ?>

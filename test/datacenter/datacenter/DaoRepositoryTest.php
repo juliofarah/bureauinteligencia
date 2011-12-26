@@ -99,7 +99,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(150,$values->offsetGet(0)->getValue());
         $this->assertEquals(1990,$values->offsetGet(0)->getYear());
     }
-        
+    
     private function populatesDatabase() {
         //echo $this->persistDataForTest();
         $this->connection->prepare($this->persistDataForTest())->execute();
