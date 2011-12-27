@@ -39,6 +39,16 @@ class DatacenterController {
         return $this->toJson($values);
     }
 
+    public function getValuesWithMultipleParams($subgroup, $font, $type, $variety, $origin, $destiny) {
+        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);        
+        return $this->toJson($values);
+    }
+        
+    public function getValuesFilteringByTwoSubgroups(array $subgroup, $font, $type, $variety, $origin, $destiny) {
+        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);        
+        return $this->hashMapFilteredToJSON($values);
+    }
+    
     public function calculateSampleStandardDeviation($group){
         $values = $this->datacenterRepository->getValuesFromAGroup($group);
         $standarDeviation = $this->statistic->sampleStandardDeviation($values);
@@ -49,7 +59,22 @@ class DatacenterController {
                 ->serialize();
     }
     
-    public function toJson(ArrayIterator $list){
+    private function hashMapFilteredToJSON(Map $map){
+        $json = '{';
+        $listValues = $map->values()->getIterator();
+        $n = 1;
+        while($listValues->valid()){
+            $json .= '"subgroup_'.$n++.'":';
+            $json .= $this->toJson($listValues->current()->getIterator());
+            if(($n-1) < $listValues->count())
+                $json .= ',';
+            $listValues->next();
+        }
+        $json .= '}';
+        return $json;
+    }
+    
+    private function toJson(ArrayIterator $list){
         $json = "[";
         while($list->valid()){
             $json .= $list->current()->toJson();
@@ -61,5 +86,4 @@ class DatacenterController {
         return $json;
     }
 }
-
 ?>
