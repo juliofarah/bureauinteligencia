@@ -1,5 +1,4 @@
 <?php
-
 require_once '../../core/Datacenter/DatacenterService.php';
 require_once '../../core/Datacenter/DatacenterRepository.php';
 require_once '../../core/generics/Param.php';
@@ -68,7 +67,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
     /**
      * @test
      */
-    public function getValuesWhenQueryHasTwoSubgroupsSelected(){
+    public function getValuesWhenQueryHasTwoSubgroupsSelectedAndTheReturnMustContainsOneListOfValuesToEachSubgroup(){
         $this->repository->expects($this->at(0))
                          ->method('getValuesWithMultipleParamsSelected')
                          ->with(1, $this->equalTo(array(1,2)), $this->equalTo(array(1,2)), 
@@ -90,7 +89,7 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals('Conilon', $values->get(1)->offsetGet(0)->getVariety());
         $this->assertEquals('Arábica', $values->get(0)->offsetGet(0)->getVariety());
     }
-    
+        
     /**************************************************************************/
     /***these methods are used to build the return for the mocked object***/
     private function listFilteredByOneSubgroup(){
@@ -141,5 +140,4 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
         return $valuesSubgroup2;
     }
 }
-
 ?>

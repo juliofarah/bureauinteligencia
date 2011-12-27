@@ -13,6 +13,11 @@ class DatacenterController {
     private $datacenterRepository;
     
     /**
+     * @var DatacenterService 
+     */
+    private $datacenterService;
+    
+    /**
      * @var Statistic 
      */
     private $statistic;
@@ -23,12 +28,17 @@ class DatacenterController {
      */
     private $jsonResponse;
     
-    public function DatacenterController(DatacenterRepository $datacenterRepository, Statistic $statistic, JsonResponse $jsonResponse){
-        $this->datacenterRepository = $datacenterRepository;
+    public function DatacenterController(DatacenterService $service, Statistic $statistic, JsonResponse $jsonResponse){
+        $this->datacenterService = $service;
         $this->statistic = $statistic;
         $this->jsonResponse = $jsonResponse;
     }
-    
+
+    public function getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny) {
+        $values = $this->datacenterService->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
+        return $this->toJson($values);
+    }
+
     public function calculateSampleStandardDeviation($group){
         $values = $this->datacenterRepository->getValuesFromAGroup($group);
         $standarDeviation = $this->statistic->sampleStandardDeviation($values);
@@ -39,6 +49,17 @@ class DatacenterController {
                 ->serialize();
     }
     
+    public function toJson(ArrayIterator $list){
+        $json = "[";
+        while($list->valid()){
+            $json .= $list->current()->toJson();
+            $json .= ",";
+            $list->next();
+        }
+        $json = substr($json, 0, -1);
+        $json .= "]";
+        return $json;
+    }
 }
 
 ?>

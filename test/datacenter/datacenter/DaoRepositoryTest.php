@@ -63,6 +63,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($values->offsetGet(0) instanceof Data && $values->offsetGet(0) instanceof Data);
         $this->assertEquals(300, $values->offsetGet(1)->getValue());
     }
+    
     /**
      * @test
      */

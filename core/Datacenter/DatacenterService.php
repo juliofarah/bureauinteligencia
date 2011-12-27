@@ -31,7 +31,7 @@ class DatacenterService {
     
     /**
      *
-     * @param type $subgroup
+     * @param type $subgroup    
      * @param type $variety
      * @param type $type
      * @param type $origin
@@ -50,8 +50,7 @@ class DatacenterService {
         }else{
             $listValues = $this->repository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);        
             return $listValues;           
-        }            
+        }
     }
 }
-
 ?>

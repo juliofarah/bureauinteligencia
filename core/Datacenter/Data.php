@@ -45,6 +45,29 @@ class Data {
     private $destiny;
     
     private $value;
+
+    public function toArray(){
+        $array = array();
+        if($this->year != null)
+            $array['year'] = $this->getYear();
+        if($this->subgroup != null)
+            $array['subgroup'] = $this->subgroup->toArray();
+        if($this->font != null)
+            $array['font'] = $this->font->toArray();
+        if($this->type != null)
+            $array['type'] = $this->type->toArray();
+        if($this->variety != null)
+            $array['variety'] = $this->variety->toArray();
+        if($this->origin != null)
+            $array['origin'] = $this->origin->toArray();
+        if($this->destiny != null)
+            $array['destiny'] = $this->destiny->toArray();
+        return $array;
+    }
+    
+    public function toJson() {
+       return json_encode($this->toArray());
+    }
     
     public function Data($year, $subgroup, $font, $type, $variety, $origin, $destiny){
         $this->year = $year;

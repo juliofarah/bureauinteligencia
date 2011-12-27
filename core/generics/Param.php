@@ -29,7 +29,12 @@ abstract class Param {
     }
     
     public function toArray(){
-        return array('id'=>$this->id(),'name'=> utf8_decode($this->name));
+        $array = array();
+        if($this->id != null)
+            $array['id'] = $this->id();
+        if($this->name != null)
+            $array['name'] = utf8_decode($this->name());
+        return $array;
     }
     
     public function toJson(){
