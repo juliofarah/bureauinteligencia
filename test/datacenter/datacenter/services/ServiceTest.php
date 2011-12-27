@@ -82,7 +82,13 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
         $subgroup = array(1,8);
         $font = $origin = $destiny = 1;
         $variety = $type = array(1,2);
-        $this->assertTrue($this->service->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font) instanceof HashMap);
+        $values = $this->service->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);
+        $this->assertTrue($values instanceof HashMap);
+        $this->assertEquals(1990, $values->get(0)->offsetGet(0)->getYear());
+        $this->assertEquals('Brasil', $values->get(1)->offsetGet(0)->getOriginName());
+        $this->assertEquals('USA', $values->get(1)->offsetGet(0)->getDestinyName());
+        $this->assertEquals('Conilon', $values->get(1)->offsetGet(0)->getVariety());
+        $this->assertEquals('Arábica', $values->get(0)->offsetGet(0)->getVariety());
     }
     
     /**************************************************************************/

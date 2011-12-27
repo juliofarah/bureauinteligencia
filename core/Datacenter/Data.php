@@ -70,7 +70,18 @@ class Data {
     
     public function getVarietyName(){
         return $this->variety->name();
-    }    
+    }
+    
+    public function getOriginName(){
+        return $this->origin->name();
+    }
+    
+    public function getDestinyName(){
+        return $this->destiny->name();
+    }
+    
+    public function getVariety(){
+        return $this->variety->name();
+    }
 }
-
 ?>
