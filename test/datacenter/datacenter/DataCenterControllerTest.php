@@ -83,6 +83,48 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
                     $this->controller->getValuesFilteringByTwoSubgroups($subgroup, $font, $type, $variety, $origin, $destiny));        
     }
     
+    /**
+     * @test
+     */
+    public function makeControllerRedirectToCorrectMethodAccordingToParams(){
+        $this->mockObjects();
+        $this->dataCenterService->expects($this->any())
+                                ->method('getValuesWithSimpleFilter')
+                                ->will($this->returnValue($this->listValues()->getIterator()));
+        $this->dataCenterService->expects($this->any())
+                                ->method('getValuesFilteringWithMultipleParams')
+                                ->will($this->returnValue($this->listWithDifferentFilters()->getIterator()));
+        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, $this->jsonResponse);    
+        $subgroup = $font = $type = $variety = $origin = $destiny = 1;
+        $this->assertEquals($this->simpleQueryJsonExpected(), $this->controller->getValues($subgroup, $font, $type, $variety, $origin, $destiny));        
+        $variety = array(1,2,3);
+        $type = array(1,2);
+        $destiny = array(6,7,8,9);
+        $this->assertEquals($this->multipleParamsJsonExpected(), 
+                $this->controller->getValues($subgroup, $font, $type, $variety, $origin, $destiny));
+    }
+    
+    /**
+     * @test
+     */
+    public function makeControllerRedirectToTwoSubgroupsMethod(){
+        $this->mockObjects();
+        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, $this->jsonResponse);
+        $map = new HashMap();
+        $map->put(0, $this->listValues());
+        $map->put(1, $this->listFilteredByOtherSubgroup());
+        $this->dataCenterService->expects($this->any())
+                                ->method('getValuesFilteringWithMultipleParams')
+                                ->will($this->returnValue($map));
+        $subgroup = $font = $type = $variety = $origin = $destiny = 1;
+        $variety = array(1,2,3);
+        $type = array(1,2);
+        $destiny = array(6,7,8,9);
+        $subgroup = array(1,2);
+        $this->assertEquals($this->twoSubgroupsJsonExepcted(), 
+                $this->controller->getValues($subgroup, $font, $type, $variety, $origin, $destiny));
+    }
+        
     private function listValues(){
         $subgroup = new Subgroup("subgrupo");
         $font = new Font("fonte");

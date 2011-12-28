@@ -34,13 +34,30 @@ class DatacenterController {
         $this->jsonResponse = $jsonResponse;
     }
 
+    public function getValues($subgroup, $font, $type, $variety, $origin, $destiny) {
+        if(!$this->anyValueIsAnArray($subgroup, $font, $type, $variety, $origin, $destiny)){
+            return $this->getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny);
+        }else{            
+            if(is_array($subgroup)){                
+                return $this->getValuesFilteringByTwoSubgroups($subgroup, $font, $type, $variety, $origin, $destiny);
+            }else{                
+                return $this->getValuesWithMultipleParams($subgroup, $font, $type, $variety, $origin, $destiny);
+            }
+        }
+    }
+    
+    private function anyValueIsAnArray($subgroup, $font, $type, $variety, $origin, $destiny){
+        return (is_array($subgroup) || is_array($font) || is_array($type) || is_array($variety) 
+                || is_array($origin) || is_array($destiny));
+    }
+    
     public function getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny) {
         $values = $this->datacenterService->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
         return $this->toJson($values);
     }
 
     public function getValuesWithMultipleParams($subgroup, $font, $type, $variety, $origin, $destiny) {
-        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);        
+        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);
         return $this->toJson($values);
     }
         
@@ -59,7 +76,7 @@ class DatacenterController {
                 ->serialize();
     }
     
-    private function hashMapFilteredToJSON(Map $map){
+    private function hashMapFilteredToJSON(Map $map){        
         $json = '{';
         $listValues = $map->values()->getIterator();
         $n = 1;
