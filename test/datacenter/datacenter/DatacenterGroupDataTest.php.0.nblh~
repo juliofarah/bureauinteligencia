@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Description of DatacenterGroupDataTest
+ *
+ * @author Ramon
+ */
+class DatacenterGroupDataTest extends PHPUnit_Framework_TestCase{
+    
+}
+
+?>

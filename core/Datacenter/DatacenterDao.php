@@ -50,8 +50,7 @@ class DatacenterDao implements DatacenterRepository{
      * @return ArrayIterator 
      */
     private function buildSimpleObjects(array $values){
-        $list = new ArrayObject();
-        print_r($values);
+        $list = new ArrayObject();        
         foreach($values as $value){
             $subgroup = new Subgroup($value['subgroup']);
             $font = new Font($value['font']);
@@ -94,8 +93,7 @@ class DatacenterDao implements DatacenterRepository{
         $sql .= "AND ".$this->in("value.destiny_id", $destiny);
         $sql .= "AND ".$this->in("value.font_id", $font);
         if($year != null)
-            $sql .= "AND ".$this->yearCondition($year);
-        echo $sql;
+            $sql .= "AND ".$this->yearCondition($year);        
         $query = $this->session->prepare($sql);
         $query->execute();
         return $this->buildSimpleObjects($query->fetchAll(PDO::FETCH_ASSOC));

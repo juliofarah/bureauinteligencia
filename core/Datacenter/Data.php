@@ -46,8 +46,12 @@ class Data {
     
     private $value;
 
+    private $id;
+    
     public function toArray(){
         $array = array();
+        if($this->id != null)
+            $array['id'] = $this->getId();
         if($this->year != null)
             $array['year'] = $this->getYear();
         if($this->subgroup != null)
@@ -79,6 +83,14 @@ class Data {
         $this->destiny = $destiny;
     }
     
+    public function setId($id){
+        $this->id = $id;
+    }
+    
+    public function getId(){
+        return $this->id;
+    }
+    
     public function setValue($value){
         $this->value = $value;
     }
@@ -89,6 +101,14 @@ class Data {
     
     public function getYear(){
         return $this->year;
+    }
+    
+    public function getSubgroupName(){
+        return $this->subgroup->name();
+    }
+    
+    public function getTypeName(){
+        return $this->type->name();
     }
     
     public function getVarietyName(){
@@ -106,5 +126,19 @@ class Data {
     public function getVariety(){
         return $this->variety->name();
     }
+        
+    public function getFontName(){
+        return $this->font->name();
+    }
+    
+    public function isOfTheSameCategoryOf(Data $data = null) {
+        return ($data != null && $this->getSubgroupName() == $data->getSubgroupName() &&
+                $this->getTypeName() == $data->getTypeName() &&
+                $this->getVariety() == $data->getVariety() &&
+                $this->getOriginName() == $data->getOriginName() &&
+                $this->getDestinyName() == $data->getDestinyName() &&
+                $this->getFontName() == $data->getFontName());
+    }
+
 }
 ?>
