@@ -14,18 +14,25 @@ class TableBuilder {
     public function buildAsJson($mapWithGroupedValues,array $years) {        
         $json = '[';        
         if(is_array($mapWithGroupedValues)){            
-            $json .= '{'.$this->buildSimpleTable($mapWithGroupedValues[0], $years,1).'}';
-            $json .= ',';
-            $json .= '{'.$this->buildSimpleTable($mapWithGroupedValues[1], $years,2).'}';
+            $json .= $this->buildMultiTables($mapWithGroupedValues, $years);
         }else{
             $json .= '{'.$this->buildSimpleTable($mapWithGroupedValues,$years).'}';
         }
-        $json .= ']';
-        echo '\n\n'.$json;
+        $json .= ']';       
         return $json;
     }
     
-    private function buildSimpleTable(Map $mapWithGroupedValues,array $years, $i = 1){
+    private function buildMultiTables(array $mapWithGroupedValues, array $years){
+        $i = 1;
+        $json = '';
+        foreach($mapWithGroupedValues as $groupedValues){
+            $json .= '{'.$this->buildSimpleTable($groupedValues, $years,$i++).'},';
+        }
+        $json = substr($json, 0, -1);            
+        return $json;
+    }
+    
+    private function buildSimpleTable(Map $mapWithGroupedValues, array $years, $i = 1){
         $json = $this->initTableJson($i).'{';
         $json .= $this->thead($years);
         $json .= ',"tbody":';
