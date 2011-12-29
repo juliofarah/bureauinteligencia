@@ -21,6 +21,7 @@ class TableBuilder {
             $json .= '{'.$this->buildSimpleTable($mapWithGroupedValues,$years).'}';
         }
         $json .= ']';
+        echo '\n\n'.$json;
         return $json;
     }
     
