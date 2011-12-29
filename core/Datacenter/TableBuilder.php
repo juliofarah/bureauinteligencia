@@ -9,22 +9,32 @@ class TableBuilder {
     /**
      * The param $mapValues must be the map with grouped values. In this map
      * each position contains an ArrayObject with grouped Data .
-     * @param Map $mapValues 
+     * @param $mapWithGroupedValues 
      */
-    public function buildAsJson(Map $mapValues,array $years) {        
-        $json = '[{';
-        $json .= $this->initTableJson().'{';
-        $json .= $this->thead($years);
-        $json .= ',"tbody":';
-        $json .= $this->buildTbodyJson($mapValues,$years);        
-        $json .= '}';
-        $json .= '}]';
-        echo $json;
+    public function buildAsJson($mapWithGroupedValues,array $years) {        
+        $json = '[';        
+        if(is_array($mapWithGroupedValues)){            
+            $json .= '{'.$this->buildSimpleTable($mapWithGroupedValues[0], $years,1).'}';
+            $json .= ',';
+            $json .= '{'.$this->buildSimpleTable($mapWithGroupedValues[1], $years,2).'}';
+        }else{
+            $json .= '{'.$this->buildSimpleTable($mapWithGroupedValues,$years).'}';
+        }
+        $json .= ']';
         return $json;
     }
     
-    private function initTableJson(){
-        $json = '"tabela_1":';
+    private function buildSimpleTable(Map $mapWithGroupedValues,array $years, $i = 1){
+        $json = $this->initTableJson($i).'{';
+        $json .= $this->thead($years);
+        $json .= ',"tbody":';
+        $json .= $this->buildTbodyJson($mapWithGroupedValues,$years);        
+        $json .= '}';        
+        return $json;
+    }
+    
+    private function initTableJson($i = 1){
+        $json = '"tabela_'.$i.'":';
         return $json;
     }
     

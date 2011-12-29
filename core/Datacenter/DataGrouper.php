@@ -6,6 +6,10 @@
  */
 class DataGrouper {
 
+    /**     
+     * @param ArrayObject $listOfData
+     * @return HashMap 
+     */
     public function groupDataValues(ArrayObject $listOfData) {
         $mapGrouped = new HashMap();
         $dataToGroup = $this->objectData($listOfData->offsetGet(0));
