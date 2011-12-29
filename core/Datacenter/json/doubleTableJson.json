@@ -1,0 +1,186 @@
+[
+  {
+    "tabela_1": {
+      "thead": [
+        {
+          "th": "Variedade"
+        },
+        {
+          "th": "Tipo"
+        },
+        {
+          "th": "Origem"
+        },
+        {
+          "th": "Destino"
+        },
+        {
+          "th": "1989"
+        },
+        {
+          "th": "1990"
+        },
+        {
+          "th": "1991"
+        },
+        {
+          "th": "1992"
+        }
+      ],
+      "tbody": [
+        {
+          "variety": "variety",
+          "type": "type",
+          "origin": "origin",
+          "destiny": "destiny",
+          "values": [
+            {
+              "value": 150
+            },
+            {
+              "value": 220
+            },
+            {
+              "value": 285
+            },
+            {
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "variety": "variety2",
+          "type": "type2",
+          "origin": "origin2",
+          "destiny": "destiny2",
+          "values": [
+            {
+              "value": 188
+            },
+            {
+              "value": 302
+            },
+            {
+              "value": 254
+            },
+            {
+              "value": 195
+            }
+          ]
+        },
+        {
+          "variety": "variety3",
+          "type": "type3",
+          "origin": "origin3",
+          "destiny": "destiny2",
+          "values": [
+            {
+              "value": "-"
+            },
+            {
+              "value": 101
+            },
+            {
+              "value": 148
+            },
+            {
+              "value": 157
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "tabela_2": {
+      "thead": [
+        {
+          "th": "Variedade"
+        },
+        {
+          "th": "Tipo"
+        },
+        {
+          "th": "Origem"
+        },
+        {
+          "th": "Destino"
+        },
+        {
+          "th": "1989"
+        },
+        {
+          "th": "1990"
+        },
+        {
+          "th": "1991"
+        },
+        {
+          "th": "1992"
+        }
+      ],
+      "tbody": [
+        {
+          "variety": "variety",
+          "type": "type",
+          "origin": "origin",
+          "destiny": "destiny",
+          "values": [
+            {
+              "value": 150
+            },
+            {
+              "value": 220
+            },
+            {
+              "value": 285
+            },
+            {
+              "value": "-"
+            }
+          ]
+        },
+        {
+          "variety": "variety2",
+          "type": "type2",
+          "origin": "origin2",
+          "destiny": "destiny2",
+          "values": [
+            {
+              "value": 188
+            },
+            {
+              "value": 302
+            },
+            {
+              "value": 254
+            },
+            {
+              "value": 195
+            }
+          ]
+        },
+        {
+          "variety": "variety3",
+          "type": "type3",
+          "origin": "origin3",
+          "destiny": "destiny2",
+          "values": [
+            {
+              "value": "-"
+            },
+            {
+              "value": 101
+            },
+            {
+              "value": 148
+            },
+            {
+              "value": 157
+            }
+          ]
+        }
+      ]
+    }
+  }
+]
