@@ -28,12 +28,18 @@ class DatacenterController {
      */
     private $jsonResponse;
     
+    private $asJson = false;
+    
     public function DatacenterController(DatacenterService $service, Statistic $statistic, JsonResponse $jsonResponse){
         $this->datacenterService = $service;
         $this->statistic = $statistic;
         $this->jsonResponse = $jsonResponse;
     }
 
+    public function getValuesAsJson(){
+        $this->asJson = true;
+    }
+    
     public function getValues($subgroup, $font, $type, $variety, $origin, $destiny) {
         if(!$this->anyValueIsAnArray($subgroup, $font, $type, $variety, $origin, $destiny)){
             return $this->getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny);
@@ -53,17 +59,23 @@ class DatacenterController {
     
     public function getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny) {
         $values = $this->datacenterService->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
-        return $this->toJson($values);
+        if($this->asJson)
+            return $this->toJson($values);        
+        return $values;
     }
 
     public function getValuesWithMultipleParams($subgroup, $font, $type, $variety, $origin, $destiny) {
         $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);
-        return $this->toJson($values);
+        if($this->asJson)
+            return $this->toJson($values);        
+        return $values;
     }
         
     public function getValuesFilteringByTwoSubgroups(array $subgroup, $font, $type, $variety, $origin, $destiny) {
         $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);        
-        return $this->hashMapFilteredToJSON($values);
+        if($this->asJson)
+            return $this->hashMapFilteredToJSON($values);
+        return $values;
     }
     
     public function calculateSampleStandardDeviation($group){
