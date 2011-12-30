@@ -8,7 +8,7 @@ interface DatacenterRepository {
     /**
      * @return ArrayIterator
      */
-    public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
+    public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font, $year = null);
     
     /**
      * @return ArrayIterator

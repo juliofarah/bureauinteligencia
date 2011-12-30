@@ -31,7 +31,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
     public function getValuesWithoutMultiParams() {
         $this->populatesDatabase();//Insert values on Database in the first test
         $subgroup = $variety = $type = $origin = $destiny = $font = 1;
-        $values = $this->daoRepository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
+        $values = $this->daoRepository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font, array(1989,1991));
         $this->assertEquals(2, $values->count());
         $this->assertTrue($values->offsetGet(0) instanceof Data && $values->offsetGet(0) instanceof Data);
         $this->assertEquals(150, $values->offsetGet(0)->getValue());
@@ -58,7 +58,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $variety = 2;
         $origin = 1;
         $destiny = 2;
-        $values = $this->daoRepository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
+        $values = $this->daoRepository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font, array(1988,1991));
         $this->assertEquals(2, $values->count());
         $this->assertTrue($values->offsetGet(0) instanceof Data && $values->offsetGet(0) instanceof Data);
         $this->assertEquals(300, $values->offsetGet(1)->getValue());
@@ -74,13 +74,13 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $variety = array(1,2);
         $origin = 1;
         $destiny = 1;
-        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);
+        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, array(1988,1991));
         $this->assertEquals(2, $values->count());
         $this->assertEquals(200, $values->offsetGet(1)->getValue());
         
         //change de destiny country
         $destiny = array(1,2);
-        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);
+        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, array(1989,1991));
         $this->assertEquals(4, $values->count());
         $this->assertEquals(300, $values->offsetGet(3)->getValue());
     }

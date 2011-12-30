@@ -28,21 +28,55 @@ class DatacenterController {
      */
     private $jsonResponse;
     
+    /**
+     *
+     * @var DataGrouper 
+     */
+    private $grouper;
+    
+    /**     
+     * @var TableBuilder 
+     */
+    private $tableBuilder;
+    
     private $asJson = false;
     
-    public function DatacenterController(DatacenterService $service, Statistic $statistic, JsonResponse $jsonResponse){
+    public function DatacenterController(DatacenterService $service, Statistic $statistic, 
+            JsonResponse $jsonResponse, DataGrouper $grouper, TableBuilder $tableBuilder){
         $this->datacenterService = $service;
         $this->statistic = $statistic;
         $this->jsonResponse = $jsonResponse;
+        $this->grouper = $grouper;
+        $this->tableBuilder = $tableBuilder;
     }
 
     public function getValuesAsJson(){
         $this->asJson = true;
     }
+
+    public function buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny,array $year = null) {
+        $values = $this->getValues($subgroup, $font, $type, $variety, $origin, $destiny,$year);
+        if($values instanceof HashMap){
+            $listValues = $values->values();
+            $group1 = $this->grouper->groupDataValues($this->getListAsAnArrayObject($listValues->offsetGet(0)));
+            $group2 = $this->grouper->groupDataValues($this->getListAsAnArrayObject($listValues->offsetGet(1)));
+            $groupedValues = array($group1, $group2);
+        }else{
+            $groupedValues = $this->grouper->groupDataValues($this->getListAsAnArrayObject($values));
+        }        
+        return $this->tableBuilder->buildAsJson($groupedValues, array(1990,1992)); 
+    }
     
-    public function getValues($subgroup, $font, $type, $variety, $origin, $destiny) {
+    private function getListAsAnArrayObject($list){
+        if($list instanceof ArrayIterator){
+            $list = new ArrayObject($list->getArrayCopy());
+        }
+        return $list;
+    }
+ 
+    public function getValues($subgroup, $font, $type, $variety, $origin, $destiny,array $years = null) {
         if(!$this->anyValueIsAnArray($subgroup, $font, $type, $variety, $origin, $destiny)){
-            return $this->getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny);
+            return $this->getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny,$years);
         }else{            
             if(is_array($subgroup)){                
                 return $this->getValuesFilteringByTwoSubgroups($subgroup, $font, $type, $variety, $origin, $destiny);
@@ -57,22 +91,22 @@ class DatacenterController {
                 || is_array($origin) || is_array($destiny));
     }
     
-    public function getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny) {
-        $values = $this->datacenterService->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
-        if($this->asJson)
-            return $this->toJson($values);        
-        return $values;
-    }
-
-    public function getValuesWithMultipleParams($subgroup, $font, $type, $variety, $origin, $destiny) {
-        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);
+    public function getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny,array $years = null) {
+        $values = $this->datacenterService->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font,$years);
         if($this->asJson)
             return $this->toJson($values);        
         return $values;
     }
         
-    public function getValuesFilteringByTwoSubgroups(array $subgroup, $font, $type, $variety, $origin, $destiny) {
-        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);        
+    public function getValuesWithMultipleParams($subgroup, $font, $type, $variety, $origin, $destiny,array $years = null) {
+        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font,$years);
+        if($this->asJson)
+            return $this->toJson($values);        
+        return $values;
+    }
+        
+    public function getValuesFilteringByTwoSubgroups(array $subgroup, $font, $type, $variety, $origin, $destiny, array $years = null) {
+        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font,$years);        
         if($this->asJson)
             return $this->hashMapFilteredToJSON($values);
         return $values;

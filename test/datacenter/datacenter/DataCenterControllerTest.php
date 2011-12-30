@@ -27,12 +27,24 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
      */
     private $jsonResponse;
     
+    /**     
+     * @var DataGrouper 
+     */
+    private $grouper;
+    
+    /**     
+     * @var TableBuilder 
+     */
+    private $tableBuilder;
+    
     private function mockObjects(){
         $this->dataCenterService = $this->getMockBuilder('DatacenterService')
                                         ->disableOriginalConstructor()
                                         ->getMock();
         $this->statistic = $this->getMock("Statistic");
         $this->jsonResponse = $this->getMock("JsonResponse");
+        $this->grouper = $this->getMock("DataGrouper");
+        $this->tableBuilder = $this->getMock("TableBuilder");
     }
     
     /**
@@ -43,7 +55,8 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $this->dataCenterService->expects($this->any())
                                 ->method('getValuesWithSimpleFilter')
                                 ->will($this->returnValue($this->listValues()->getIterator()));
-        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, $this->jsonResponse);
+        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
+                $this->jsonResponse, $this->grouper, $this->tableBuilder);
         $this->controller->getValuesAsJson();
         $subgroup = $font = $type = $variety = $origin = $destiny = 1;
         $this->assertEquals($this->simpleQueryJsonExpected(),
@@ -58,7 +71,8 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $this->dataCenterService->expects($this->any())
                                 ->method('getValuesFilteringWithMultipleParams')
                                 ->will($this->returnValue($this->listWithDifferentFilters()->getIterator()));
-        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, $this->jsonResponse);
+        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
+                $this->jsonResponse, $this->grouper, $this->tableBuilder);
         $this->controller->getValuesAsJson();
         $subgroup = $font = $type = $origin = 1;
         $variety = $destiny = array(1,2);
@@ -77,7 +91,8 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $this->dataCenterService->expects($this->any())
                                 ->method('getValuesFilteringWithMultipleParams')
                                 ->will($this->returnValue($map));
-        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, $this->jsonResponse);
+        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
+                $this->jsonResponse, $this->grouper, $this->tableBuilder);
         $this->controller->getValuesAsJson();
         $subgroup = array(1,8);
         $type = $font = $origin = $destiny = 1;        
@@ -97,7 +112,8 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $this->dataCenterService->expects($this->any())
                                 ->method('getValuesFilteringWithMultipleParams')
                                 ->will($this->returnValue($this->listWithDifferentFilters()->getIterator()));
-        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, $this->jsonResponse);    
+        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
+                $this->jsonResponse, $this->grouper, $this->tableBuilder);    
         $this->controller->getValuesAsJson();
         $subgroup = $font = $type = $variety = $origin = $destiny = 1;
         $this->assertEquals($this->simpleQueryJsonExpected(), $this->controller->getValues($subgroup, $font, $type, $variety, $origin, $destiny));        
@@ -113,7 +129,8 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
      */
     public function makeControllerRedirectToTwoSubgroupsMethod(){
         $this->mockObjects();
-        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, $this->jsonResponse);
+        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
+                $this->jsonResponse, $this->grouper, $this->tableBuilder);
         $this->controller->getValuesAsJson();
         $map = new HashMap();
         $map->put(0, $this->listValues());
@@ -129,7 +146,71 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals($this->twoSubgroupsJsonExepcted(), 
                 $this->controller->getValues($subgroup, $font, $type, $variety, $origin, $destiny));
     }
+    
+    /**
+     * @test
+     */
+    public function buildTableAsJson(){
+        $this->mockObjects();        
+        $tableBuilder = $this->getMock("TableBuilder");
+        $groupedValues = new HashMap();
+        $grouper = $this->getMock("DataGrouper");
         
+        $grouper->expects($this->any())->method("groupDataValues")
+                ->will($this->returnValue($groupedValues));
+        
+         $this->dataCenterService->expects($this->any())
+                                ->method('getValuesWithSimpleFilter')
+                                ->will($this->returnValue(new ArrayIterator()));         
+        $this->dataCenterService->expects($this->at(0))
+                                 ->method('getValuesFilteringWithMultipleParams')
+                                 ->will($this->returnValue(new ArrayIterator()));                                
+        $map = new HashMap();
+        $map->put(0, new ArrayIterator());
+        $map->put(1, new ArrayIterator());
+        $this->dataCenterService->expects($this->at(1))
+                                 ->method('getValuesFilteringWithMultipleParams')                
+                                 ->will($this->returnValue($map));
+        $years = array(1,2);                
+        $controller = new DatacenterController($this->dataCenterService, $this->statistic, 
+                $this->jsonResponse, $grouper, $tableBuilder);
+        $subgroup = $font = $type = $variety = $origin = $destiny = array(1,2);
+        $subgroup = 1;
+        
+        $this->stubTableBuilder($tableBuilder, $subgroup);
+        $this->assertEquals($this->singleTableJSONModel(), 
+                $controller->buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny,$years));
+        $subgroup = array(1,2);        
+        
+        $this->assertEquals($this->doubleTableJSONModel(), 
+                $controller->buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny,$years));
+     }
+    
+    private function stubTableBuilder(&$tableBuilder, $subgroup){        
+        $tableBuilder->expects($this->at(1))->method('buildAsJson')
+                     ->will($this->returnValue($this->doubleTableJSONModel()));       
+        $tableBuilder->expects($this->at(0))->method('buildAsJson')
+                     ->will($this->returnValue($this->singleTableJSONModel()));        
+    }
+    
+    private function doubleTableJSONModel(){
+        $json = '[';       
+        $json .= '{"tabela_1":{"teste":"teste"}},';
+        $json .= '{"tabela_2":{"teste2":"teste2"}}';
+        $json .= ']';
+        return $json;
+    }
+    
+    private function singleTableJSONModel(){
+        $json = '[';
+        $json .= '{';
+        $json .= '"tabela_1":';        
+        $json .= '{"teste":"teste"}';
+        $json .= '}';
+        $json .= ']';        
+        return $json;
+    }
+    
     private function listValues(){
         $subgroup = new Subgroup("subgrupo");
         $font = new Font("fonte");

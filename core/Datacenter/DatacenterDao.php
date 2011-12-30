@@ -27,7 +27,7 @@ class DatacenterDao implements DatacenterRepository{
      * @param type $font
      * @return ArrayIterator 
      */
-    public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font) {
+    public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font, $year = null) {
         $sql = "SELECT ".$this->allParams();
         $sql .= " FROM data value ";
         $sql .= $this->leftOuterJoin();
@@ -37,7 +37,9 @@ class DatacenterDao implements DatacenterRepository{
         $sql .= "AND value.type_id = :type ";
         $sql .= "AND value.origin_id = :origin ";
         $sql .= "AND value.destiny_id = :destiny ";
-        $sql .= "AND value.font_id = :font"; 
+        $sql .= "AND value.font_id = :font";
+        if($year != null)
+            $sql .= " AND ".$this->yearCondition($year); 
         $query = $this->session->prepare($sql);
         $query->execute(array(":subgroup"=>$subgroup,":variety"=>$variety,":type"=>$type,
                         ":origin"=>$origin,":destiny"=>$destiny,":font"=>$font));

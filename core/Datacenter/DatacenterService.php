@@ -25,7 +25,7 @@ class DatacenterService {
      * @param type $font
      * @return ArrayIterator 
      */
-    public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font) {
+    public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font,array $years = null) {
         return $this->repository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
     }
     
@@ -39,7 +39,7 @@ class DatacenterService {
      * @param type $font
      * @return ArrayIterator
      */
-    public function getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font) {
+    public function getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font,array $years = null) {
         if(is_array($subgroup)){
             $listValues1 = $this->repository->getValuesWithMultipleParamsSelected($subgroup[0], $variety, $type, $origin, $destiny, $font);
             $listValues2 = $this->repository->getValuesWithMultipleParamsSelected($subgroup[1], $variety, $type, $origin, $destiny, $font);
