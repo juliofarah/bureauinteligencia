@@ -35,27 +35,39 @@ class DatacenterController {
     private $grouper;
     
     /**     
-     * @var TableBuilder 
+     * @var BuilderFactory 
      */
-    private $tableBuilder;
+    private $builderFactory;
     
     private $asJson = false;
     
     public function DatacenterController(DatacenterService $service, Statistic $statistic, 
-            JsonResponse $jsonResponse, DataGrouper $grouper, TableBuilder $tableBuilder){
+            JsonResponse $jsonResponse, DataGrouper $grouper, BuilderFactory $factory){
         $this->datacenterService = $service;
         $this->statistic = $statistic;
         $this->jsonResponse = $jsonResponse;
-        $this->grouper = $grouper;
-        $this->tableBuilder = $tableBuilder;
+        $this->grouper = $grouper;        
+        $this->builderFactory = $factory;
     }
-
+    
+    private function getBuilder($type) {
+        return $this->builderFactory->getBuilder($type);
+    }
+    
     public function getValuesAsJson(){
         $this->asJson = true;
     }
-
-    public function buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny,array $year = null) {
-        $values = $this->getValues($subgroup, $font, $type, $variety, $origin, $destiny,$year);
+    
+    public function buildChart($subgroup, $font, $type, $variety, $origin, $destiny, $years) {
+        return $this->buildAnything("chart", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    }
+    
+    public function buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny,array $years = null) {
+        return $this->buildAnything("table", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    }
+    
+    private function buildAnything($type, $subgroup, $font, $type, $variety, $origin, $destiny,array $years = null){
+        $values = $this->getValues($subgroup, $font, $type, $variety, $origin, $destiny,$years);
         if($values instanceof HashMap){
             $listValues = $values->values();
             $group1 = $this->grouper->groupDataValues($this->getListAsAnArrayObject($listValues->offsetGet(0)));
@@ -63,8 +75,9 @@ class DatacenterController {
             $groupedValues = array($group1, $group2);
         }else{
             $groupedValues = $this->grouper->groupDataValues($this->getListAsAnArrayObject($values));
-        }        
-        return $this->tableBuilder->build($groupedValues, array(1990,1992)); 
+        } 
+        $builder = $this->getBuilder($type);
+        return $builder->build($groupedValues, $years);
     }
     
     private function getListAsAnArrayObject($list){

@@ -34,6 +34,10 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
     private $grouper;
     
     /**     
+     * @var BuilderFactory 
+     */
+    private $builderFactory;
+    /**     
      * @var TableBuilder 
      */
     private $tableBuilder;
@@ -47,11 +51,11 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
                                 ->method('getValuesFilteringWithMultipleParams')
                                 ->will($this->returnValue($this->listWithDifferentFilters()->getIterator()));        
         $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
-        $this->jsonResponse, $this->grouper, $this->tableBuilder);
+        $this->jsonResponse, $this->grouper, $this->builderFactory);
         
     }
     
-    private function mockObjects(){
+    private function mockObjects(){        
         $this->dataCenterService = $this->getMockBuilder('DatacenterService')
                                         ->disableOriginalConstructor()
                                         ->getMock();
@@ -59,7 +63,11 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $this->jsonResponse = $this->getMock("JsonResponse");
         $this->grouper = $this->getMock("DataGrouper");
         $this->tableBuilder = $this->getMock("TableBuilder");
-    }
+        $this->builderFactory = $this->getMock("BuilderFactory");
+        $this->builderFactory->expects($this->any())
+                             ->method('getBuilder')
+                             ->will($this->returnValue($this->tableBuilder));        
+    }        
     
     /**
      * @test
@@ -96,8 +104,9 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $this->dataCenterService->expects($this->any())
                                 ->method('getValuesFilteringWithMultipleParams')
                                 ->will($this->returnValue($map));
+        
         $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
-                $this->jsonResponse, $this->grouper, $this->tableBuilder);
+                $this->jsonResponse, $this->grouper,$this->builderFactory);
         $this->controller->getValuesAsJson();
         $subgroup = array(1,8);
         $type = $font = $origin = $destiny = 1;        
@@ -127,7 +136,7 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $this->mockObjects();
         $this->controller = null;
         $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
-                $this->jsonResponse, $this->grouper, $this->tableBuilder);
+                $this->jsonResponse, $this->grouper, $this->builderFactory);
         $this->controller->getValuesAsJson();
         $map = new HashMap();
         $map->put(0, $this->listValues());
@@ -150,31 +159,25 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
     public function buildTableAsJson(){
         $this->mockObjects();        
         $tableBuilder = $this->getMock("TableBuilder");
+        $builderFactory = $this->getMock("BuilderFactory");
         $groupedValues = new HashMap();
         $grouper = $this->getMock("DataGrouper");
         
         $grouper->expects($this->any())->method("groupDataValues")
                 ->will($this->returnValue($groupedValues));
         
-         $this->dataCenterService->expects($this->any())
-                                ->method('getValuesWithSimpleFilter')
-                                ->will($this->returnValue(new ArrayIterator()));         
-        $this->dataCenterService->expects($this->at(0))
-                                 ->method('getValuesFilteringWithMultipleParams')
-                                 ->will($this->returnValue(new ArrayIterator()));                                
-        $map = new HashMap();
-        $map->put(0, new ArrayIterator());
-        $map->put(1, new ArrayIterator());
-        $this->dataCenterService->expects($this->at(1))
-                                 ->method('getValuesFilteringWithMultipleParams')                
-                                 ->will($this->returnValue($map));
-        $years = array(1,2);                
+        $this->stubDatacenterService();
+
+        $years = array(1,2);
+       
         $controller = new DatacenterController($this->dataCenterService, $this->statistic, 
-                $this->jsonResponse, $grouper, $tableBuilder);
+                $this->jsonResponse, $grouper, $builderFactory);
         $subgroup = $font = $type = $variety = $origin = $destiny = array(1,2);
-        $subgroup = 1;
-        
+        $subgroup = 1;        
         $this->stubTableBuilder($tableBuilder, $subgroup);
+        $this->stubBuilderFactory($builderFactory,$tableBuilder);
+        
+        
         $this->assertEquals($this->singleTableJSONModel(), 
                 $controller->buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny,$years));
         $subgroup = array(1,2);        
@@ -182,12 +185,86 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals($this->doubleTableJSONModel(), 
                 $controller->buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny,$years));
      }
-    
-    private function stubTableBuilder(&$tableBuilder, $subgroup){        
+     
+     /**
+      * @test
+      */
+     public function buildSingleChart() {
+        $this->mockObjects();
+        $chartBuilder = $this->getMockBuilder('ChartBuilder')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $builderFactory = $this->getMock("BuilderFactory");
+        $groupedValues = new HashMap();
+        $grouper = $this->getMock("DataGrouper");
+        $grouper->expects($this->any())->method("groupDataValues")
+                ->will($this->returnValue($groupedValues));
+        $this->stubDatacenterService();
+        $years = array(1,2);
+
+        $controller = new DatacenterController($this->dataCenterService, $this->statistic, 
+                $this->jsonResponse, $grouper, $builderFactory);
+        $subgroup = $font = $type = $variety = $origin = $destiny = array(1,2);
+        $subgroup = 1;
+        $this->stubChartBuilder($chartBuilder);
+        
+        $builderFactory->expects($this->any())
+                ->method('getBuilder')
+                ->will($this->returnValue($chartBuilder));      
+        $this->assertEquals($this->singleChart(), 
+                $controller->buildChart($subgroup, $font, $type, $variety, $origin, $destiny,$years));
+        $subgroup = array(1,2);
+         $this->assertEquals($this->doubleChart(), 
+                $controller->buildChart($subgroup, $font, $type, $variety, $origin, $destiny,$years));
+     }
+     
+     private function singleChart(){
+          $xml = '<chart>';
+         $xml .= '<test/>';
+         $xml .= '</chart>';
+         return $xml;
+     }
+     
+     private function doubleChart(){
+         $xml = '<chart>';
+         $xml .= '<test/>';
+         $xml .= '<test/>';
+         $xml .= '</chart>';
+         return $xml;
+     }
+     private function stubDatacenterService() {
+        $this->dataCenterService->expects($this->any())
+                ->method('getValuesWithSimpleFilter')
+                ->will($this->returnValue(new ArrayIterator()));
+        $this->dataCenterService->expects($this->at(0))
+                ->method('getValuesFilteringWithMultipleParams')
+                ->will($this->returnValue(new ArrayIterator()));
+        $map = new HashMap();
+        $map->put(0, new ArrayIterator());
+        $map->put(1, new ArrayIterator());
+        $this->dataCenterService->expects($this->at(1))
+                ->method('getValuesFilteringWithMultipleParams')
+                ->will($this->returnValue($map));
+    }
+     
+     private function stubBuilderFactory(&$builderFactory, $tableBuilder) {
+        $builderFactory->expects($this->any())
+                ->method('getBuilder')
+                ->will($this->returnValue($tableBuilder));
+    }
+
+    private function stubTableBuilder(&$tableBuilder, $subgroup) {
         $tableBuilder->expects($this->at(1))->method('build')
-                     ->will($this->returnValue($this->doubleTableJSONModel()));       
+                ->will($this->returnValue($this->doubleTableJSONModel()));
         $tableBuilder->expects($this->at(0))->method('build')
-                     ->will($this->returnValue($this->singleTableJSONModel()));        
+                ->will($this->returnValue($this->singleTableJSONModel()));
+    }
+    
+    private function stubChartBuilder(&$chartBuilder){
+        $chartBuilder->expects($this->at(0))->method('build')
+                     ->will($this->returnValue($this->singleChart()));
+        $chartBuilder->expects($this->at(1))->method('build')
+                     ->will($this->returnValue($this->doubleChart()));
     }
     
     private function doubleTableJSONModel(){
