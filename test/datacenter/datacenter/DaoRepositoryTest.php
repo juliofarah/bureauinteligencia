@@ -102,7 +102,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
     }
     
     private function populatesDatabase() {
-        //echo $this->persistDataForTest();
+        echo $this->persistDataForTest();
         $this->connection->prepare($this->persistDataForTest())->execute();
     }
 

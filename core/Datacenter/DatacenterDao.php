@@ -96,6 +96,7 @@ class DatacenterDao implements DatacenterRepository{
         $sql .= "AND ".$this->in("value.font_id", $font);
         if($year != null)
             $sql .= "AND ".$this->yearCondition($year);        
+        echo $sql;
         $query = $this->session->prepare($sql);
         $query->execute();
         return $this->buildSimpleObjects($query->fetchAll(PDO::FETCH_ASSOC));

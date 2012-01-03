@@ -22,9 +22,18 @@ class XmlMultiSeriesCombinationColumnLine extends XmlMultiSeries{
      */
     public function setLineToAnAxis($seriesName, $type){
         $dataset = $this->getDataset($seriesName);
-        if($dataset != null){
-            $dataset->addAttribute("parentYAxis", $type);
+        if($dataset != null){            
+            if(!$this->attributeExists($dataset->attributes(), "parentYAxis"))
+                $dataset->addAttribute("parentYAxis", $type);
         }
+    }
+    
+    private function attributeExists($attributes, $att){
+        foreach($attributes as $attName => $attValue){            
+            if($attName == $att)
+                return true;
+        }
+        return false;
     }
 }
 

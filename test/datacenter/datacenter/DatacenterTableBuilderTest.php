@@ -13,7 +13,7 @@ class DatacenterTableBuilderTest extends PHPUnit_Framework_TestCase{
     public function buildTableFromAList(){
         $years = array(1989, 1992);        
         $tableBuilder = new TableBuilder();        
-        $this->assertEquals($this->singleTableJSONModel(), $tableBuilder->buildAsJson($this->groupedList(),$years));
+        $this->assertEquals($this->singleTableJSONModel(), $tableBuilder->build($this->groupedList(),$years));
     }        
     
     /**
@@ -23,7 +23,7 @@ class DatacenterTableBuilderTest extends PHPUnit_Framework_TestCase{
         $years = array(1989, 1992);
         $tableBuilder = new TableBuilder();
         $groupedValues = array($this->groupedList(), $this->groupedList());        
-        $this->assertEquals($this->doubleTableJSONModel(),$tableBuilder->buildAsJson($groupedValues,$years));
+        $this->assertEquals($this->doubleTableJSONModel(),$tableBuilder->build($groupedValues,$years));
     }
 
     private function doubleTableJSONModel(){

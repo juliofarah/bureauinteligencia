@@ -64,7 +64,7 @@ class DatacenterController {
         }else{
             $groupedValues = $this->grouper->groupDataValues($this->getListAsAnArrayObject($values));
         }        
-        return $this->tableBuilder->buildAsJson($groupedValues, array(1990,1992)); 
+        return $this->tableBuilder->build($groupedValues, array(1990,1992)); 
     }
     
     private function getListAsAnArrayObject($list){

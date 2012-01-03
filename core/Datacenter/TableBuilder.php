@@ -4,14 +4,14 @@
  *
  * @author Ramon
  */
-class TableBuilder {
+class TableBuilder implements Builder{
 
     /**
      * The param $mapValues must be the map with grouped values. In this map
      * each position contains an ArrayObject with grouped Data .
      * @param $mapWithGroupedValues 
      */
-    public function buildAsJson($mapWithGroupedValues,array $years) {        
+    public function build($mapWithGroupedValues,array $years) {        
         $json = '[';        
         if(is_array($mapWithGroupedValues)){            
             $json .= $this->buildMultiTables($mapWithGroupedValues, $years);

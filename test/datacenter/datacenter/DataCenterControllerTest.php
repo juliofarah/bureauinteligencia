@@ -1,5 +1,6 @@
 <?php
 require_once '../../core/Datacenter/DatacenterController.php';
+require_once '../../core/Datacenter/Builder.php';
 /**
  * Description of DataCenterControllerTest
  *
@@ -37,6 +38,19 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
      */
     private $tableBuilder;
     
+    protected function setUp(){
+        $this->mockObjects();
+        $this->dataCenterService->expects($this->any())
+                                ->method('getValuesWithSimpleFilter')
+                                ->will($this->returnValue($this->listValues()->getIterator()));
+        $this->dataCenterService->expects($this->any())
+                                ->method('getValuesFilteringWithMultipleParams')
+                                ->will($this->returnValue($this->listWithDifferentFilters()->getIterator()));        
+        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
+        $this->jsonResponse, $this->grouper, $this->tableBuilder);
+        
+    }
+    
     private function mockObjects(){
         $this->dataCenterService = $this->getMockBuilder('DatacenterService')
                                         ->disableOriginalConstructor()
@@ -51,12 +65,6 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
      * @test
      */  
     public function getValuesWithSimpleParams(){        
-        $this->mockObjects();
-        $this->dataCenterService->expects($this->any())
-                                ->method('getValuesWithSimpleFilter')
-                                ->will($this->returnValue($this->listValues()->getIterator()));
-        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
-                $this->jsonResponse, $this->grouper, $this->tableBuilder);
         $this->controller->getValuesAsJson();
         $subgroup = $font = $type = $variety = $origin = $destiny = 1;
         $this->assertEquals($this->simpleQueryJsonExpected(),
@@ -67,12 +75,8 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function getValuesWithMultipleParams(){
-        $this->mockObjects();
-        $this->dataCenterService->expects($this->any())
-                                ->method('getValuesFilteringWithMultipleParams')
-                                ->will($this->returnValue($this->listWithDifferentFilters()->getIterator()));
-        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
-                $this->jsonResponse, $this->grouper, $this->tableBuilder);
+        //$this->mockObjects();
+
         $this->controller->getValuesAsJson();
         $subgroup = $font = $type = $origin = 1;
         $variety = $destiny = array(1,2);
@@ -85,6 +89,7 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
      */
     public function getValuewWithMoreThanOneSubgroupSelected(){
         $this->mockObjects();
+        $this->controller = null;
         $map = new HashMap();
         $map->put(0, $this->listValues());
         $map->put(1, $this->listFilteredByOtherSubgroup());
@@ -104,16 +109,7 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
     /**
      * @test
      */
-    public function makeControllerRedirectToCorrectMethodAccordingToParams(){
-        $this->mockObjects();
-        $this->dataCenterService->expects($this->any())
-                                ->method('getValuesWithSimpleFilter')
-                                ->will($this->returnValue($this->listValues()->getIterator()));
-        $this->dataCenterService->expects($this->any())
-                                ->method('getValuesFilteringWithMultipleParams')
-                                ->will($this->returnValue($this->listWithDifferentFilters()->getIterator()));
-        $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
-                $this->jsonResponse, $this->grouper, $this->tableBuilder);    
+    public function makeControllerRedirectToCorrectMethodAccordingToParams(){          
         $this->controller->getValuesAsJson();
         $subgroup = $font = $type = $variety = $origin = $destiny = 1;
         $this->assertEquals($this->simpleQueryJsonExpected(), $this->controller->getValues($subgroup, $font, $type, $variety, $origin, $destiny));        
@@ -129,6 +125,7 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
      */
     public function makeControllerRedirectToTwoSubgroupsMethod(){
         $this->mockObjects();
+        $this->controller = null;
         $this->controller = new DatacenterController($this->dataCenterService, $this->statistic, 
                 $this->jsonResponse, $this->grouper, $this->tableBuilder);
         $this->controller->getValuesAsJson();
@@ -187,9 +184,9 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
      }
     
     private function stubTableBuilder(&$tableBuilder, $subgroup){        
-        $tableBuilder->expects($this->at(1))->method('buildAsJson')
+        $tableBuilder->expects($this->at(1))->method('build')
                      ->will($this->returnValue($this->doubleTableJSONModel()));       
-        $tableBuilder->expects($this->at(0))->method('buildAsJson')
+        $tableBuilder->expects($this->at(0))->method('build')
                      ->will($this->returnValue($this->singleTableJSONModel()));        
     }
     
