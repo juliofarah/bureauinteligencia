@@ -12,15 +12,25 @@ class MapToExcel implements DataToExcel{
      */
     private $values;
     
-    public function MapToExcel(Map $values){
-        if($values->containsKey("rowTitles"))
-            $this->values = $values;
-        else
-            throw new Exception("O mapa deve conter uma chave 'rowTitles', com os nomes das colunas");
+    private $numberOfRows = 0;
+    
+    public function MapToExcel(Map $values = null){
+        if(!is_null($values)){
+            if($values->containsKey("rowTitles"))
+                $this->values = $values;
+            else
+                throw new Exception("O mapa deve conter uma chave 'rowTitles', com os nomes das colunas");            
+        }else{
+            $this->values = new HashMap();
+        }
     }
     
-    private function setTitles(array $titles){
-        $this->values->put("rowTitles", $titles);
+    public function setTitles(array $titles){        
+        $this->values->put("rowTitles", $titles);        
+    }
+    
+    public function setValues(array $values) {
+        $this->values->put($this->numberOfRows++, $values);
     }
     
     public function getAllLinesValues() {                

@@ -1,124 +1,71 @@
 <?php
 /**
- * Description of TableBuilder
+ * Description of TableBuildr
  *
  * @author Ramon
  */
-class TableBuilder implements Builder{
+abstract class TableBuilder implements Builder{   
+    
+    protected function buildSimpleTable(Map $groupedValues, $arrays, $i=1){
+        $this->initTable($i);
+    }        
 
-    /**
-     * The param $mapValues must be the map with grouped values. In this map
-     * each position contains an ArrayObject with grouped Data .
-     * @param $mapWithGroupedValues 
-     */
-    public function build($mapWithGroupedValues,array $years) {        
-        $json = '[';        
-        if(is_array($mapWithGroupedValues)){            
-            $json .= $this->buildMultiTables($mapWithGroupedValues, $years);
-        }else{
-            $json .= '{'.$this->buildSimpleTable($mapWithGroupedValues,$years).'}';
-        }
-        $json .= ']';       
-        return $json;
+    protected abstract function initTable($i = 1);        
+    
+    protected function titles(array $years){
+        $this->setTitles($years);
     }
     
-    private function buildMultiTables(array $mapWithGroupedValues, array $years){
-        $i = 1;
-        $json = '';
-        foreach($mapWithGroupedValues as $groupedValues){
-            $json .= '{'.$this->buildSimpleTable($groupedValues, $years,$i++).'},';
-        }
-        $json = substr($json, 0, -1);            
-        return $json;
+    protected function setTitles(array $years){
+        $this->setDefinedTitles(array("Variedade", "Tipo", "Origem", "Destino"), $years);
     }
     
-    private function buildSimpleTable(Map $mapWithGroupedValues, array $years, $i = 1){
-        $json = $this->initTableJson($i).'{';
-        $json .= $this->thead($years);
-        $json .= ',"tbody":';
-        $json .= $this->buildTbodyJson($mapWithGroupedValues,$years);        
-        $json .= '}';        
-        return $json;
-    }
-    
-    private function initTableJson($i = 1){
-        $json = '"tabela_'.$i.'":';
-        return $json;
-    }
-    
-    private function thead(array $years){
-        $thead = '"thead":[';
-        $thead .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},';
-        $thead .= $this->years($years);
-        $thead .= ']';
-        return $thead;
-    }
-    
-    private function years(array $years){
-        $thYears = '';
+    protected abstract function setDefinedTitles(array $definedTitles, array $years);    
+ 
+    protected function years(array $years){
         foreach($this->arrayYears($years) as $year){
-            $thYears .= '{"th":"'.$year.'"},'; 
+            $this->buildTitleYears($year);
         }
-        return substr($thYears,0,-1);
+        $this->config();
     }
+        
+    protected abstract function config();
+
+    protected abstract function buildTitleYears($year);
     
-    private function buildTbodyJson(Map $values, array $years){
+    protected function addValuesToARow(Map $values, array $years){
         $list = $values->values();
-        $groupsNumber = $list->count();
-        $json = '[';
+        $groupsNumber = $list->count();        
         for($i = 0; $i < $groupsNumber; $i++){
             $group = $list->offsetGet($i);
             $data = $group->offsetGet(0);
-            $json .= $this->setProperties($group, $data, $years);
-            if($i < $groupsNumber-1)
-                $json .= ',';
+            $this->setValues($group, $data, $years);
         }
-        $json .= ']';
-        return $json;
+        $this->config();
     }
     
-    private function setProperties(ArrayObject $group,Data $data, array $years){
-        $properties = '{';
-        $properties .= '"variety":"'.$data->getVarietyName().'",';
-        $properties .= '"type":"'.$data->getTypeName().'",';
-        $properties .= '"origin":"'.$data->getOriginName().'",';
-        $properties .= '"destiny":"'.$data->getDestinyName().'",';
-        $properties .= '"values":'.$this->listValues($group, $years);
-        $properties .= '}';
-        return $properties;
+    protected function setValues(ArrayObject $group, Data $data, $years){
+        $this->setProperties($group, $data, $years);                
     }
     
-    private function listValues(ArrayObject $group,array $years){
-        $values = '[';        
-        $values .= $this->listValuesVerifyingTheYearOfThat($group, $years);
-        $values .= ']';
-        return $values;
-    }
-    
-    private function listValuesVerifyingTheYearOfThat(ArrayObject $group, array $years){
-        $value = '';        
+    protected abstract function setProperties(ArrayObject $group, Data $data, array $years);
+
+    protected function listValuesVerifyingTheYearOfThat(ArrayObject $group, array $years){        
         foreach($this->arrayYears($years) as $ys){            
             $foundValueOfThisYear = null;
             foreach($group as $data){
                 if($data->getYear() == $ys){                    
                     $foundValueOfThisYear = $data->getValue();
                 }
-            }                     
-            $value .= $this->addValueToJsonIfThereIsSomeValueToThisYear($foundValueOfThisYear);
+            }
+            $this->addValueIfThereIsSomeValueToThisYear($foundValueOfThisYear);
         }
-        $value = substr($value,0,-1);
-        return $value;
+        $this->config();
     }
     
-    private function addValueToJsonIfThereIsSomeValueToThisYear($foundValueOfThisYear){
-        if(!is_null($foundValueOfThisYear)){
-            return '{"value":'.$foundValueOfThisYear.'},';
-        }else{
-            return '{"value":"-"},';
-        }        
-    }
+    protected abstract function addValueIfThereIsSomeValueToThisYear($foundValueOfThisYear);
     
-    private function arrayYears(array $years){
+    protected function arrayYears(array $years){
         $listYears = array();
         for($y = $years[0]; $y<=$years[1];$y++){
             array_push($listYears, $y);

@@ -38,9 +38,9 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
      */
     private $builderFactory;
     /**     
-     * @var TableBuilder 
+     * @var TableJsonBuilder 
      */
-    private $tableBuilder;
+    private $TableJsonBuilder;
     
     protected function setUp(){
         $this->mockObjects();
@@ -62,11 +62,13 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $this->statistic = $this->getMock("Statistic");
         $this->jsonResponse = $this->getMock("JsonResponse");
         $this->grouper = $this->getMock("DataGrouper");
-        $this->tableBuilder = $this->getMock("TableBuilder");
+        $this->TableJsonBuilder = $this->getMockBuilder('TableJsonBuilder')
+                                        ->disableOriginalConstructor()
+                                        ->getMock();
         $this->builderFactory = $this->getMock("BuilderFactory");
         $this->builderFactory->expects($this->any())
                              ->method('getBuilder')
-                             ->will($this->returnValue($this->tableBuilder));        
+                             ->will($this->returnValue($this->TableJsonBuilder));        
     }        
     
     /**
@@ -158,7 +160,9 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
      */
     public function buildTableAsJson(){
         $this->mockObjects();        
-        $tableBuilder = $this->getMock("TableBuilder");
+        $TableJsonBuilder = $this->getMockBuilder("TableJsonBuilder")
+                             ->disableOriginalConstructor()
+                             ->getMock();
         $builderFactory = $this->getMock("BuilderFactory");
         $groupedValues = new HashMap();
         $grouper = $this->getMock("DataGrouper");
@@ -174,8 +178,8 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
                 $this->jsonResponse, $grouper, $builderFactory);
         $subgroup = $font = $type = $variety = $origin = $destiny = array(1,2);
         $subgroup = 1;        
-        $this->stubTableBuilder($tableBuilder, $subgroup);
-        $this->stubBuilderFactory($builderFactory,$tableBuilder);
+        $this->stubTableJsonBuilder($TableJsonBuilder, $subgroup);
+        $this->stubBuilderFactory($builderFactory,$TableJsonBuilder);
         
         
         $this->assertEquals($this->singleTableJSONModel(), 
@@ -247,16 +251,16 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
                 ->will($this->returnValue($map));
     }
      
-     private function stubBuilderFactory(&$builderFactory, $tableBuilder) {
+     private function stubBuilderFactory(&$builderFactory, $TableJsonBuilder) {
         $builderFactory->expects($this->any())
                 ->method('getBuilder')
-                ->will($this->returnValue($tableBuilder));
+                ->will($this->returnValue($TableJsonBuilder));
     }
 
-    private function stubTableBuilder(&$tableBuilder, $subgroup) {
-        $tableBuilder->expects($this->at(1))->method('build')
+    private function stubTableJsonBuilder(&$TableJsonBuilder, $subgroup) {
+        $TableJsonBuilder->expects($this->at(1))->method('build')
                 ->will($this->returnValue($this->doubleTableJSONModel()));
-        $tableBuilder->expects($this->at(0))->method('build')
+        $TableJsonBuilder->expects($this->at(0))->method('build')
                 ->will($this->returnValue($this->singleTableJSONModel()));
     }
     

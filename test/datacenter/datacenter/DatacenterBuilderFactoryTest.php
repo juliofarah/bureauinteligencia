@@ -13,7 +13,7 @@ class DatacenterBuilderFactoryTest extends PHPUnit_Framework_TestCase{
      */
     public function getRightObjectAccordingToParam(){
         $factory = new BuilderFactory();
-        $this->assertTrue($factory->getBuilder("table") instanceof TableBuilder);
+        $this->assertTrue($factory->getBuilder("table") instanceof TableJsonBuilder);
         $this->assertTrue($factory->getBuilder("chart") instanceof ChartBuilder);
     }    
         

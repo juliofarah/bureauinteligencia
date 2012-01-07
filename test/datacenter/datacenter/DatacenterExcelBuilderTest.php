@@ -1,79 +1,73 @@
 <?php
+require_once '../../util/excel/writer/MapToExcel.php';
 require_once '../../core/Datacenter/TableBuilder.php';
-require_once '../../core/Datacenter/TableJsonBuilder.php';
+require_once '../../core/Datacenter/TableExcelBuilder.php';
 /**
- * Description of DatacenterTableJsonBuilderTest
+ * Description of DatacenterExcelBuilderTest
  *
  * @author Ramon
  */
-class DatacenterTableJsonBuilderTest extends PHPUnit_Framework_TestCase{
-    
-    /**
-     * @var JsonBuilder 
-     */
-    private $jsonBuilder;
+class DatacenterExcelBuilderTest extends PHPUnit_Framework_TestCase{
     
     /**
      *
-     * @var TableJsonBuilder 
+     * @var TableExcelBuilder 
      */
-    private $TableJsonBuilder;
+    private $excelBuilder;
+    
+    /**
+     *
+     * @var DataToExcel
+     */
+    private $dataToExcel;
     
     protected function setUp(){
-       $this->jsonBuilder = new JsonBuilder();//$this->getMock("JsonBuilder"); 
-       $this->TableJsonBuilder = new TableJsonBuilder($this->jsonBuilder);
+       $this->dataToExcel = new MapToExcel();
+       $this->excelBuilder = new TableExcelBuilder($this->dataToExcel); 
     }
-    /**
-     * @test
-     */
-    public function buildTableFromAList(){
-        $years = array(1989, 1992);                
-        $this->assertEquals($this->singleTableJSONModel(), $this->TableJsonBuilder->build($this->groupedList(),$years));
-    }        
     
     /**
      * @test
      */
-    public function buildTwoTables() {
-        $years = array(1989, 1992);
-        $groupedValues = array($this->groupedList(), $this->groupedList());        
-        $this->assertEquals($this->doubleTableJSONModel(),$this->TableJsonBuilder->build($groupedValues,$years));
-    }
-        
-    private function doubleTableJSONModel(){
-        $json = '[';       
-        $json .= '{"tabela_1":'.$this->table().'},';
-        $json .= '{"tabela_2":'.$this->table().'}';
-        $json .= ']';
-        return $json;
+    public function testAddTitles(){
+        $map = $this->groupedList();
+        $this->excelBuilder->build($map, array(1989,1992));
+        $titles = $this->excelBuilder->getTitles();        
+        $this->assertTrue($this->arraysAreEquals($this->expectedTitles(), 
+                $titles->getArrayCopy()));
     }
     
-    private function singleTableJSONModel(){
-        $json = '[';
-        $json .= '{';
-        $json .= '"tabela_1":';        
-        $json .= $this->table();
-        $json .= '}';
-        $json .= ']';        
-        return $json;
+    /**
+     * @test
+     */
+    public function testAddValues(){
+        $map = $this->groupedList();
+        $this->excelBuilder->build($map, array(1989,1992));
+        $values = $this->excelBuilder->getValues();
+        $this->assertEquals(3, $values->count());        
+        $this->assertTrue($this->arraysAreEquals($this->expectedValues(), $values->getArrayCopy()));        
     }
     
-    private function table(){
-        $json = '{';
-            $json .= '"thead":[';
-            $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},';
-            $json .= '{"th":"1989"},{"th":"1990"},{"th":"1991"},{"th":"1992"}';
-            $json .= '],';
-            $json .= '"tbody":[';
-            $json .= '{"variety":"variety","type":"type","origin":"origin","destiny":"destiny",';
-            $json .=    '"values":[{"value":150},{"value":220},{"value":285},{"value":"-"}]}';
-            $json .= ',{"variety":"variety2","type":"type2","origin":"origin2","destiny":"destiny2",';
-            $json .=    '"values":[{"value":188},{"value":302},{"value":254},{"value":195}]}';
-            $json .= ',{"variety":"variety3","type":"type3","origin":"origin3","destiny":"destiny2",';
-            $json .=    '"values":[{"value":"-"},{"value":101},{"value":148},{"value":157}]}';
-            $json .= ']';
-        $json .= '}';
-        return $json;
+    private function expectedTitles(){
+        return array("Variedade","Tipo","Origem","Destino","1989","1990","1991","1992");
+    }
+       
+    
+    private function expectedValues(){
+        return array(
+                    array("variety","type","origin","destiny","150","220","285","-"),
+                    array("variety2","type2","origin2","destiny2","188","302","254","195"),
+                    array("variety3","type3","origin3","destiny2","-","101","148","157"));
+    }
+    
+    private function arraysAreEquals(array $expected,array $actual){
+        $equals = true;        
+        if(sizeof($expected) != sizeof($actual))
+            return false;
+        foreach($actual as $i => $value){            
+            $equals = $equals && ($value == $expected[$i]);
+        }
+        return $equals;
     }
     
     protected function newData($year, $value){
@@ -133,7 +127,7 @@ class DatacenterTableJsonBuilderTest extends PHPUnit_Framework_TestCase{
         $arrayList->append($this->newOtherData(1992, 157));
         $map->put(2, $arrayList);
         return $map;
-    }
+    }    
 }
 
 ?>

@@ -3,8 +3,7 @@
     require_once '../util/excel/writer/MapToExcel.php';
 ?>
 
-<?php
-    
+<?php    
     $values = new HashMap();
     $values->put("rowTitles", array("Nome", "Sobrenome", "Idade"));
     $values->put(0, array("Ramon", "Goncalves", "22"));

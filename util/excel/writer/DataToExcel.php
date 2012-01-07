@@ -5,7 +5,11 @@
  * @author Ramon
  */
 interface DataToExcel {
-
+    
+    public function setTitles(array $titles);
+    
+    public function setValues(array $values);
+    
     /**
      * @return ArrayObject
      */
