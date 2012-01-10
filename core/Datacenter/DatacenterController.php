@@ -58,6 +58,24 @@ class DatacenterController {
         $this->asJson = true;
     }
     
+    //GET ://datacenter/chart
+    public function getChart($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
+        
+    }
+    
+    //GET ://datacenter/table
+    public function getTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
+        $jsonTable = $this->buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny, $years);
+        $jsonTable = utf8_encode($jsonTable);
+        return $this->jsonResponse->addValue("tabela",$jsonTable)->withoutHeader()->serialize();        
+    }
+    
+    public function getExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
+        
+    }
+    
+    /**actions**/
+    
     public function buildChart($subgroup, $font, $type, $variety, $origin, $destiny, $years) {
         return $this->buildAnything("chart", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
     }

@@ -47,7 +47,7 @@
     $reportIntegration->integrationChart();
     $reportIntegration->integrationExcel();
     
-    $reportIntegration->emptyTable();       
+  //$reportIntegration->emptyTable();       
 ?>  
     </body>
 </html>

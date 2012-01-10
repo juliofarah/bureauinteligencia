@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This class does the integration between components of Datacenter. 
  * The integration is between the following classes:
