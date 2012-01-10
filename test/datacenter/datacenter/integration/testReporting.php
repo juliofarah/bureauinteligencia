@@ -22,10 +22,21 @@
     require_once '../../../../core/Datacenter/Data.php';    
 ?>
 <?
-require_once '../../../../core/Datacenter/ChartBuilder.php';
-require_once '../../../../core/Charts/XmlCharts/XmlChart.php';
-require_once '../../../../core/Charts/XmlCharts/MultiSerie/XmlMultiSeries.php';
-require_once '../../../../core/Charts/XmlCharts/MultiSerie/XmlMultiSeriesCombinationColumnLine.php';
+    //requires for chart building
+    require_once '../../../../core/Datacenter/ChartBuilder.php';
+    require_once '../../../../core/Charts/XmlCharts/XmlChart.php';
+    require_once '../../../../core/Charts/XmlCharts/MultiSerie/XmlMultiSeries.php';
+    require_once '../../../../core/Charts/XmlCharts/MultiSerie/XmlMultiSeriesCombinationColumnLine.php';
+?>
+
+<?
+    //requires for excel building
+    require_once '../../../../core/Datacenter/TableExcelBuilder.php';
+    require_once '../../../../util/excel/writer/ExcelWriter.php';
+    require_once '../../../../util/excel/writer/ExcelOutputFile.php';
+    require_once '../../../../util/excel/writer/MapToExcel.php';
+    require_once '../../../../util/excel/reader/excel_reader2.php';
+    
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" lang="pt-br">
@@ -34,8 +45,9 @@ require_once '../../../../core/Charts/XmlCharts/MultiSerie/XmlMultiSeriesCombina
     $reportIntegration = new ReportIntegrationTest();
     $reportIntegration->integrationTableJson();
     $reportIntegration->integrationChart();
+    $reportIntegration->integrationExcel();
     
-    $reportIntegration->emptyTable();
+    $reportIntegration->emptyTable();       
 ?>  
     </body>
 </html>

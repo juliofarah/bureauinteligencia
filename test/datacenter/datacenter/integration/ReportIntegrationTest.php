@@ -61,7 +61,15 @@ class ReportIntegrationTest{
         $this->printChatXML($controller->buildChart(1, array(1,2,3), array(1,2,3), array(1,2,3), array(1,2,3), array(1,2,3),array(1988,1993)));
         echo "<br /><br /> multigroups";
         $this->printChatXML($controller->buildChart(array(1,2), array(1,2,3), array(1,2,3), array(1,2,3), array(1,2,3), array(1,2,3),array(1988,1993)));
-    }        
+    }
+    
+    public function integrationExcel(){
+        $controller = $this->config();
+        echo "<br />Excel Spreadsheet<br/>";
+        echo $spreadsheet = $controller->buildExcelTable(1, 1, 1, 1, 1, 1, array(1989,1992));
+        $data = new Spreadsheet_Excel_Reader($spreadsheet);
+        echo $data->dump(true, true);
+    }
     
     private function printChatXML($xml){
         echo str_replace(array("<",">"),array("&lt;","&gt;"),$xml);        

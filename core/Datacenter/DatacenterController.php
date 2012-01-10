@@ -66,6 +66,10 @@ class DatacenterController {
         return $this->buildAnything("table", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
     }
     
+    public function buildExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
+        return $this->buildAnything("spreadsheet", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    }
+    
     private function buildAnything($builderType, $subgroup, $font, $type, $variety, $origin, $destiny,array $years = null){        
         $asJson = $this->asJson;
         $this->asJson = false;
