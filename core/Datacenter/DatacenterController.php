@@ -66,8 +66,10 @@ class DatacenterController {
         return $this->buildAnything("table", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
     }
     
-    private function buildAnything($type, $subgroup, $font, $type, $variety, $origin, $destiny,array $years = null){
-        $values = $this->getValues($subgroup, $font, $type, $variety, $origin, $destiny,$years);
+    private function buildAnything($builderType, $subgroup, $font, $type, $variety, $origin, $destiny,array $years = null){        
+        $asJson = $this->asJson;
+        $this->asJson = false;
+        $values = $this->getValues($subgroup, $font, $type, $variety, $origin, $destiny,$years);        
         if($values instanceof HashMap){
             $listValues = $values->values();
             $group1 = $this->grouper->groupDataValues($this->getListAsAnArrayObject($listValues->offsetGet(0)));
@@ -75,9 +77,11 @@ class DatacenterController {
             $groupedValues = array($group1, $group2);
         }else{
             $groupedValues = $this->grouper->groupDataValues($this->getListAsAnArrayObject($values));
-        } 
-        $builder = $this->getBuilder($type);
-        return $builder->build($groupedValues, $years);
+        }       
+        $builder = $this->getBuilder($builderType);
+        $built = $builder->build($groupedValues, $years);
+        $this->asJson = $asJson;
+        return $built;
     }
     
     private function getListAsAnArrayObject($list){

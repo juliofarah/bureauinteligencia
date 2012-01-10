@@ -35,7 +35,7 @@ abstract class TableBuilder implements Builder{
     
     protected function addValuesToARow(Map $values, array $years){
         $list = $values->values();
-        $groupsNumber = $list->count();        
+        $groupsNumber = $list->count();
         for($i = 0; $i < $groupsNumber; $i++){
             $group = $list->offsetGet($i);
             $data = $group->offsetGet(0);

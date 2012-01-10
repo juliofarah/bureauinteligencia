@@ -19,8 +19,7 @@ class ExcelOutputFile {
         $this->dataToExcel = $dataToExcel;
         $this->excelWriter = $excelWriter;
     }
-    
-    
+        
     private function putColumtTitlesInSpreadsheet(){
         $titlesIterator = $this->dataToExcel->getLineWithTitles()->getIterator();
         while($titlesIterator->valid()){
@@ -42,7 +41,17 @@ class ExcelOutputFile {
         $this->putLineValuesInSpreadsheet();
         $this->excelWriter->close();
         return $this->excelWriter->getFileName();
-    }    
+    }
+    
+    public function buildSpreadSheet(){
+        $this->putColumtTitlesInSpreadsheet();
+        $this->putLineValuesInSpreadsheet();
+        $this->excelWriter->close();        
+    }
+    
+    public function getSpreadSheetFilename(){
+        return $this->excelWriter->getFileName();
+    }
 }
 
 ?>

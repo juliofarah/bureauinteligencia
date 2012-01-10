@@ -20,11 +20,14 @@ class ChartBuilder implements Builder {
     public function build($mapWithGroupedValues, array $years) {        
         $this->years($years);
         if(is_array($mapWithGroupedValues)){
-            $this->setMultigroupsValues($mapWithGroupedValues);
-            $this->setMultiChartValues($mapWithGroupedValues); 
+            if($mapWithGroupedValues[0]->containsKey(0) && $mapWithGroupedValues[1]->containsKey(0)){
+                $this->setMultigroupsValues($mapWithGroupedValues);
+                $this->setMultiChartValues($years, $mapWithGroupedValues); 
+            }
         }else    
-            $this->setValues($mapWithGroupedValues);
-        return $this->xml->buildXml("test.xml");
+            $this->setValues($years, $mapWithGroupedValues);
+        $xml = $this->xml->buildXml("test.xml");        
+        return $xml;
     }
         
     private function years(array $years){
@@ -38,27 +41,51 @@ class ChartBuilder implements Builder {
         $this->xml->setSYAxisName($mapWithGroupedValues[1]->get(0)->offsetGet(0)->getSubgroupName());        
     }
     
-    private function setMultiChartValues(array $mapWithGroupedValues){
+    private function setMultiChartValues(array $years, array $mapWithGroupedValues){
         $i = 1;
         foreach($mapWithGroupedValues as $mapWithValues){
             if($i++ == 2)
-                $this->setValues($mapWithValues,true,true);
+                $this->setValues($years, $mapWithValues,true,true);
             else
-                $this->setValues ($mapWithValues,true);
+                $this->setValues($years, $mapWithValues,true);
         }
     }
     
-    private function setValues(Map $mapGroupedData,$dualY=false,$setToAxis=false){        
+    private function setValues(array $years, Map $mapGroupedData,$dualY=false,$setToAxis=false){        
         $groups = $mapGroupedData->values();
         foreach($groups as $groupedData){
-            foreach($groupedData as $data){
-                if($dualY){
+            $group = $groupedData;            
+            $this->groupValuesByYear($years, $group, $dualY, $setToAxis);
+        }
+    }
+  
+    private function setValuesIfThereIsSomeToThisYear($value, $seriesName, $axis){
+        if(!is_null($value)){
+            $this->xml->setValue($value->getValue(), $seriesName);
+        }else{
+            $this->xml->setValue(0, $seriesName);            
+        }
+        if($axis) $this->xml->setLineToAnAxis ($seriesName, "S");
+    }
+    
+    private function groupValuesByYear(array $years, ArrayObject $group, $dualY=false,$setToAxis=false){        
+        $listYears = array();        
+        for($yr = $years[0]; $yr <= $years[1]; $yr++){
+            array_push($listYears, $yr);
+        }
+        foreach($listYears as $y){
+            $foundValueOfThisYear = null;
+            $seriesName = '';
+            foreach($group as $data){
+                if($dualY)
                     $seriesName = $data->getSubgroupName().'-'.$data->getOriginName().'-'.$data->getDestinyName();
-                    $this->xml->setValue ($data->getValue(),$seriesName);
-                    if($setToAxis) $this->xml->setLineToAnAxis ($seriesName, "S");                        
-                }else
-                    $this->xml->setValue($data->getValue(), $data->getOriginName().'-'.$data->getDestinyName());
-            }   
+                else
+                    $seriesName = $data->getOriginName().'-'.$data->getDestinyName();
+                if($data->getYear() == $y){                    
+                    $foundValueOfThisYear = $data;
+                }
+            }            
+            $this->setValuesIfThereIsSomeToThisYear($foundValueOfThisYear, $seriesName, $setToAxis);
         }
     }
     
@@ -66,7 +93,7 @@ class ChartBuilder implements Builder {
         $listYears = array();
         for($y = $years[0]; $y <= $years[1]; $y++){
             array_push($listYears, $y);
-        }
+        }        
         return $listYears;
     }
 }

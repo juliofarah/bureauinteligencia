@@ -11,18 +11,20 @@ class DataGrouper {
      * @return HashMap 
      */
     public function groupDataValues(ArrayObject $listOfData) {
-        $mapGrouped = new HashMap();
-        $dataToGroup = $this->objectData($listOfData->offsetGet(0));
-        $list = $listOfData->getIterator();        
-        $list2 = $listOfData->getIterator();        
-        $dataAux = null; 
-        $i = 0;
-        while($list->valid()){
-            $auxList = $this->getDataOfSameTypeAndPutIntoList($list2, $dataToGroup, $dataAux);
-            $this->changePointers($list, $list2, $dataAux, $dataToGroup);
-            $this->changeDataToGroup($list, $dataToGroup);
-            $this->groupIntoMap($mapGrouped, $auxList, $i++);
-        }               
+        $mapGrouped = new HashMap();        
+        if($listOfData->count() > 0){
+            $dataToGroup = $this->objectData($listOfData->offsetGet(0));
+            $list = $listOfData->getIterator();
+            $list2 = $listOfData->getIterator();
+            $dataAux = null;
+            $i = 0;              
+            while ($list->valid()) {                
+                $auxList = $this->getDataOfSameTypeAndPutIntoList($list2, $dataToGroup, $dataAux);                
+                $this->changePointers($list, $list2, $dataAux, $dataToGroup);
+                $this->changeDataToGroup($list, $dataToGroup);
+                $this->groupIntoMap($mapGrouped, $auxList, $i);
+            }
+        }
         return $mapGrouped;
     }
     
@@ -53,9 +55,9 @@ class DataGrouper {
         }
     }
     
-    private function groupIntoMap(Map &$map, $auxList, $i){
+    private function groupIntoMap(Map &$map, $auxList, &$i){
         if($auxList != null)
-            $map->put($i, $auxList);
+            $map->put($i++, $auxList);        
     }
     
     /**

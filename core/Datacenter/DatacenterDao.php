@@ -53,7 +53,7 @@ class DatacenterDao implements DatacenterRepository{
      */
     private function buildSimpleObjects(array $values){
         $list = new ArrayObject();        
-        foreach($values as $value){
+        foreach($values as $value){   
             $subgroup = new Subgroup($value['subgroup']);
             $font = new Font($value['font']);
             $type = new CoffeType($value['type']);

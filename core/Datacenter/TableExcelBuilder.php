@@ -26,22 +26,29 @@ class TableExcelBuilder extends TableBuilder{
     private $titles = array();
     
     private $valuesOfARow = array();
+    
+    private $spreadSheetName;
         
-    public function TableExcelBuilder(DataToExcel $dataToExcel){
+    public function TableExcelBuilder(DataToExcel $dataToExcel, $name = "Planilha.xls"){
         $this->valuesToSpreedsheet = new HashMap();
-        $this->dataToExcel = $dataToExcel;
+        $this->dataToExcel = $dataToExcel;        
+        if($name != "Planilha.xls")
+            $this->spreadSheetName = "Planilha_".$name.".xls";
+        else
+            $this->spreadSheetName = $name;
     }
         
     public function build($mapWithGroupedValues, array $years) {
         parent::titles($years);
         parent::addValuesToARow($mapWithGroupedValues, $years);
-        $spreadSheet = new ExcelOutputFile($this->dataToExcel, new ExcelWriter("testName.xls"));
-        return $spreadSheet->getSpreadSheet();
+        $spreadSheet = new ExcelOutputFile($this->dataToExcel, new ExcelWriter($this->spreadSheetName));
+        $spreadSheet->buildSpreadSheet();
+        return $spreadSheet->getSpreadSheetFilename();  
     }
-
+    
     public function getTitles(){
         return $this->dataToExcel->getLineWithTitles();
-    }    
+    }
     
     public function getValues() {
         return $this->dataToExcel->getAllLinesValues();

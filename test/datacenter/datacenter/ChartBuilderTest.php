@@ -26,6 +26,7 @@ class ChartBuilderTest extends PHPUnit_Framework_TestCase{
         $this->dataXml = new XmlMultiSeriesCombinationColumnLine();
         $this->chartBuilder = new ChartBuilder($this->dataXml);
     }
+    
     /**
      * @test
      */
@@ -36,8 +37,7 @@ class ChartBuilderTest extends PHPUnit_Framework_TestCase{
                 $this->chartBuilder->build($mapWithGroupedValues, $years));
         $this->assertEquals($this->xml(),trim($xml));        
     }
-    
-   
+     
     /**
      * @test
      */
@@ -47,6 +47,17 @@ class ChartBuilderTest extends PHPUnit_Framework_TestCase{
         $xml = str_replace('<?xml version="1.0"?>','',
                 $this->chartBuilder->build($mapsWithGroupedValues, $years));
         $this->assertEquals($this->xml(true),trim($xml));
+    }
+    
+    /**
+     * @test
+     */
+    public function getChartWithNumberOfValuesDifferents(){
+        $mapsWithGroupedValues = $this->goupedListWithDifferentYears();
+        $years = array(1989,1992);
+        $xml = str_replace('<?xml version="1.0"?>','',
+                $this->chartBuilder->build($mapsWithGroupedValues, $years));        
+        $this->assertEquals($this->xml2(),trim($xml));
     }
     
     private function xml($dualY = false){
@@ -64,6 +75,33 @@ class ChartBuilderTest extends PHPUnit_Framework_TestCase{
         }else
             $xml .= $this->dataseries();
         $xml .= '</chart>';       
+        return $xml;
+    }
+    
+    private function xml2(){
+        $xml = '<chart bgColor="FFFFFF">';
+        $xml .= '<categories>';
+        $xml .= '<category label="1989"/>';
+        $xml .= '<category label="1990"/>';
+        $xml .= '<category label="1991"/>';
+        $xml .= '<category label="1992"/>';
+        $xml .= '</categories>';
+        
+        $dataseries = '<dataset seriesName="origin-destiny">';
+        $dataseries .= '<set value="0"/>';
+        $dataseries .= '<set value="220"/>';
+        $dataseries .= '<set value="285"/>';
+        $dataseries .= '<set value="150"/>';        
+        $dataseries .= '</dataset>';
+        
+        $dataseries .= '<dataset seriesName="origin2-destiny2">';
+        $dataseries .= '<set value="188"/>';
+        $dataseries .= '<set value="302"/>';
+        $dataseries .= '<set value="254"/>';
+        $dataseries .= '<set value="195"/>';
+        $dataseries .= '</dataset>';        
+        $xml .= $dataseries . '</chart>';
+        
         return $xml;
     }
     
@@ -131,6 +169,22 @@ class ChartBuilderTest extends PHPUnit_Framework_TestCase{
         return $data;        
     }
         
+    private function goupedListWithDifferentYears(){
+        $map = new HashMap();
+        $arrayList = new ArrayObject();        
+        $arrayList->append($this->newData(1990,220));
+        $arrayList->append($this->newData(1991,285));
+        $arrayList->append($this->newData(1992,150));
+        $map->put(0, $arrayList);        
+        $arrayList = new ArrayObject();
+        $arrayList->append($this->newAnotherData(1989,188));
+        $arrayList->append($this->newAnotherData(1990,302));
+        $arrayList->append($this->newAnotherData(1991,254));
+        $arrayList->append($this->newAnotherData(1992,195));
+        $map->put(1, $arrayList);
+        return $map;        
+    }
+    
     private function groupedList(){        
         $map = new HashMap();
         $arrayList = new ArrayObject();

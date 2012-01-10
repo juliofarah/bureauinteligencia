@@ -116,11 +116,11 @@ class Data {
     }
     
     public function getOriginName(){
-        return $this->origin->name();
+        return utf8_encode($this->origin->name());
     }
     
     public function getDestinyName(){
-        return $this->destiny->name();
+        return utf8_encode($this->destiny->name());
     }
     
     public function getVariety(){
@@ -132,7 +132,8 @@ class Data {
     }
     
     public function isOfTheSameCategoryOf(Data $data = null) {
-        return ($data != null && $this->getSubgroupName() == $data->getSubgroupName() &&
+        return ($data != null && 
+                $this->getSubgroupName() == $data->getSubgroupName() &&
                 $this->getTypeName() == $data->getTypeName() &&
                 $this->getVariety() == $data->getVariety() &&
                 $this->getOriginName() == $data->getOriginName() &&

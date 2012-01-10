@@ -20,12 +20,12 @@ abstract class XmlChart {
     }
 
     public function buildXml($xml){
-        $this->root->asXML($xml);        
+        $this->root->asXML($xml);    
         return $this->getContentXMLFile($xml);
     }
 
     private function getContentXMLFile($xml){        
-        return (file_get_contents($xml));
+        return (file_get_contents($xml));        
     }
 }
 ?>

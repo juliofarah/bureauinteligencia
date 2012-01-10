@@ -42,12 +42,9 @@ class TableJsonBuilder extends TableBuilder{//implements Builder{
         $this->initTable($i);
         $this->json .= '{';
         $this->titles($years);
-        $this->json .= ',"tbody":';
-        $this->json .= '[';
-        
+        $this->json .= ',"tbody":[';        
         $this->addValuesToARow($mapWithGroupedValues,$years);        
-        
-        $this->json .= ']';        
+        $this->json .= ']'; 
         $this->json .= '}';
         $this->json .= '}';
     }
@@ -68,7 +65,8 @@ class TableJsonBuilder extends TableBuilder{//implements Builder{
     }
     
     protected function config(){
-        $this->json = substr($this->json,0,-1);        
+        if(substr($this->json, -1) != '[')
+            $this->json = substr($this->json,0,-1);        
     }
     
     protected function buildTitleYears($year){

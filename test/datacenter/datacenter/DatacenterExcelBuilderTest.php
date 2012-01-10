@@ -41,11 +41,11 @@ class DatacenterExcelBuilderTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function testAddValues(){
-        $map = $this->groupedList();
-        $this->excelBuilder->build($map, array(1989,1992));
-        $values = $this->excelBuilder->getValues();
-        $this->assertEquals(3, $values->count());        
-        $this->assertTrue($this->arraysAreEquals($this->expectedValues(), $values->getArrayCopy()));        
+        $map = $this->groupedList();        
+        $this->assertEquals("Planilha.xls", $this->excelBuilder->build($map, array(1989,1992)));
+        $values = $this->excelBuilder->getValues();        
+        $this->assertEquals(3, $values->count());
+        $this->assertTrue($this->arraysAreEquals($this->expectedValues(), $values->getArrayCopy()));                
     }
     
     private function expectedTitles(){
