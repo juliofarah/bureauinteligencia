@@ -19,3 +19,16 @@
     
     require_once '../DatacenterController.php';
 ?>
+<?php        
+    require_once '../../DataBase/Connection.php';
+    require_once '../../../util/Maps/HashMap.php';       
+?>
+<?
+    $repository = new DatacenterDao(Connection::connectToTest());        
+    $service = new DatacenterService($repository);
+    $statistic = new Statistic();
+    $jsonResponse = new JsonResponse();
+    $grouper = new DataGrouper();
+    $factory = new BuilderFactory();        
+    $controller = new DatacenterController($service, $statistic, $jsonResponse, $grouper, $factory); 
+?>

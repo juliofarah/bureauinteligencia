@@ -41,6 +41,8 @@ class DatacenterController {
     
     private $asJson = false;
     
+    private $chartType;
+    
     public function DatacenterController(DatacenterService $service, Statistic $statistic, 
             JsonResponse $jsonResponse, DataGrouper $grouper, BuilderFactory $factory){
         $this->datacenterService = $service;
@@ -60,14 +62,19 @@ class DatacenterController {
     
     //GET ://datacenter/chart
     public function getChart($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
-        
+        $xmlChart = $this->buildChart($subgroup, $font, $type, $variety, $origin, $destiny, $years);
+        $xmlChart = str_replace("\"", "'", trim($xmlChart));
+        $this->jsonResponse->response(true, null)->addValue("chart", trim($xmlChart));
+        $this->jsonResponse->addValue("typeChart", $this->chartType);
+        return $this->jsonResponse->withoutHeader()->serialize();
     }
     
     //GET ://datacenter/table
     public function getTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
         $jsonTable = $this->buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny, $years);
         $jsonTable = utf8_encode($jsonTable);
-        return $this->jsonResponse->addValue("tabela",$jsonTable)->withoutHeader()->serialize();        
+        $jsonTable = json_decode($jsonTable);
+        return $this->jsonResponse->response(true, null)->addValue("tabela",$jsonTable)->withoutHeader()->serialize();        
     }
     
     public function getExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
@@ -97,8 +104,15 @@ class DatacenterController {
             $group1 = $this->grouper->groupDataValues($this->getListAsAnArrayObject($listValues->offsetGet(0)));
             $group2 = $this->grouper->groupDataValues($this->getListAsAnArrayObject($listValues->offsetGet(1)));
             $groupedValues = array($group1, $group2);
+            if($builderType == 'chart'){
+                if($group1->values()->count() > 0 && $group2->values()->count() > 0)
+                    $this->chartType = "MSColumn3DLineDY.swf";
+                else
+                    $this->chartType = "MSColumnLine3D.swf";
+            }     
         }else{
             $groupedValues = $this->grouper->groupDataValues($this->getListAsAnArrayObject($values));
+            $this->chartType = "MSColumnLine3D.swf";
         }       
         $builder = $this->getBuilder($builderType);
         $built = $builder->build($groupedValues, $years);

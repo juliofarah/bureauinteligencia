@@ -29,6 +29,13 @@ var ChartBuilder = function(){
         buildChart(swf);
     }
     
+    api.buildCombinationChart = function(div_id, w, h, xml_content, swf){
+        configParams(div_id, w, h, xml_content);
+        if(swf == undefined)
+            swf = "fusion/MSColumn3DLineDY.swf";
+        buildChart(swf);
+    }
+    
     var configParams = function(div_id, w, h, xml_content){
         div = div_id;
         width = w;

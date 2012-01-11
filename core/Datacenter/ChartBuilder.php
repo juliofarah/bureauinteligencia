@@ -20,13 +20,13 @@ class ChartBuilder implements Builder {
     public function build($mapWithGroupedValues, array $years) {        
         $this->years($years);
         if(is_array($mapWithGroupedValues)){
-            if($mapWithGroupedValues[0]->containsKey(0) && $mapWithGroupedValues[1]->containsKey(0)){
-                $this->setMultigroupsValues($mapWithGroupedValues);
-                $this->setMultiChartValues($years, $mapWithGroupedValues); 
-            }
+            //if($mapWithGroupedValues[0]->containsKey(0) && $mapWithGroupedValues[1]->containsKey(0)){
+            $this->setMultigroupsValues($mapWithGroupedValues);
+            $this->setMultiChartValues($years, $mapWithGroupedValues); 
+            //}
         }else    
             $this->setValues($years, $mapWithGroupedValues);
-        $xml = $this->xml->buildXml("test.xml");        
+        $xml = $this->xml->buildXml("xml/chart_".rand(1,28304908).".xml");        
         return $xml;
     }
         
@@ -37,8 +37,10 @@ class ChartBuilder implements Builder {
     }
     
     private function setMultigroupsValues(array $mapWithGroupedValues){
-        $this->xml->setPYAxisName($mapWithGroupedValues[0]->get(0)->offsetGet(0)->getSubgroupName());
-        $this->xml->setSYAxisName($mapWithGroupedValues[1]->get(0)->offsetGet(0)->getSubgroupName());        
+        if($mapWithGroupedValues[0]->containsKey(0))
+            $this->xml->setPYAxisName($mapWithGroupedValues[0]->get(0)->offsetGet(0)->getSubgroupName());
+        if($mapWithGroupedValues[1]->containsKey(0))
+            $this->xml->setSYAxisName($mapWithGroupedValues[1]->get(0)->offsetGet(0)->getSubgroupName());        
     }
     
     private function setMultiChartValues(array $years, array $mapWithGroupedValues){
