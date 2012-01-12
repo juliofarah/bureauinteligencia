@@ -21,11 +21,17 @@ abstract class XmlChart {
 
     public function buildXml($xml){
         $this->root->asXML($xml);    
-        return $this->getContentXMLFile($xml);
+        $xmlContent = $this->getContentXMLFile($xml);
+        $this->deleteXMLFile($xml);
+        return $xmlContent;
     }
 
     private function getContentXMLFile($xml){        
         return (file_get_contents($xml));        
+    }
+    
+    private function deleteXMLFile($xml){
+        unlink($xml);
     }
 }
 ?>

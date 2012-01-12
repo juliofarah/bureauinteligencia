@@ -28,7 +28,7 @@ class ChartBuilder implements Builder {
             //}
         }else
             $this->setValues($years, $mapWithGroupedValues);
-        $xml = $this->xml->buildXml($this->path."chart_".rand(1,28304908).".xml");        
+        $xml = $this->xml->buildXml($this->path."chart_".rand(1,28304908).".xml");
         return $xml;
     }
         
