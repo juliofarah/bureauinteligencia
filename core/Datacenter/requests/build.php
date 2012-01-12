@@ -1,27 +1,22 @@
-<?php       
-    require_once '../DatacenterDao.php';
-    require_once '../DatacenterService.php';
-    require_once '../DataGrouper.php';
-    require_once '../Data.php';
-    require_once '../BuilderFactory.php';
-    require_once '../Builder.php';
+<?php           
+    require_once 'core/Datacenter/DatacenterDao.php';
+    require_once 'core/Datacenter/DatacenterService.php';
+    require_once 'core/Datacenter/DataGrouper.php';
+    require_once 'core/Datacenter/Data.php';
+    require_once 'core/Datacenter/BuilderFactory.php';
+    require_once 'core/Datacenter/Builder.php';
     
     
-    require_once '../Statistic/Statistic.php';
-    require_once '../../../util/JsonResponse.php';
+    require_once 'core/Datacenter/Statistic/Statistic.php';    
     
-    require_once '../../generics/Param.php';
-    require_once '../../generics/datacenter/Subgroup.php';
-    require_once '../../generics/datacenter/Font.php';
-    require_once '../../generics/datacenter/Variety.php';
-    require_once '../../generics/datacenter/CoffeType.php';
-    require_once '../../generics/datacenter/Country.php';    
+    require_once 'core/generics/Param.php';
+    require_once 'core/generics/datacenter/Subgroup.php';
+    require_once 'core/generics/datacenter/Font.php';
+    require_once 'core/generics/datacenter/Variety.php';
+    require_once 'core/generics/datacenter/CoffeType.php';
+    require_once 'core/generics/datacenter/Country.php';    
     
-    require_once '../DatacenterController.php';
-?>
-<?php        
-    require_once '../../DataBase/Connection.php';
-    require_once '../../../util/Maps/HashMap.php';       
+    require_once 'core/Datacenter/DatacenterController.php';
 ?>
 <?
     $repository = new DatacenterDao(Connection::connectToTest());        

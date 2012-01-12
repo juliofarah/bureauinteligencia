@@ -1,7 +1,7 @@
 <?php
     require_once 'build.php';
-    require_once '../TableBuilder.php';
-    require_once '../TableJsonBuilder.php';
+    require_once 'core/Datacenter/TableBuilder.php';
+    require_once 'core/Datacenter/TableJsonBuilder.php';
 ?>
 <?
     $subgroup = $_GET['subgrupo']; 

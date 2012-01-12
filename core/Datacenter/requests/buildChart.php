@@ -1,9 +1,9 @@
 <?php
     require_once 'build.php';
-    require_once '../ChartBuilder.php';
-    require_once '../../Charts/XmlCharts/XmlChart.php';
-    require_once '../../Charts/XmlCharts/MultiSerie/XmlMultiSeries.php';
-    require_once '../../Charts/XmlCharts/MultiSerie/XmlMultiSeriesCombinationColumnLine.php';
+    require_once 'core/Datacenter/ChartBuilder.php';
+    require_once 'core/Charts/XmlCharts/XmlChart.php';
+    require_once 'core/Charts/XmlCharts/MultiSerie/XmlMultiSeries.php';
+    require_once 'core/Charts/XmlCharts/MultiSerie/XmlMultiSeriesCombinationColumnLine.php';
 ?>
 <?
     $subgroup = $_GET['subgrupo']; 

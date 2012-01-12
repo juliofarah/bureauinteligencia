@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Description of ChartBuilder
  *
@@ -13,8 +12,11 @@ class ChartBuilder implements Builder {
      */
     private $xml;
     
+    private $path; 
+    
     public function ChartBuilder(XmlMultiSeriesCombinationColumnLine $xml) {
         $this->xml = $xml;
+        $this->path = __DIR__.'/xml/';
     }
     
     public function build($mapWithGroupedValues, array $years) {        
@@ -24,9 +26,9 @@ class ChartBuilder implements Builder {
             $this->setMultigroupsValues($mapWithGroupedValues);
             $this->setMultiChartValues($years, $mapWithGroupedValues); 
             //}
-        }else    
+        }else
             $this->setValues($years, $mapWithGroupedValues);
-        $xml = $this->xml->buildXml("xml/chart_".rand(1,28304908).".xml");        
+        $xml = $this->xml->buildXml($this->path."chart_".rand(1,28304908).".xml");        
         return $xml;
     }
         

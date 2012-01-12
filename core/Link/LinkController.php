@@ -101,8 +101,7 @@ class LinkController {
         self::$map_requests->put("mainMultiColumn", "core/Charts/build_column3dchart_futuras.php");
         self::$map_requests->put("quotations/storaged", "core/Charts/build_linechart_of_a_quotation.php");
         self::$map_requests->put("quotations/futuras/storaded", "core/Charts/build_chandlechart.php");
-        //self::$map_requests->put("qutotations/storaged", "core/Cotation/CotacoesRefactor/Storage/get-storaged-cotations.php");
-        
+        //self::$map_requests->put("qutotations/storaged", "core/Cotation/CotacoesRefactor/Storage/get-storaged-cotations.php");        
         
         self::$map_requests->put("user/subscribe", "../core/User/subscribe-user.php");
         self::$map_requests->put("user/forgetpassword", "core/User/forgot-password.php");
@@ -111,8 +110,8 @@ class LinkController {
         self::$map_requests->put("load", "apps/to_load/load_apps.php");        
         
         //routes to datacenters
-        self::$map_requests->put("datacenter/table", "core/Datacenter/request/buildTable.php");        
-        self::$map_requests->put("datacenter/chart", "core/Datacenter/request/buildChart.php");
+        self::$map_requests->put("datacenter/table", "core/Datacenter/requests/buildTable.php");        
+        self::$map_requests->put("datacenter/chart", "core/Datacenter/requests/buildChart.php");
     }
 
     private static function initAdminPages(){
