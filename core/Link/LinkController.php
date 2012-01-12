@@ -109,6 +109,10 @@ class LinkController {
         
         /****Loading apps****/
         self::$map_requests->put("load", "apps/to_load/load_apps.php");        
+        
+        //routes to datacenters
+        self::$map_requests->put("datacenter/table", "core/Datacenter/request/buildTable.php");        
+        self::$map_requests->put("datacenter/chart", "core/Datacenter/request/buildChart.php");
     }
 
     private static function initAdminPages(){
