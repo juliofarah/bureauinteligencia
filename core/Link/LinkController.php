@@ -112,6 +112,7 @@ class LinkController {
         //routes to datacenters
         self::$map_requests->put("datacenter/table", "core/Datacenter/requests/buildTable.php");        
         self::$map_requests->put("datacenter/chart", "core/Datacenter/requests/buildChart.php");
+        self::$map_requests->put("datacenter/param", "core/generics/datacenter/getParam.php");
     }
 
     private static function initAdminPages(){

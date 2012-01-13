@@ -56,6 +56,18 @@ class Controller {
         return $this->returnJson($publicationTypes);
     }
     
+    public function getTypeToDatacenter($type, $id = null){
+        switch($type){
+            case 'groups':    return $this->groups();           break;
+            case 'subgroup':  return $this->subgroups($id);     break;
+            case 'variety':   return $this->varieties();        break;
+            case 'coffetype': return $this->coffeTypes();       break;
+            case 'origin':    return $this->origincountries();  break;
+            case 'destiny':   return $this->destinycountries(); break;
+            case 'font':      return $this->fonts($id);         break;
+        }
+    }
+    
     public function groups(){
         $groups = $this->dao->getGroups();
         return $this->returnJson($groups);  
