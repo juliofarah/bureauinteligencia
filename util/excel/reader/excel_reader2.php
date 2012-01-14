@@ -924,7 +924,7 @@ class Spreadsheet_Excel_Reader {
 			$this->colnames[$name] = $i;
 			$this->colindexes[$i] = $name;
 		}
-		$this->store_extended_info = $store_extended_info;
+		$this->store_extended_info = $store_extended_info;                
 		if ($file!="") {
 			$this->read($file);
 		}

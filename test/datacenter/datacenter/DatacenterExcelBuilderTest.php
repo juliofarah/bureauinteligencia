@@ -45,7 +45,7 @@ class DatacenterExcelBuilderTest extends PHPUnit_Framework_TestCase{
     public function testAddValues(){
         $map = $this->groupedList();        
         $this->assertEquals("Planilha.xls", $this->excelBuilder->build($map, array(1989,1992)));
-        $values = $this->excelBuilder->getValues();        
+        $values = $this->excelBuilder->getValues();     
         $this->assertEquals(3, $values->count());
         $this->assertTrue($this->arraysAreEquals($this->expectedValues(), $values->getArrayCopy()));                
     }
