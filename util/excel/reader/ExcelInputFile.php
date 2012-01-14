@@ -10,8 +10,21 @@ class ExcelInputFile {
      */
     private $spreadSheetReader;
 
+    /**
+     *
+     * @var SpreadsheetValidator 
+     */
+    private $validator;
+    
     public function ExcelInputFile(Spreadsheet_Excel_Reader $reader){
         $this->spreadSheetReader = $reader;
+        $this->validator = new SpreadsheetValidator($this);
+        $this->validSpreadsheetFormat();
+    }
+    
+    private function validSpreadsheetFormat(){        
+        if(!$this->validator->spreadsheetHasAValidFormat())
+            throw new WrongFormatException();
     }
     
     public function getValuesFromACountry($country) {

@@ -7,21 +7,17 @@ require_once '../../util/excel/reader/SpreadsheetValidator.php';
  */
 class SpreadsheetValidatorTest extends PHPUnit_Framework_TestCase{
     
-    private $validator;
-    
-        /**
-     * @var Spreadsheet_Excel_Reader 
+    /**    
+     * @var SpreadsheetValidator 
      */
-    private $spreadsheetReader;
-    
+    private $validator;
+       
     /**
      * @var ExcelInputFile
      */
     private $inputFile;
     
     protected function setUp(){
- //      $file =__DIR__."\Teste_WrongFormat.xls";            
-//       $this->spreadsheetReader = new Spreadsheet_Excel_Reader($file);
        $this->mockExcelInputFile();
        $this->validator = new SpreadsheetValidator($this->inputFile);
     }
@@ -55,6 +51,13 @@ class SpreadsheetValidatorTest extends PHPUnit_Framework_TestCase{
      */
     public function verifyLineOfValues(){
         $this->assertFalse($this->validator->linesWithValuesAreCorrect());
+    }
+    
+    /**
+     * @test
+     */
+    public function invalidSpreadsheet(){
+        $this->assertFalse($this->validator->spreadsheetHasAValidFormat());
     }
 }
 ?>

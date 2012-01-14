@@ -1,4 +1,5 @@
 <?php
+require_once '../../core/Exceptions/WrongFormatException.php';
 require_once '../../util/excel/reader/excel_reader2.php';
 require_once '../../util/excel/reader/ExcelInputFile.php';
 /**
@@ -21,6 +22,7 @@ class ReadSpreadSheetTest extends PHPUnit_Framework_TestCase{
     protected function setUp(){
        $file =__DIR__."\Teste.xls";            
        $this->spreadsheetReader = new Spreadsheet_Excel_Reader($file);
+       
        $this->excelInputFile = new ExcelInputFile($this->spreadsheetReader); 
     }
     
