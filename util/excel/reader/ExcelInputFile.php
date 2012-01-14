@@ -37,7 +37,7 @@ class ExcelInputFile {
         foreach($linesOfAColumn as $index => $lineItem){
             if($lineItem == $item)
                 return ($index+2);
-        }        
+        }
     }
     
     public function getValuesFromAllYears() {
@@ -79,7 +79,7 @@ class ExcelInputFile {
         return $this->column($col);
     }
     
-    private function firstRow(){
+    public function firstRow(){
         return $this->line(1);
     }    
 
@@ -97,9 +97,9 @@ class ExcelInputFile {
         return $lines[$numberLine];
     }
     
-    private function allTheLinesButTheFirst(){
+    public function allTheLinesButTheFirst(){
         $lines = $this->lines();
-        array_shift($lines);
+        array_shift($lines);        
         return $lines;
     }
     
