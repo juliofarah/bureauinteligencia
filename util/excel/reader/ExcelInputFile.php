@@ -1,7 +1,6 @@
 <?php
 /**
  * Description of ExcelInputFile
- *
  * @author Ramon
  */
 class ExcelInputFile {
@@ -14,14 +13,40 @@ class ExcelInputFile {
     public function ExcelInputFile(Spreadsheet_Excel_Reader $reader){
         $this->spreadSheetReader = $reader;
     }
-
+    
+    public function getValuesFromACountry($country) {
+        $values = array();
+        $countryRowNumber = $this->getRowNumberOfACountry($country);
+        $countryLine = $this->line($countryRowNumber);
+        $associativeValueToYear = array();        
+        $years = $this->getYears();
+        foreach($years as $year){
+            $colNumber = $this->getColumnNumberOfAYear($year);
+            $associativeValueToYear[$year] = $countryLine[$colNumber];            
+        }        
+        $values[$country] = $associativeValueToYear; 
+        return $values;
+    }  
+    
+    private function getRowNumberOfACountry($country){
+        return $this->getRowOfAIntemInAColumn(1, $country);
+    }
+    
+    private function getRowOfAIntemInAColumn($col, $item){
+        $linesOfAColumn = $this->getValuesOfColumn($col);
+        foreach($linesOfAColumn as $index => $lineItem){
+            if($lineItem == $item)
+                return ($index+2);
+        }        
+    }
+    
     public function getValuesFromAllYears() {
         $years = $this->getYears();
         $values = array();
         foreach($years as $year){                        
             $valuesOfAYear = $this->getValuesFromAYear($year);
             $values[$year] = $valuesOfAYear[$year];
-        }        
+        }
         return $values;
     }
     
@@ -36,9 +61,9 @@ class ExcelInputFile {
     }
     
     private function getColumnNumberOfAYear($year){
-        $years = $this->getYears();        
+        $years = $this->getYears();
         foreach($years as $col => $y){
-            //+2 because the year array has had one element remove 
+            //+2 because the year array has had one element remove
             //and it starts with index 1
             if($y == $year) return ($col+2);
         }
@@ -53,7 +78,7 @@ class ExcelInputFile {
     public function getValuesOfColumn($col) {                
         return $this->column($col);
     }
-
+    
     private function firstRow(){
         return $this->line(1);
     }    
@@ -65,7 +90,7 @@ class ExcelInputFile {
             array_push($column, $lines[$line][$col]);
         }
         return $column;
-    }        
+    }
     
     private function line($numberLine){
         $lines = $this->lines();
@@ -82,5 +107,4 @@ class ExcelInputFile {
         return $this->spreadSheetReader->sheets[0]['cells'];
     }
 }
-
 ?>

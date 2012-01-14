@@ -56,6 +56,15 @@ class ReadSpreadSheetTest extends PHPUnit_Framework_TestCase{
         $this->assertTrue($this->associativeArrayEquals($this->manyYearsAssociativeArrayExcpected(), $values));
     }
     
+    /**
+     * @test
+     */
+    public function getValuesFromACountry(){
+        $values = $this->excelInputFile->getValuesFromACountry("Brasil");
+        $expected = array("Brasil" => array("1990" => 222, "1991" => 2432, "1992" => 453, "1993" => 234));
+        $this->assertTrue($this->associativeArrayEquals($expected, $values));
+    }
+    
     private function expectedValuesOfColumn2(){
         return array(222, 3242);
     }
