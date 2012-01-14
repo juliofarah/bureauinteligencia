@@ -68,7 +68,8 @@ class ExcelInputFile {
         $columnNumber = $this->getColumnNumberOfAYear($year);
         $lines = $this->lines();        
         foreach($this->allTheLinesButTheFirst() as $line){
-            $values[$line[1]] = $line[$columnNumber];
+            if(isset($line[$columnNumber]))
+                $values[$line[1]] = $line[$columnNumber];
         }        
         return array($year => $values);
     }
