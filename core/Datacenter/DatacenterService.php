@@ -25,9 +25,7 @@ class DatacenterService {
         $countries = $excelInputFile->getValuesOfColumn(1);        
         $dataToSave = new ArrayObject();
         foreach($countries as $country){
-            $origin = $this->countryMap->getCountryId($country);
-            $valuesFromACountry = $excelInputFile->getValuesFromACountry($country);
-            $years = $excelInputFile->getYears();            
+            $origin = $this->countryMap->getCountryId($country);            
             $dataOfCurrentCountry = $this->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
             $yearsToInsert = $this->insertValuesIfACountryDoesNotHaveItStoredYet($dataOfCurrentCountry, $excelInputFile, $country);
             if($yearsToInsert->count() > 0){         
@@ -38,13 +36,13 @@ class DatacenterService {
     }
  
     private function getDataToSave(ArrayObject &$dataToInsert, ArrayObject $years, ExcelInputFile $inputFile, $country, $subgroup, $font, $type, $variety, $origin, $destiny){
+        $valuesFromACountry = $inputFile->getValuesFromACountry($country);
         foreach($years as $year){
-            $valuesFromACountry = $inputFile->getValuesFromACountry($country);
             $value = $valuesFromACountry[$country][$year];
             $data = $this->buildDataToInsert($year, $subgroup, $font, $type, $variety, $origin, $destiny);
             $data->setValue($value);
             $dataToInsert->append($data);
-        }        
+        } 
     }
  
     private function buildDataToInsert($year, $subgroupId, $fontId, $typeId, $varietyId, $originId, $destinyId){        
