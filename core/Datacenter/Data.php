@@ -107,20 +107,40 @@ class Data {
         return $this->subgroup->name();
     }
     
+    public function getSubgroupId(){
+        return $this->subgroup->id();
+    }
+    
     public function getTypeName(){
         return $this->type->name();
+    }
+    
+    public function getTypeId(){
+        return $this->type->id();
     }
     
     public function getVarietyName(){
         return $this->variety->name();
     }
     
+    public function getVarietyId(){
+        return $this->variety->id();
+    }
+    
     public function getOriginName(){
         return utf8_encode($this->origin->name());
     }
     
+    public function getOriginId(){
+        return $this->origin->id();
+    }
+    
     public function getDestinyName(){
         return utf8_encode($this->destiny->name());
+    }
+    
+    public function getDestinyId(){
+        return $this->destiny->id();        
     }
     
     public function getVariety(){
@@ -129,6 +149,10 @@ class Data {
         
     public function getFontName(){
         return $this->font->name();
+    }
+    
+    public function getFontId(){
+        return $this->font->id();
     }
     
     public function isOfTheSameCategoryOf(Data $data = null) {

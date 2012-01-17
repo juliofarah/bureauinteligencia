@@ -20,9 +20,11 @@ class CountryMap {
     
     private function populateMap(){
         $this->map->put("Brasil", 1);
+        $this->map->put("Colombia",2);
+        $this->map->put("Colômbia",2);
     }
     
-    public function getCountryId($countryName){
+    public function getCountryId($countryName){        
         return $this->map->get($countryName);
     }
 }

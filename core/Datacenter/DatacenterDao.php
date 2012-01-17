@@ -1,12 +1,11 @@
 <?php
-
 /**
  * Description of DatacenterDao
  *
  * @author Ramon
  */
-
 require_once 'DatacenterRepository.php';
+
 class DatacenterDao implements DatacenterRepository{
    
     /**     
@@ -18,9 +17,29 @@ class DatacenterDao implements DatacenterRepository{
         $this->session = $session;
     }
     
-    public function save(ArrayObject $dataList) {
+    public function save(ArrayObject $list) {
+        if(!is_null($list) && $list->count() > 0)
+            foreach($list as $data){
+                $this->insert($data);
+            }
+    }
+    
+    public function insert(Data $data){
+        $insert = "INSERT INTO data (ano, subgroup_id, font_id, type_id, variety_id, origin_id, destiny_id, value) 
+                    VALUES (:year, :subgroup, :font, :type, :variety, :origin, :destiny, :value)";
+        $query = $this->session->prepare($insert);
+        $query->bindParam(":year", $data->getYear());
+        $query->bindParam(":subgroup", $data->getSubgroupId());
+        $query->bindParam(":font", $data->getFontId());
+        $query->bindParam(":type", $data->getTypeId());
+        $query->bindParam(":variety", $data->getVarietyId());
+        $query->bindParam(":origin", $data->getOriginId());
+        $query->bindParam(":destiny", $data->getDestinyId());
+        $query->bindParam(":value", $data->getValue());
         
-    }    
+        $query->execute();                
+    }
+    
     
     /**     
      * @param type $subgroup
@@ -57,7 +76,7 @@ class DatacenterDao implements DatacenterRepository{
      */
     private function buildSimpleObjects(array $values){
         $list = new ArrayObject();        
-        foreach($values as $value){   
+        foreach($values as $value){
             $subgroup = new Subgroup($value['subgroup']);
             $font = new Font($value['font']);
             $type = new CoffeType($value['type']);

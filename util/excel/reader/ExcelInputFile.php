@@ -22,6 +22,10 @@ class ExcelInputFile {
         $this->validSpreadsheetFormat();
     }
     
+    public function setNewSpreadsheet(Spreadsheet_Excel_Reader $reader){
+        $this->spreadSheetReader = $reader;
+    }
+    
     private function validSpreadsheetFormat(){        
         if(!$this->validator->spreadsheetHasAValidFormat())
             throw new WrongFormatException();

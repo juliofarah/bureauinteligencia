@@ -101,6 +101,37 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(1990,$values->offsetGet(0)->getYear());
     }
     
+    /**
+     * @test
+     */
+    public function testInsertValues(){
+        $this->emptyDatabase();
+        $list = new ArrayObject();
+        $list->append($this->newData(1990, 235));
+        $list->append($this->newData(1991, 232));
+        $list->append($this->newData(1992, 458));
+        $this->daoRepository->save($list);
+        $values = $this->daoRepository->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1);
+        $this->assertEquals(3,$values->count());
+        $values = $this->daoRepository->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1, array(1991,1992));
+        $this->assertEquals(2,$values->count());
+        $values = $this->daoRepository->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1, 1990);        
+        $this->assertEquals(1,$values->count());
+        $this->assertEquals(1990, $values->offsetGet(0)->getYear());
+    }
+    
+    protected function newData($year, $value){
+        $subgroup = new Subgroup("subgrupo",1);
+        $font = new Font("fonte",1);
+        $type = new CoffeType("type",1);
+        $variety = new Variety("variety",1);
+        $origin = new Country("origin",1);
+        $destiny = new Country("destiny",1);        
+        $data = new Data($year, $subgroup, $font, $type, $variety, $origin, $destiny);
+        $data->setValue($value);
+        return $data;
+    }
+    
     private function populatesDatabase() {
         //echo $this->persistDataForTest();
         $this->connection->prepare($this->persistDataForTest())->execute();
@@ -112,6 +143,9 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
 
     public function __destruct() {
         $this->emptyDatabase();
+        $values = $this->daoRepository->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1, 1990);       
+        if($values->count() > 0)
+            die('erro ao limpar database');    
     }
 }
 ?>
