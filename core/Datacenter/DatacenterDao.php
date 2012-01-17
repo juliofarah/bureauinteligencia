@@ -18,6 +18,10 @@ class DatacenterDao implements DatacenterRepository{
         $this->session = $session;
     }
     
+    public function save(ArrayObject $dataList) {
+        
+    }    
+    
     /**     
      * @param type $subgroup
      * @param type $variety
@@ -135,7 +139,7 @@ class DatacenterDao implements DatacenterRepository{
 
     public function getValuesFromAGroup($group) {
         
-    }       
+    }
 }
 
 ?>

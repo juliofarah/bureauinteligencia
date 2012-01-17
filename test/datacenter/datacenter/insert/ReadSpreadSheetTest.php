@@ -38,7 +38,7 @@ class ReadSpreadSheetTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function getFullColumn(){
-        $values = $this->excelInputFile->getValuesOfColumn(2);
+        $values = $this->excelInputFile->getValuesOfColumn(2);        
         $this->assertTrue($this->arraysAreEquals($this->expectedValuesOfColumn2(), $values));
     }
         
@@ -62,8 +62,20 @@ class ReadSpreadSheetTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function getValuesFromACountry(){
-        $values = $this->excelInputFile->getValuesFromACountry("Brasil");
+        $values = $this->excelInputFile->getValuesFromACountry("Brasil");        
         $expected = array("Brasil" => array("1990" => 222, "1991" => 2432, "1992" => 453, "1993" => 234));
+        $this->assertTrue($this->associativeArrayEquals($expected, $values));
+    }
+    
+    /**
+     * @test
+     */
+    public function getValuesFromAllCountries(){
+        $values = $this->excelInputFile->getValuesFromAllCountries();
+        $expected = array(
+                        "Brasil" => array("1990" => 222, "1991" => 2432, "1992" => 453, "1993" => 234),
+                        "Colombia" => array("1990" => 3242, "1991" => 534, "1992" => 345, "1993" => 234)
+                        );
         $this->assertTrue($this->associativeArrayEquals($expected, $values));
     }
     

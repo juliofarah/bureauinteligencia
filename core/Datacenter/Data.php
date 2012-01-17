@@ -52,7 +52,7 @@ class Data {
         $array = array();
         if($this->id != null)
             $array['id'] = $this->getId();
-        if($this->year != null)
+        if($this->year != null) 
             $array['year'] = $this->getYear();
         if($this->subgroup != null)
             $array['subgroup'] = $this->subgroup->toArray();

@@ -16,6 +16,11 @@ interface DatacenterRepository {
     public function getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, $year = null);
     
     /**
+     * @return boolean
+     */
+    public function save(ArrayObject $dataList);
+    
+    /**
      * @return ArrayIterator
      */
     public function getValuesFromAGroup($group);

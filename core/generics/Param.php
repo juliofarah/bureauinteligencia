@@ -11,7 +11,7 @@ abstract class Param {
     
     private $name;
     
-    public function Param($name, $id = null){
+    public function Param($name = null, $id = null){
         $this->name = $name;
         $this->id = $id;
     }

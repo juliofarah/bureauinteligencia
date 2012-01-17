@@ -9,6 +9,7 @@ require_once '../../core/generics/datacenter/CoffeType.php';
 require_once '../../core/generics/datacenter/Country.php';
 require_once '../../core/Datacenter/Data.php';
 require_once '../../util/Maps/HashMap.php';
+require_once '../../core/Datacenter/CountryMap.php';
 
 /**
  * Description of ServiceTest
@@ -27,9 +28,9 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
      * @var DatacenterService
      */
     private $service;
-    
+        
     public function ServiceTest(){
-        $this->repository = $this->getMock("DatacenterRepository");        
+        $this->repository = $this->getMock("DatacenterRepository");
         $this->service = new DatacenterService($this->repository);
     }
     /**
@@ -39,6 +40,55 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
         $stack = array("test");
         $this->assertEquals(1, count($stack));        
     }        
+    
+    /**
+     * @return ExcelInputFile 
+     */
+    private function mockExcelInputFile(){
+        $excelInputFile = $this->getMockBuilder('ExcelInputFile')->disableOriginalConstructor()->getMock();
+        $valuesByCountry = array("Brasil" => array("1990" => 222, "1991" => 2432, "1992" => 453, "1993" => 234));
+        $excelInputFile->expects($this->any())
+                       ->method('getValuesFromACountry')
+                       ->will($this->returnValue($valuesByCountry));
+        $excelInputFile->expects($this->any())
+                       ->method('getValuesOfColumn')
+                       ->will($this->returnValue(array("Brasil")));
+        $excelInputFile->expects($this->any())
+                       ->method('getYears')
+                       ->will($this->returnValue(array("1990","1991","1992","1993")));        
+        //$excelInputFile->expects($this->any())
+          //             ->method('getValuesFromAllCountries')
+            //           ->will($this->returnValue());
+        return $excelInputFile;
+    }
+    
+    private function buildData($year, $values){
+        $data = new Data($year, 1, 1, 1, 1, 1, 1);
+        $data->setValue($values);
+        return $data;
+    }
+    /**
+     * @test
+     */
+    public function serviceInsertionTest(){
+        $excelInputFile = $this->mockExcelInputFile();
+        $data = new ArrayObject();
+        $this->repository->expects($this->any())
+                         ->method("save")
+                         //->with($data)
+                         ->will($this->returnValue(true));
+        $list = new ArrayObject();
+        $list->append($this->buildData(1990, 222));
+        $list->append($this->buildData(1991, 2432));
+        $list->append($this->buildData(1992, 453));
+        //$list->append($this->buildData(1993, 234));
+        $this->repository->expects($this->any())
+                         ->method('getValuesWithSimpleFilter')
+                         ->will($this->returnValue($list->getIterator()));
+        $this->service = new DatacenterService($this->repository, new CountryMap());
+        $subgroup = $destiny = $type = $variety = $font = 1;
+        $this->assertTrue($this->service->insertValues($excelInputFile, $subgroup, $destiny, $type, $variety, $font));
+    }
     
     /**     
      * @test

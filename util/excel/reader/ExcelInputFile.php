@@ -15,7 +15,7 @@ class ExcelInputFile {
      * @var SpreadsheetValidator 
      */
     private $validator;
-    
+ 
     public function ExcelInputFile(Spreadsheet_Excel_Reader $reader){
         $this->spreadSheetReader = $reader;
         $this->validator = new SpreadsheetValidator($this);
@@ -26,7 +26,17 @@ class ExcelInputFile {
         if(!$this->validator->spreadsheetHasAValidFormat())
             throw new WrongFormatException();
     }
-    
+
+    public function getValuesFromAllCountries() {
+        $countries = $this->column(1);        
+        $allCountriesValues = array();
+        foreach($countries as $country){
+            $valuesFromACountry = $this->getValuesFromACountry($country);
+            $allCountriesValues[$country] = $valuesFromACountry[$country];
+        }
+        return $allCountriesValues;
+    }
+   
     public function getValuesFromACountry($country) {
         $values = array();
         $countryRowNumber = $this->getRowNumberOfACountry($country);

@@ -28,8 +28,7 @@ class SpreadsheetValidatorTest extends PHPUnit_Framework_TestCase{
                           ->getMock();
         $this->inputFile->expects($this->any())
                   ->method('firstRow')
-                  ->will($this->returnValue(array("Paises","Origem",1990,1991,1992)));
-       
+                  ->will($this->returnValue(array("Paises","Origem",1990,1991,1992)));       
        $return = array(array("Brasil", 222, 2432, 453), array("Colombia",3242,534,345,234));            
        $this->inputFile->expects($this->any())
                        ->method('allTheLinesButTheFirst')
