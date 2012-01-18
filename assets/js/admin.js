@@ -1,5 +1,7 @@
 $(document).ready(function(){
     //listAreasToSelect();
+    eventInsertSpreadsheet();
+    listValuesToDatacenterSelects();
     listStatesToSelect();
     listPublicationTypesToSelect();
     eventChangeToArea();

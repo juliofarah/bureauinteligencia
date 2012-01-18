@@ -62,7 +62,7 @@ if(empty ($_POST) && empty ($_GET) && LinkController::link() != 'login-fail/empt
                     <li><a href="" id="lnk-cotacoes">Cota&ccedil;&otilde;es</a></li>
                     <li><a href="<?echo $baseUrl?>/admin/videos" id="lnk-videoteca">Videoteca</a></li>
                     <li><a href="" id="lnk-metereologia">Meteorologia</a></li>
-                    <li class="ultimo"><a href="" id="lnk-datacenter">Data Center</a></li>
+                    <li class="ultimo"><a href="<?echo $baseUrl?>/admin/datacenter" id="lnk-datacenter">Data Center</a></li>
                 </ul>
             <!-- Fim Menu Apps -->
             </div>

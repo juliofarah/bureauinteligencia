@@ -113,6 +113,7 @@ class LinkController {
         self::$map_requests->put("datacenter/table", "core/Datacenter/requests/buildTable.php");        
         self::$map_requests->put("datacenter/chart", "core/Datacenter/requests/buildChart.php");
         self::$map_requests->put("datacenter/param", "core/generics/datacenter/getParam.php");
+        //self::$map_requests->put("datacenterAdmin/param", "../core/generics/datacenter/getParam.php");
     }
 
     private static function initAdminPages(){
@@ -134,6 +135,9 @@ class LinkController {
         self::$map_admin_pages->put("analise/inserir", "View/publication/analysis_insertion.php");
         self::$map_admin_pages->put("analise/list", "View/publication/analysis_list.php");       
         self::$map_admin_pages->put("analise/list/", "View/publication/analysis_list.php");       
+        
+        self::$map_admin_pages->put("datacenter", "View/datacenter/datacenter.php");
+        self::$map_admin_pages->put("datacenter/inserir", "View/datacenter/datacenter_insertion.php");
         
         self::$map_admin_pages->put("logoutAdmin", "logout_admin.php");
     }       

@@ -11,10 +11,12 @@
     else
         if($type == 'origin' || $type == 'destiny'){
             require_once 'core/generics/datacenter/Country.php';
-        }else
+        }else{
+            require_once 'core/generics/datacenter/Group.php';
             require_once 'core/generics/datacenter/'.$type.'.php';
+        }
     
-    $dao = new GenericDao(Connection::connect());    
+    $dao = new GenericDao(Connection::connect());
     $controller = new Controller($dao);
     header('Content-type: application/json');
     echo $controller->getTypeToDatacenter(strtolower($type), $id);

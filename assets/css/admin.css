@@ -71,6 +71,7 @@ button.button-insert{
 
 .field label{
     font-weight: bold;
+    font-size: 12px;
     margin-right: 10px;    
 }
 
@@ -85,6 +86,9 @@ button.button-insert{
     background-color: #FFF;
 }
 
+.field select{
+    font-size: 12px;
+}
 .infofield{
     margin-left: 130px;
     color: red;

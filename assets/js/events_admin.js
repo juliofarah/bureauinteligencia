@@ -56,6 +56,13 @@ function eventInsert(){
     });
 }
 
+function eventInsertSpreadsheet(){
+    $(".button-insert-spreadsheet").click(function(){
+       console.log($(this).parents("form").html());
+       return false;
+    });
+}
+
 function eventInserPublication(){
     $(".button-insert-paper").click(function(){
         var $form = $(this).parents("form");
@@ -168,12 +175,61 @@ function listStatesToSelect(){
 }
 
 function listPublicationTypesToSelect(){
-    if($("select#publicationType") != null){
+    if($("select#publicationType").html() != null){
         var request = AdminAjax();
         request.list_to_select("../admin/publicationTypes", $("select#publicationType"), {'no-must-online':true});
     }
 }
 
+function listValuesToDatacenterSelects(){
+    //console.log($("#form-datacenter").attr("action"));
+    var request = AdminAjax();
+    var url = "../../datacenter/param";
+    var data = {'id': null, 'no-must-online': true};
+    listGroupsToDatacenter(request,url,data,$("select#groups"));
+    listVarietiesToDatacenter(request, url, data,$("select#variety"));
+    listCoffeTypeToDatacenter(request, url, data,$("select#coffetype"));
+    listDestiniesToDatacenter(request, url, data, $("select#destiny"));
+}
+
+function listGroupsToDatacenter(request, url, data, $select){
+    if($select.html() != null){
+        data.type = 'Groups';
+        request.list_to_select(url,$select,data);
+        groupChange();
+    }
+}
+function groupChange(){
+    $("select#groups").live("change",function(){
+       if($(this).val() != ''){
+           var idGroup = $(this).val();
+           var request = AdminAjax();
+           var data = {"id":idGroup,"type":"subgroup","no-must-online":true};
+           request.list_to_select("../../datacenter/param", $("select#subgroups"), data);
+           data.type = "font";
+           request.list_to_select("../../datacenter/param", $("select#font"), data);
+       }       
+    });
+}
+
+function listVarietiesToDatacenter(request, url, data, $select){
+    if($select.html() != null){
+        data.type = "Variety";
+        request.list_to_select(url,$select, data);
+    }
+}
+function listCoffeTypeToDatacenter(request,url,data,$select){
+    if($select.html() != null){
+        data.type = "CoffeType";
+        request.list_to_select(url, $select, data);
+    }
+}
+function listDestiniesToDatacenter(request,url,data,$select){
+    if($select.html() != null){
+        data.type = 'destiny';
+        request.list_to_select(url, $select, data);
+    }
+}
 function eventChangeToArea(){
     $("select#area").live("change", function(){
         if($(this).val() != '' && !$(this).hasClass("area_analysis")){
@@ -192,7 +248,7 @@ function valid($form){
     var id = "#"+$form.attr("id");
     var isvalid = true;
     var invalid_inputs = new Array();
-
+    var formAction = $form.attr("action");    
     $(id + " input, select").each(function(i, obj){
         if(obj.value == ''){
             isvalid = isvalid && false;
@@ -203,7 +259,7 @@ function valid($form){
                 var indexA = file.length-4;
                 var indexB = file.length;
                 var toVerify = file.substring(indexA, indexB).replace(".","");
-                if(!canInsertThisFileExtension(toVerify)){
+                if(!canInsertThisFileExtension(toVerify, formAction)){
                     isvalid = isvalid && false;
                     invalid_inputs.push("#"+obj.id);
                 }
@@ -217,7 +273,26 @@ function valid($form){
     }
 }
 
-var canInsertThisFileExtension = function(string){
+var canInsertThisFileExtension = function(extension, serviceAction){
+    //modelo do link http://{root}/admin/datacenter/insert
+    var serviceString = serviceAction.split("/admin/");
+    serviceString = serviceString[1];
+    switch(serviceString){
+        case 'datacenter/insert': 
+            return insertFileToDatacenter(extension);
+        break;
+        case 'paper/insert':
+            return insertFileToPublication(extension);
+        break;
+    }
+}
+
+var insertFileToPublication = function(extension){
     var fileExtensionsAllowed = new Array("pdf");
-    return (fileExtensionsAllowed.indexOf(string, 0) != -1);
+    return (fileExtensionsAllowed.indexOf(extension, 0) != -1);    
+}
+
+var insertFileToDatacenter = function(extension){
+    var fileExtensionsAllowed = new Array("xls");
+    return (fileExtensionsAllowed.indexOf(extension, 0) != -1);
 }
