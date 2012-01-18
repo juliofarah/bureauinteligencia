@@ -78,9 +78,26 @@ class DatacenterController {
     }
     
     public function getExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
-        
+        //TODO build routine to return the excelTable;
     }
     
+    //POST ://datacenter/save
+    public function saveValues(ExcelInputFile $inputFile, $subgroup, $font, $destiny, $coffeType, $variety){
+        if(Session::isLogged()){
+            try{
+                if($this->datacenterService->insertValues($excelInputFile, $subgroup, $destiny, $type, $variety, $font)){
+                    return $this->jsonResponse->response(true, "Dados inseridos com sucesso!")->serialize();
+                }
+            }catch(WrongFormatException $wrongFormat){
+                //tentar retornar uma imagem com o html correto
+            }catch(Exception $e){
+                return $this->jsonResponse->response(false, $e->getMessage())->serialize();
+            }            
+        }else{
+            throw new LoginException();
+        }
+    }
+        
     /**actions**/
     
     public function buildChart($subgroup, $font, $type, $variety, $origin, $destiny, $years) {
