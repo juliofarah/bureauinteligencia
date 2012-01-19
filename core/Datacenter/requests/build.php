@@ -24,7 +24,7 @@
 ?>
 <?
     if(!isset($_POST['fromAdmin'])){
-        $repository = new DatacenterDao(Connection::connectToTest());
+        $repository = new DatacenterDao(Connection::connect());
         $service = new DatacenterService($repository);
         $statistic = new Statistic();
         $jsonResponse = new JsonResponse();

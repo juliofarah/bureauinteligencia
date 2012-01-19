@@ -39,13 +39,13 @@ class TableJsonBuilder extends TableBuilder{//implements Builder{
     
     protected function buildSimpleTable(Map $mapWithGroupedValues, array $years, $i = 1){
         $this->json .= '{';
-        $this->initTable($i);
-        $this->json .= '{';
+        //$this->initTable($i);
+        //$this->json .= '{';
         $this->titles($years);
         $this->json .= ',"tbody":[';        
         $this->addValuesToARow($mapWithGroupedValues,$years);        
         $this->json .= ']'; 
-        $this->json .= '}';
+        //$this->json .= '}';
         $this->json .= '}';
     }
 
@@ -77,8 +77,8 @@ class TableJsonBuilder extends TableBuilder{//implements Builder{
         $this->json .= '{';
         $this->json .= '"variety":"'.$data->getVarietyName().'",';
         $this->json .= '"type":"'.$data->getTypeName().'",';
-        $this->json .= '"origin":"'.$data->getOriginName().'",';
-        $this->json .= '"destiny":"'.$data->getDestinyName().'",';
+        $this->json .= '"origin":"'.utf8_decode($data->getOriginName()).'",';
+        $this->json .= '"destiny":"'.utf8_decode($data->getDestinyName()).'",';
         $this->json .= '"values":'; $this->listValues($group, $years);
         $this->json .= '},';        
     }

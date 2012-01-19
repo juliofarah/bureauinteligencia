@@ -1,0 +1,236 @@
+/* Menu de seleções */
+
+#menu_selecoes {
+	margin-top: 15px;
+	position: relative;
+}
+
+/* Seletor de Grupo */
+
+.selector {
+	float: left;
+	border-bottom: 1px solid #DDD;
+}
+
+.selector .header {
+	/*background: #774F38;*/
+	background: #600B0B;
+	color: #fff;
+	font-weight: bold;
+	padding: 4px;
+	text-align: center;
+	border-radius: 5px 5px 0 0;
+}
+
+.selector .options {
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+}
+
+.selector .options ul {
+	margin: 0;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.selector .options ul li {
+	list-style: none;
+	margin: 0;
+	cursor: pointer;
+	padding: 4px;
+	border-top: 1px solid #ddd;
+}
+
+.selector .options ul li:hover {
+	background: #eee;
+}
+
+.selector .options ul li.sg {
+	padding: 0;
+	text-align: center;
+	color: #888;
+	background: #ECF1F2;
+	cursor: auto;
+}
+
+#subgrupo .header {
+	border-radius: 0 5px 0 0;
+}
+
+#grupo .header {
+	border-radius: 5px 0 0 0;
+}
+
+#grupo, #subgrupo {
+	width: 20%;
+}
+
+#subgrupo {
+	margin-left: -1px;
+}
+
+#variedade, #tipo, #origem, #destino, #fonte {
+	width: 11%;
+	margin-left: 1%;
+}
+
+.subgroup {
+	display: none;
+}
+
+#periodo {
+	width: 40%;
+	position: absolute;
+	bottom: 0;
+}
+
+#periodo .options {
+	text-align: center;
+	padding: 3px;
+}
+
+#periodo .options label {
+	margin-left: 10px;
+}
+
+#periodo .options input {
+	width: 30%;
+}
+
+#confirm {
+	margin: 5px 0;
+}
+
+a.confirmar {
+	-moz-box-shadow:inset 0px 1px 0px 0px #a4e271;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #a4e271;
+	box-shadow:inset 0px 1px 0px 0px #a4e271;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #89c403), color-stop(1, #77a809) );
+	background:-moz-linear-gradient( center top, #89c403 5%, #77a809 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#89c403', endColorstr='#77a809');
+	background-color:#89c403;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #74b807;
+	display:inline-block;
+	color:#ffffff;
+	font-family:arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #528009;
+	float: right;
+}a.confirmar:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #77a809), color-stop(1, #89c403) );
+	background:-moz-linear-gradient( center top, #77a809 5%, #89c403 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#77a809', endColorstr='#89c403');
+	background-color:#77a809;
+}a.confirmar:active {
+	position:relative;
+	top:1px;
+}
+
+/* Abas */
+
+#tabs {
+	border-bottom: 1px solid #ddd;
+	height: 30px;
+	padding: 0 0 0 10px;
+}
+
+#tabs ul li {
+	float: left;
+	list-style-type: none;
+}
+
+.tab {
+	cursor: pointer;
+	display: block;
+	margin: 0 3px;
+	width: 102px;
+	height: 31px;
+	background: url('../img/tab_bg.gif') no-repeat right;
+	color: #7B858A;
+	float: left;
+}
+
+.tab.sel {
+	background: url('../img/tab_sel_bg.gif') no-repeat right;
+	color: #333;
+}
+
+.tab span.tab-left {
+	float: left;
+	height: 31px;
+	width: 10px;
+	background: url('../img/tab_left.gif') no-repeat;
+}
+
+.tab.sel span.tab-left {
+	background: url('../img/tab_sel_left.gif') no-repeat;
+}
+
+.tab span.title {
+	display: block;
+	padding-top: 7px;
+	padding-right: 10px;
+	text-align: center;
+}
+
+.tab div {
+	position: relative;
+}
+
+#tabs ul {
+	margin: 0;
+}
+
+/* Tabela */
+
+table
+{
+	font-size: 12px;
+	margin: 45px auto;
+	width: 480px;
+	text-align: left;
+	border-collapse: collapse;
+}
+table th
+{
+	font-size: 14px;
+	font-weight: normal;
+	padding: 12px 15px;
+	color: #039;
+}
+table td
+{
+	padding: 10px 15px;
+	color: #669;
+	border-top: 1px solid #e8edff;
+}
+.oce-first
+{
+	background: #d0dafd;
+	border-right: 10px solid transparent;
+	border-left: 10px solid transparent;
+}
+table tr:hover td
+{
+	color: #339;
+	background: #eff2ff;
+}
+
+#grafico {
+	text-align: center;
+}
+
+#content-1 {
+	width: 100%;
+	overflow-x: auto;
+}
