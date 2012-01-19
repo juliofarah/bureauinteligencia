@@ -27,8 +27,9 @@ class ExcelInputFile {
     }
     
     private function validSpreadsheetFormat(){        
+        $message = "Esta planilha contem um formato inválido de acordo com os padrões definidos.";
         if(!$this->validator->spreadsheetHasAValidFormat())
-            throw new WrongFormatException();
+            throw new WrongFormatException($message);
     }
 
     public function getValuesFromAllCountries() {

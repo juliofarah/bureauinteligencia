@@ -37,7 +37,7 @@ var AdminAjax = function(){
     };
 
     api.saveWithFile = function($form, values){
-        loading();
+        loading();        
         var options = {
             dataType: 'json',
             data: values,
@@ -46,10 +46,10 @@ var AdminAjax = function(){
                 alert(response.message);
                 if(response.status){
                    $form.clearForm();
-                   $("#publication-file").val('');
+                   $("#publication-file, #datacenter-spreadsheet").val('');
                 }                
             }
-        };
+        };        
         $form.ajaxSubmit(options);
     }
 

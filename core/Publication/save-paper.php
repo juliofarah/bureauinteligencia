@@ -32,7 +32,6 @@ if(RequestsPatterns::postParamsSetted(RequestsPatterns::$TITLE, 'subarea', 'year
             print_r($jsonResponse->response(false, $err->getMessage())->withoutHeader()->serialize());
         }
     }else{
-        //print_r($jsonResponse->response(false, "Arquivo enviado com sucesso PORRA NENHUMA!".$_POST['publication_type'])->withoutHeader()->serialize());
         print_r($jsonResponse->response(false, "Todos os campos devem ser preenchidos e/ou marcados.")->withoutHeader()->serialize());
     }
 }else{

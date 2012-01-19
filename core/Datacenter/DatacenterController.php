@@ -82,14 +82,15 @@ class DatacenterController {
     }
     
     //POST ://datacenter/save
-    public function saveValues(ExcelInputFile $inputFile, $subgroup, $font, $destiny, $coffeType, $variety){
-        if(Session::isLogged()){
+    public function saveValues(ExcelInputFile $excelInputFile, $subgroup, $font, $destiny, $coffeType, $variety){
+        if(SessionAdmin::isLogged()){
             try{
-                if($this->datacenterService->insertValues($excelInputFile, $subgroup, $destiny, $type, $variety, $font)){
+                if($this->datacenterService->insertValues($excelInputFile, $subgroup, $destiny, $coffeType, $variety, $font)){
                     return $this->jsonResponse->response(true, "Dados inseridos com sucesso!")->serialize();
+                }else{
+                    $message = "Dados não inseridos. Verifique a possibilidade de já existirem dados referentes a esta planilha";
+                    return $this->jsonResponse->response(true, $message)->serialize();
                 }
-            }catch(WrongFormatException $wrongFormat){
-                //tentar retornar uma imagem com o html correto
             }catch(Exception $e){
                 return $this->jsonResponse->response(false, $e->getMessage())->serialize();
             }            

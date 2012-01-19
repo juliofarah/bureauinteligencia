@@ -1,4 +1,4 @@
-<?  session_start()?>
+<?session_start();?>
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
@@ -91,7 +91,7 @@ if(empty ($_POST) && empty ($_GET) && LinkController::link() != 'login-fail/empt
     </body>
 </html>
 <?
-}else{
+}else{    
     if(LinkController::link() == 'login-fail'){
         $_GET['loginfail'] = true;
         include 'login_error.php';
@@ -104,15 +104,15 @@ if(empty ($_POST) && empty ($_GET) && LinkController::link() != 'login-fail/empt
             require_once "../util/JsonResponse.php";
             require_once '../util/SessionAdmin.php';
             require_once 'AdminUser.php';
-            if(LinkController::isRequestToInsertPublication())
-                SessionAdmin::login(new AdminUser("ramonox", "ramonoxido"));
+            //if(LinkController::isRequestToInsertPublication())
+                //SessionAdmin::login(new AdminUser("ramonox", "ramonoxido"));            
             include LinkController::restAdmin();
         }catch(Exception $err){
             if(LinkController::isRequestToInsertPublication()){
                 $message = $err->getMessage();
                 echo '{"status": "'.false.'", "message":"'.$message.'"}';
                 print_r($_POST);
-            }else{                
+            }else{
                 $jsonResponse = new JsonResponse();
                 print_r($jsonResponse->response(FALSE, $err->getMessage())->serialize());
             }

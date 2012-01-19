@@ -21,7 +21,7 @@ class DatacenterService {
         $this->countryMap = $countryMap;
     }
     
-    public function insertValues(ExcelInputFile $excelInputFile, $subgroup, $destiny, $type, $variety, $font) {      
+    public function insertValues(ExcelInputFile $excelInputFile, $subgroup, $destiny, $type, $variety, $font) {
         $countries = $excelInputFile->getValuesOfColumn(1);        
         $dataToSave = new ArrayObject();
         foreach($countries as $country){

@@ -113,10 +113,11 @@ class LinkController {
         self::$map_requests->put("datacenter/table", "core/Datacenter/requests/buildTable.php");        
         self::$map_requests->put("datacenter/chart", "core/Datacenter/requests/buildChart.php");
         self::$map_requests->put("datacenter/param", "core/generics/datacenter/getParam.php");
+        self::$map_requests->put("datacenter/insert", "../core/Datacenter/requests/insert_values.php");        
         //self::$map_requests->put("datacenterAdmin/param", "../core/generics/datacenter/getParam.php");
     }
 
-    private static function initAdminPages(){
+    private static function initAdminPages(){        
         self::$map_admin_pages = new HashMap();
         self::$map_admin_pages->put("main", "View/main.php");
         self::$map_admin_pages->put("videos", "View/video/videos.php");
@@ -144,10 +145,9 @@ class LinkController {
 
     public static function routeAdminPage(){
         self::initAdminPages();
-        $link = self::link();                
-        
-        /**/
-        if(SessionAdmin::isLogged()){
+        $link = self::link();
+        /**/        
+        if(SessionAdmin::isLogged()){            
             if(self::$map_admin_pages->containsKey($link)){
                 if(file_exists(self::$map_admin_pages->get($link))){
                     return self::$map_admin_pages->get($link);
@@ -226,17 +226,18 @@ class LinkController {
         return self::link() == "publication/insert";
     }
 
-    public static function restAdmin(){        
-        self::initRequests();
-
+    public static function restAdmin(){
+        self::initRequests();        
         if(strpos(self::link(), "?") !== false)
             $link = substr(self::link(), 0, strpos(self::link(), "?"));
         else
             $link = self::link();        
-        if(SessionAdmin::isLogged() || $link == 'login' || isset ($_REQUEST['no-must-online'])){            
-            if(self::$map_requests->containsKey($link)){
-                if(file_exists(self::$map_requests->get($link))){
-                    return self::$map_requests->get($link);
+        if(SessionAdmin::isLogged() || $link == 'login' || isset ($_REQUEST['no-must-online'])){ 
+            if(self::$map_requests->containsKey($link)){                
+                if(file_exists(self::$map_requests->get($link))){     
+                    //throw new FileNotFoundException(SessionAdmin::isLogged().'-'.SessionAdmin::getAdminName());
+                    //return self::$map_requests->get($link);
+                    return self::$map_requests->get($link);                    
                 }
                 throw new FileNotFoundException("Arquivo de requisição não encontrado!");
             }

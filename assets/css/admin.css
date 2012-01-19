@@ -95,10 +95,16 @@ button.button-insert{
     float: left;
     font-size: 11px
 }
+
 .error{
     border-color: #9e1414 !important;
     background-color: #ebc0c0 !important;
     width: 65% !important;
+}
+
+.errorDatacenter{
+    border-color: #9e1414 !important;
+    background-color: #ebc0c0 !important;
 }
 
 div.erro{    

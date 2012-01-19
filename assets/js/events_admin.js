@@ -57,41 +57,10 @@ function eventInsert(){
 }
 
 function eventInsertSpreadsheet(){
-    $(".button-insert-spreadsheet").click(function(){
-       console.log($(this).parents("form").html());
-       return false;
-    });
-}
-
-function eventInserPublication(){
-    $(".button-insert-paper").click(function(){
-        var $form = $(this).parents("form");
-        removeErrors($form);
-        var validResponse = valid($form);
-        if(validResponse.valid){            
-            var data = {
-                "title": $("#title").val(),
-                "subarea":$("#subarea").val(),
-                'state': $("#state").val(), 
-                'year': $("#publication-year").val(),
-                'publication_type': $("#publicationType").val(),
-                'type_event': $("input[name=type_event]:checked").val()                
-            };
-            var request = AdminAjax();
-            request.saveWithFile($form, data);
-        }else{            
-            var inputsErrors = errorsMessages();            
-            $(validResponse.inputs).each(function(i,item){
-                if($(item).attr("type") == 'file'){
-                    //$(item)
-                }
-                $(item).addClass("error");
-                var type = $(item).attr("type").toString();                
-                $(item).next("div.erro").html(inputsErrors[type]);
-            })
-        }
-        return false;
-    });
+    //$(".button-insert-spreadsheet").click(function(){
+       //console.log($(this).parents("form").html());
+      // return false;
+    //});
 }
 
 function textFieldCharLimits(){
@@ -112,14 +81,18 @@ function textFieldCharLimits(){
 
 var removeErrors = function($form){
     $("div.erro").empty();
-    $("#"+$form.attr("id") + " input").removeClass("error");
-    $("#"+$form.attr("id") + " select").removeClass("error");
+    $("#"+$form.attr("id") + " input").removeClass("error").removeClass("errorDatacenter");
+    $("#"+$form.attr("id") + " select").removeClass("error").removeClass("errorDatacenter");
 }
 
-var errorsMessages = function(){
+var errorsMessages = function(type){
     var messages = new Array();
     messages["text"] = "Valor Inválido";
-    messages["file"] = "Valor Inválido ou não é um Arquivo PDF";
+    if(type == "button-insert-paper"){
+        messages["file"] = "Valor Inválido ou não é um Arquivo PDF";
+    }else if(type == 'button-insert-spreadsheet'){
+        messages["file"] = "Valor Inválido ou não é um Arquivo XLS. Se for uma planilha, verifique se está no formato .XLSX";
+    }
     messages["select-one"] = "Selecione uma opção";
     return messages;
 }
@@ -191,7 +164,6 @@ function listValuesToDatacenterSelects(){
     listCoffeTypeToDatacenter(request, url, data,$("select#coffetype"));
     listDestiniesToDatacenter(request, url, data, $("select#destiny"));
 }
-
 function listGroupsToDatacenter(request, url, data, $select){
     if($select.html() != null){
         data.type = 'Groups';
@@ -211,7 +183,6 @@ function groupChange(){
        }       
     });
 }
-
 function listVarietiesToDatacenter(request, url, data, $select){
     if($select.html() != null){
         data.type = "Variety";
@@ -243,8 +214,68 @@ function eventChangeToArea(){
     });
 }
 
+function dataDatacenter(){
+    var data = {
+        "subgroup":$("#subgroups").val(),
+        "font":$("#font").val(),
+        "coffetype":$("#coffetype").val(),
+        "variety":$("#variety").val(),
+        "destiny":$("#destiny").val()
+    };    
+    return data;
+}
 
-function valid($form){
+function dataPublication(){
+    var data = {
+        "title": $("#title").val(),
+        "subarea":$("#subarea").val(),
+        'state': $("#state").val(), 
+        'year': $("#publication-year").val(),
+        'publication_type': $("#publicationType").val(),
+        'type_event': $("input[name=type_event]:checked").val()                
+    };
+    return data;
+}
+
+function getData(type){
+    var data = null;
+    if(type == "button-insert-paper"){
+        data = dataPublication();
+    }else if(type == 'button-insert-spreadsheet'){
+        data = dataDatacenter();
+    }
+    return data;
+}
+
+function eventInsertDataWithFile(){
+    $(".button-insert-paper, .button-insert-spreadsheet").click(function(){        
+        var $form = $(this).parents("form");
+        removeErrors($form);
+        var validResponse = valid($form);
+        if(validResponse.valid){            
+            var data = getData($(this).attr("class"));
+            var request = AdminAjax();            
+            request.saveWithFile($form, data);
+        }else{
+            var insertClass = $(this).attr("class");
+            var inputsErrors = errorsMessages($(this).attr("class"));
+            $(validResponse.inputs).each(function(i,item){                
+                $(item).addClass("error");
+                if(insertClass == "button-insert-spreadsheet"){                    
+                    $(item).removeClass("error")
+                    $(item).addClass("errorDatacenter");
+                }                    
+                var type = $(item).attr("type").toString();
+                if($(item).next("div.erro").html() != null)
+                    $(item).next("div.erro").html(inputsErrors[type]);
+            });
+            return false;
+        }
+        return false;
+    });
+}
+
+function valid($form){    
     var id = "#"+$form.attr("id");
     var isvalid = true;
     var invalid_inputs = new Array();
@@ -265,7 +296,6 @@ function valid($form){
                 }
             }
         }
-
     });
     return {
         "valid": isvalid,
@@ -276,9 +306,9 @@ function valid($form){
 var canInsertThisFileExtension = function(extension, serviceAction){
     //modelo do link http://{root}/admin/datacenter/insert
     var serviceString = serviceAction.split("/admin/");
-    serviceString = serviceString[1];
+    serviceString = serviceString[1];    
     switch(serviceString){
-        case 'datacenter/insert': 
+        case 'datacenter/insert':
             return insertFileToDatacenter(extension);
         break;
         case 'paper/insert':

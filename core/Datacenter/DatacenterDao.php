@@ -18,10 +18,12 @@ class DatacenterDao implements DatacenterRepository{
     }
     
     public function save(ArrayObject $list) {
+        $countInserted = 0;
         if(!is_null($list) && $list->count() > 0)
             foreach($list as $data){
-                $this->insert($data);
+                if($this->insert($data)) $countInserted++;
             }
+        return ($countInserted > 0);
     }
     
     public function insert(Data $data){
@@ -37,7 +39,9 @@ class DatacenterDao implements DatacenterRepository{
         $query->bindParam(":destiny", $data->getDestinyId());
         $query->bindParam(":value", $data->getValue());
         
-        $query->execute();                
+        $query->execute();
+        
+        return $query->rowCount() > 0;
     }
     
     

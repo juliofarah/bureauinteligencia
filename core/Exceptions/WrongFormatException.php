@@ -7,7 +7,7 @@
 class WrongFormatException extends RuntimeException{
     
     public function WrongTypeException($msg = null){
-        if(is_null($msg)){
+        if($msg == null){
             $msg = "Esta planilha contem um formato inválido de acordo com os padrões definidos.";
         }
         parent::__construct($msg);

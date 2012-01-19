@@ -1,12 +1,13 @@
 $(document).ready(function(){
     //listAreasToSelect();
-    eventInsertSpreadsheet();
+    //eventInsertSpreadsheet();
+    eventInsertDataWithFile();
     listValuesToDatacenterSelects();
     listStatesToSelect();
     listPublicationTypesToSelect();
     eventChangeToArea();
     eventInsert();
-    eventInserPublication();
+    //eventInserPublication();
     eventDelete();
     eventSortableList();
 });
