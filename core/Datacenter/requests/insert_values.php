@@ -19,7 +19,7 @@ if(RequestsPatterns::postParamsSetted('subgroup', 'font', 'coffetype', 'variety'
         $variety = $_POST['variety'];
         $destiny = $_POST['destiny'];
                 
-        $repository = new DatacenterDao(Connection::connectToTest());        
+        $repository = new DatacenterDao(Connection::connect());        
         $service = new DatacenterService($repository, new CountryMap());
         $statistic = new Statistic();
         $jsonResponse = new JsonResponse();
