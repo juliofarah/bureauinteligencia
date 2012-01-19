@@ -26,12 +26,12 @@ if(RequestsPatterns::postParamsSetted('subgroup', 'font', 'coffetype', 'variety'
         $grouper = new DataGrouper();
         $factory = new BuilderFactory();        
         $controller = new DatacenterController($service, $statistic, $jsonResponse, $grouper, $factory); 
-        
+                
         $reader = new Spreadsheet_Excel_Reader($_FILES['Planilha']['tmp_name']);        
         try{
-            $inputFile = new ExcelInputFile($reader);            
+            $inputFile = new ExcelInputFile($reader);
             $response = $controller->saveValues($inputFile, $subgroup, $font, $destiny, $coffeType, $variety);
-            //print_r($jsonResponse->response(false, "buceta vila")->withoutHeader()->serialize());
+            //print_r($jsonResponse->response(false, "buceta vila")->withoutHeader()->serialize());            
             print_r($response);
         }catch(WrongFormatException $exception){
             print_r($jsonResponse->response(false, $exception->getMessage())->withoutHeader()->serialize());

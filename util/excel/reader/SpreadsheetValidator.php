@@ -19,7 +19,7 @@ class SpreadsheetValidator {
     public function spreadsheetHasAValidFormat() {
         return ($this->firstLinePatternIsCorrect() && $this->linesWithValuesAreCorrect());
     }
-    
+        
     public function firstLinePatternIsCorrect() {        
         $firstLine = $this->excelInputFile->firstRow();
         if(utf8_encode($firstLine[1]) != 'Países') return false;        
