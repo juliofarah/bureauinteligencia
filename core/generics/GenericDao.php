@@ -65,7 +65,7 @@ class GenericDao {
     }
     
     public function getCoffeTypes() {
-        return $this->getObject("coffeType");
+        return $this->getObject("coffetype");
     }
 
     public function getOriginCountries() {
@@ -143,7 +143,7 @@ class GenericDao {
             case "groups": return new Group($object['name'], $object['id']); break;
             case "subgroup": return new Subgroup($object['name'], $object['id']); break;
             case "variety": return new Variety($object['name'], $object['id']); break;
-            case "coffeType": return new CoffeType($object['name'], $object['id']); break;
+            case "coffetype": return new CoffeType($object['name'], $object['id']); break;
             case "country": return new Country($object['name'], $object['id']); break;
             case "font": return new Font($object['name'], $object['id']); break;
         }

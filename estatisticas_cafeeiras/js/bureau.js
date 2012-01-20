@@ -12,6 +12,12 @@ var data = {
 $(document).ready(function(){
 	// Esconde o conteúdo das abas
 	$('.tabcontent').hide();
+        
+        $('body').ajaxStart(function(){
+            $(this).css("cursor", "wait");
+        }).ajaxStop(function(){
+            $(this).cass("cursor", "default");
+        });
 	
 	$.getJSON('../datacenter/param', {type: "Groups"},//, id: null},
 		function(data){
@@ -110,7 +116,7 @@ $(document).ready(function(){
 	}
 	
 	$('.options ul li').live('click', function(){
-		if ($(this).is('.sg')) { return false; }
+		if ($(this).is('.sg')) {return false;}
 		if ($(this).is('.sel')) {
 			$(this).removeClass('sel');
 			$(this).css('background', 'none');

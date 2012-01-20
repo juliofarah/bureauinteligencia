@@ -16,7 +16,7 @@
             require_once 'core/generics/datacenter/Country.php';
         }else{
             require_once 'core/generics/datacenter/Group.php';
-            require_once 'core/generics/datacenter/'.$type.'.php';
+            require_once 'core/generics/datacenter/'.ucfirst($type).'.php';
         }
     
     $dao = new GenericDao(Connection::connect());

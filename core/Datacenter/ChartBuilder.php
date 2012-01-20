@@ -1,4 +1,5 @@
 <?php
+//if(!defined(__DIR__)) define(__DIR__, dirname(__FILE__));
 /**
  * Description of ChartBuilder
  *
@@ -15,8 +16,9 @@ class ChartBuilder implements Builder {
     private $path; 
     
     public function ChartBuilder(XmlMultiSeriesCombinationColumnLine $xml) {
-        $this->xml = $xml;
-        $this->path = __DIR__.'/xml/';
+        $this->xml = $xml;        
+        //$this->path = __DIR__.'/xml/';
+        $this->path = dirname(__FILE__).'/xml/';
     }
     
     public function build($mapWithGroupedValues, array $years) {        

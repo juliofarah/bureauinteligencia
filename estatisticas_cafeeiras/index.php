@@ -1,3 +1,15 @@
+<?  session_start();?>
+<?
+    require_once '../util/Session.php';
+    require_once '../core/User/User.php';
+?>
+<?
+if(!Session::isLogged()){
+    Session::login(new User("teste","teste"));
+    //session_destroy();
+    echo "login";
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
