@@ -13,7 +13,7 @@ $(document).ready(function(){
 	// Esconde o conteúdo das abas
 	$('.tabcontent').hide();
 	
-	$.getJSON('../datacenter/param', {type: "Groups", id: null},
+	$.getJSON('../datacenter/param', {type: "Groups"},//, id: null},
 		function(data){
 			$(data).each(function(i, param){
 				$('#grupo .options ul').append('<li id="'+param.id+'">'+param.name+'</li>');
@@ -59,28 +59,28 @@ $(document).ready(function(){
 			});
 		});
 	
-	$.getJSON('../datacenter/param', {type: "Variety", id: null},
+	$.getJSON('../datacenter/param', {type: "Variety"},//, id: null},
 		function(data){
 			$(data).each(function(i, param){
 				$('#variedade .options ul').append('<li id="'+param.id+'">'+param.name+'</li>');
 			});
 		});
 	
-	$.getJSON('../datacenter/param', {type: "CoffeType", id: null},
+	$.getJSON('../datacenter/param', {type: "CoffeType"},//, id: null},
 		function(data){
 			$(data).each(function(i, param){
 				$('#tipo .options ul').append('<li id="'+param.id+'">'+param.name+'</li>');
 			});
 		});
 	
-	$.getJSON('../datacenter/param', {type: "origin", id: null},
+	$.getJSON('../datacenter/param', {type: "origin"},//, id: null},
 		function(data){
 			$(data).each(function(i, param){
 				$('#origem .options ul').append('<li id="'+param.id+'">'+param.name+'</li>');
 			});
 		});
 		
-	$.getJSON('../datacenter/param', {type: "destiny", id: null},
+	$.getJSON('../datacenter/param', {type: "destiny"},//, id: null},
 		function(data){
 			$(data).each(function(i, param){
 				$('#destino .options ul').append('<li id="'+param.id+'">'+param.name+'</li>');

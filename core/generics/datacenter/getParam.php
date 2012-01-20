@@ -5,7 +5,10 @@
 ?>
 <?    
     $type = $_GET['type'];
-    $id = $_GET['id'];
+    if(isset ($_GET['id']))
+        $id = $_GET['id'];
+    else
+        $id = null;
     if($type == 'Groups')
         require_once 'core/generics/datacenter/Group.php';
     else
