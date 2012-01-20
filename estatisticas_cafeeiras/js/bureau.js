@@ -10,9 +10,11 @@ var data = {
 }
 
 $(document).ready(function(){
+    
 	// Esconde o conteúdo das abas
 	$('.tabcontent').hide();
         
+        // Pequeno evento de load - temporário
         $('body').ajaxStart(function(){
             $(this).css("cursor", "wait");
         }).ajaxStop(function(){
