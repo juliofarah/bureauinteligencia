@@ -252,7 +252,7 @@ $(document).ready(function(){
 			|| data.ano == undefined) {
 			
 			alert('É necessário selecionar todos os campos.');
-				
+                        return false;
 		}
 		
 		$('.tabcontent').html('');
