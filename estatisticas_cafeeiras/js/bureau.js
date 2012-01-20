@@ -16,9 +16,9 @@ $(document).ready(function(){
         
         // Pequeno evento de load - temporário
         $('body').ajaxStart(function(){
-            $(this).css("cursor", "wait");
+            $(this).css("cursor","wait");
         }).ajaxStop(function(){
-            $(this).css("cursor", "default");
+            $(this).css("cursor","default");
         });
 	
 	$.getJSON('../datacenter/param', {type: "Groups"},//, id: null},
