@@ -16,7 +16,7 @@ $(document).ready(function(){
         $('body').ajaxStart(function(){
             $(this).css("cursor", "wait");
         }).ajaxStop(function(){
-            $(this).cass("cursor", "default");
+            $(this).css("cursor", "default");
         });
 	
 	$.getJSON('../datacenter/param', {type: "Groups"},//, id: null},
