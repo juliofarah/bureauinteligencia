@@ -183,6 +183,7 @@ $(document).ready(function(){
         
         $('#tab-3').click(function(){
             if($('#content-3').html() == ''){
+                spreadSheetDivs();
                 $.getJSON('../datacenter/spreadsheet', data,
                         function(spreadsheet){
                             //console.log(spreadsheet);
@@ -265,7 +266,7 @@ $(document).ready(function(){
                         return false;
 		}
 		
-		$('.tabcontent').html('');
+		$('.tabcontent').html('');                
 		
 		if ($('#tab-1.sel').length == 1) {
 			// Tabela
@@ -282,6 +283,7 @@ $(document).ready(function(){
 					mostraGrafico(chart);
 				});
 		} else if ($('#tab-3.sel').length == 1) {
+                        spreadSheetDivs();
 			// Excel
                         $.getJSON('../datacenter/spreadsheet', data,
                                 function(spreadsheet){
@@ -303,10 +305,17 @@ $(document).ready(function(){
 	
 });
 
+function spreadSheetDivs(){
+    var view = '<div id="spreadsheet-view"></div>';
+    var link = '<div id="spreadsheet-link"></div>';
+    $("#content-3").html(view + link);
+}
+
 function mostraPlanilha(json){
     if(json.status){
         var link = "<a class='spreadsheet-link' href='"+json.planilha+"'>Planilha</a>";
-        $("#content-3").append("<span class='spreadsheet'>Clique aqui para baixar sua planilha: " + link + "</span>");
+        $("#spreadsheet-view").append(json.asHtml);
+        $("#spreadsheet-link").append("<span class='spreadsheet'>Clique aqui para baixar sua planilha: " + link + "</span>");
     }
 }
 

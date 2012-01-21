@@ -82,7 +82,15 @@ class DatacenterController {
         //TODO build routine to return the excelTable;
         $spreadsheetName = $this->buildExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, $years);
         $path = LinkController::getBaseURL() . "/" . $spreadsheetName;
-        return $this->jsonResponse->response(true, null)->addValue("planilha",$path)->withoutHeader()->serialize();
+        return $this->jsonResponse->response(true, null)
+                                  ->addValue("planilha",$path)
+                                  //->addValue("asHtml", $this->buildExcelHTML($spreadsheetName))
+                                  ->withoutHeader()->serialize();
+    }
+    
+    private function buildExcelHTML($spreadsheetFile){        
+        $data = new Spreadsheet_Excel_Reader($spreadsheetFile);
+        return $data->dump(true, true);
     }
     
     //POST ://datacenter/save

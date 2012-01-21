@@ -13,18 +13,19 @@ if(!Session::isLogged()){
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<title>Bureau do Café</title>
 	<link rel="stylesheet" type="text/css" href="http://www.icafebr.com.br/assets/css/reset.css" media="screen" />
 	<link rel="stylesheet" type="text/css" href="http://www.icafebr.com.br/assets/css/main.css" media="screen" />
 	<link rel="stylesheet" type="text/css" href="http://www.icafebr.com.br/assets/css/text.css" media="screen" />
 	<link rel="stylesheet" type="text/css" href="http://www.icafebr.com.br/assets/css/grid.css" media="screen" />
 	<link rel="stylesheet" type="text/css" href="styles/style.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="styles/spreadsheet.css" media="screen" />
 	<link type="text/css" href="styles/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 	<script src="js/jquery-ui.min.js" type="text/javascript"></script>
 	<script src="js/slimScroll.min.js" type="text/javascript"></script>
-	<script src="js/bureau.js" type="text/javascript"></script>
+	<script src="js/bureau.js" type="text/javascript"></script>        
 	<script src="js/FusionCharts.js" type="text/javascript"></script>
 	<script src="js/chart_builder.js" type="text/javascript"></script>
 </head>
@@ -191,7 +192,7 @@ if(!Session::isLogged()){
 	</div>
 	
 	<div id="content-3" class="tabcontent">
-		
+
 	</div>
 	
 	<div id="content-4" class="tabcontent">
