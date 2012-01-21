@@ -77,8 +77,12 @@ class DatacenterController {
         return $this->jsonResponse->response(true, null)->addValue("tabela",$jsonTable)->withoutHeader()->serialize();        
     }
     
+    //GET ://datacenter/spreadsheet
     public function getExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
         //TODO build routine to return the excelTable;
+        $spreadsheetName = $this->buildExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, $years);
+        $path = LinkController::getBaseURL() . "/" . $spreadsheetName;
+        return $this->jsonResponse->response(true, null)->addValue("planilha",$path)->withoutHeader()->serialize();
     }
     
     //POST ://datacenter/save
@@ -93,7 +97,7 @@ class DatacenterController {
                 }
             }catch(Exception $e){
                 return $this->jsonResponse->response(false, $e->getMessage())->serialize();
-            }            
+            }
         }else{
             throw new LoginException();
         }

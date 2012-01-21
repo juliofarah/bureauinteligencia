@@ -110,8 +110,9 @@ class LinkController {
         self::$map_requests->put("load", "apps/to_load/load_apps.php");        
         
         //routes to datacenters
-        self::$map_requests->put("datacenter/table", "core/Datacenter/requests/buildTable.php");        
+        self::$map_requests->put("datacenter/table", "core/Datacenter/requests/buildTable.php");
         self::$map_requests->put("datacenter/chart", "core/Datacenter/requests/buildChart.php");
+        self::$map_requests->put("datacenter/spreadsheet", "core/Datacenter/requests/buildExcel.php");
         self::$map_requests->put("datacenter/param", "core/generics/datacenter/getParam.php");
         self::$map_requests->put("datacenter/insert", "../core/Datacenter/requests/insert_values.php");        
         //self::$map_requests->put("datacenterAdmin/param", "../core/generics/datacenter/getParam.php");

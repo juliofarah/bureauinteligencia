@@ -31,11 +31,11 @@ class TableExcelBuilder extends TableBuilder{
         
     public function TableExcelBuilder(DataToExcel $dataToExcel, $name = "Planilha.xls"){
         $this->valuesToSpreedsheet = new HashMap();
-        $this->dataToExcel = $dataToExcel;        
+        $this->dataToExcel = $dataToExcel;
         if($name != "Planilha.xls")
-            $this->spreadSheetName = "Planilha_".$name.".xls";
+            $this->spreadSheetName = "spreadsheet/Planilha_".$name.".xls";
         else
-            $this->spreadSheetName = $name;
+            $this->spreadSheetName = "spreadsheet/".$name;
     }
         
     public function build($mapWithGroupedValues, array $years) {

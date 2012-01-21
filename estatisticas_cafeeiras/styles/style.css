@@ -234,3 +234,16 @@ table tr:hover td
 	width: 100%;
 	overflow-x: auto;
 }
+
+#content-3{
+    padding: 20px 0;
+}
+
+span.spreadsheet{
+    font-size: 14px;
+    margin: 20px;
+}
+
+a.spreadsheet-link{
+    color: blue;
+}
