@@ -42,18 +42,15 @@ class DatacenterTableJsonBuilderTest extends PHPUnit_Framework_TestCase{
         
     private function doubleTableJSONModel(){
         $json = '[';       
-        $json .= '{"tabela_1":'.$this->table().'},';
-        $json .= '{"tabela_2":'.$this->table().'}';
+        $json .= $this->table().',';
+        $json .= $this->table();
         $json .= ']';
         return $json;
     }
     
     private function singleTableJSONModel(){
         $json = '[';
-        $json .= '{';
-        $json .= '"tabela_1":';        
         $json .= $this->table();
-        $json .= '}';
         $json .= ']';        
         return $json;
     }

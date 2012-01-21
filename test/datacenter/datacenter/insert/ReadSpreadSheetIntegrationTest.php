@@ -43,7 +43,7 @@ class ReadSpreadSheetIntegrationTest extends PHPUnit_Framework_TestCase{
     }
     
     private function expectedValuesFromACountry(){
-        return array("Brasil" => array("1990" => 222, "1991" => 2432, "1992" => 453, "1993" => 234));
+        return array("Brasil" => array("1990" => 222, "1991" => 452, "1992" => 453, "1993" => 234));
     }
     
     private function associativeArrayEquals(array $expected, array $actual){

@@ -38,7 +38,7 @@ class ReadSpreadSheetTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function getFullColumn(){
-        $values = $this->excelInputFile->getValuesOfColumn(2);        
+        $values = $this->excelInputFile->getValuesOfColumn(2);
         $this->assertTrue($this->arraysAreEquals($this->expectedValuesOfColumn2(), $values));
     }
         
@@ -62,8 +62,8 @@ class ReadSpreadSheetTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function getValuesFromACountry(){
-        $values = $this->excelInputFile->getValuesFromACountry("Brasil");        
-        $expected = array("Brasil" => array("1990" => 222, "1991" => 2432, "1992" => 453, "1993" => 234));
+        $values = $this->excelInputFile->getValuesFromACountry("Brasil");   
+        $expected = array("Brasil" => array("1990" => 222, "1991" => 452, "1992" => 453, "1993" => 234));
         $this->assertTrue($this->associativeArrayEquals($expected, $values));
     }
     
@@ -73,14 +73,14 @@ class ReadSpreadSheetTest extends PHPUnit_Framework_TestCase{
     public function getValuesFromAllCountries(){
         $values = $this->excelInputFile->getValuesFromAllCountries();
         $expected = array(
-                        "Brasil" => array("1990" => 222, "1991" => 2432, "1992" => 453, "1993" => 234),
-                        "Colombia" => array("1990" => 3242, "1991" => 534, "1992" => 345, "1993" => 234)
+                        "Brasil" => array("1990" => 222, "1991" => 452, "1992" => 453, "1993" => 234),
+                        "Colombia" => array("1990" => 255, "1991" => 534, "1992" => 345, "1993" => 234)
                         );
         $this->assertTrue($this->associativeArrayEquals($expected, $values));
     }
     
     private function expectedValuesOfColumn2(){
-        return array(222, 3242);
+        return array(222, 255);
     }
     
     private function expectedYears(){
@@ -88,13 +88,13 @@ class ReadSpreadSheetTest extends PHPUnit_Framework_TestCase{
     }
 
     private function associativeArrayExpected(){
-        return array("1990" => array("Brasil" => "222", "Colombia" => "3242"));
+        return array("1990" => array("Brasil" => "222", "Colombia" => "255"));
     }
     
     private function manyYearsAssociativeArrayExcpected(){
         return array(
-                    "1990" => array("Brasil" => "222", "Colombia" => "3242"),
-                    "1991" => array("Brasil" => "2432", "Colombia" => "534"),
+                    "1990" => array("Brasil" => "222", "Colombia" => "255"),
+                    "1991" => array("Brasil" => "452", "Colombia" => "534"),
                     "1992" => array("Brasil" => "453", "Colombia" => "345"),
                     "1993" => array("Brasil" => "234", "Colombia" => "234")
                 );
@@ -121,7 +121,7 @@ class ReadSpreadSheetTest extends PHPUnit_Framework_TestCase{
     private function printIfAreNotEquals($equals, array $expected, array $actual){
         if(!$equals){
             print_r($expected);
-            echo '\n';
+            echo "\n";
             print_r($actual);
         }
     }
