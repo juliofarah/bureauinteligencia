@@ -41,7 +41,7 @@ class TableExcelBuilder extends TableBuilder{
     public function build($mapWithGroupedValues, array $years) {
         parent::titles($years);
         parent::addValuesToARow($mapWithGroupedValues, $years);
-        $spreadSheet = new ExcelOutputFile($this->dataToExcel, new ExcelWriter($this->spreadSheetName));
+        $spreadSheet = new ExcelOutputFile($this->dataToExcel, $this->spreadSheetName);
         $spreadSheet->buildSpreadSheet();
         return $spreadSheet->getSpreadSheetFilename();  
     }
@@ -69,7 +69,7 @@ class TableExcelBuilder extends TableBuilder{
     }
     
     protected function setProperties(ArrayObject $group, Data $data, array $years) {
-        array_push($this->valuesOfARow, $data->getVarietyName());
+        array_push($this->valuesOfARow, utf8_encode($data->getVarietyName()));
         array_push($this->valuesOfARow, $data->getTypeName());
         array_push($this->valuesOfARow, $data->getOriginName());
         array_push($this->valuesOfARow, $data->getDestinyName());

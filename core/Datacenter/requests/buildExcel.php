@@ -5,6 +5,7 @@
     require_once 'util/excel/writer/MapToExcel.php';
     require_once 'util/excel/writer/ExcelWriter.php';
     require_once 'util/excel/writer/ExcelOutputFile.php';    
+    require_once 'util/excel/writer/Classes/PHPExcel.php';
 ?>
 <?
     $subgroup = $_GET['subgrupo']; 

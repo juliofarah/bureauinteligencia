@@ -22,8 +22,8 @@ class ReadSpreadSheetIntegrationTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function wrongFormatException(){
-        $file =__DIR__."\Teste_WrongFormat.xls";        
-        $this->spreadsheetReader = new Spreadsheet_Excel_Reader($file);               
+        $file =__DIR__."\Teste_WrongFormat.xls";
+        $this->spreadsheetReader = new Spreadsheet_Excel_Reader($file);              
         $this->setExpectedException('WrongFormatException');
         $this->inputFile = new ExcelInputFile($this->spreadsheetReader);
         $this->fail("Should have been thronw a 'WrongFormatException' cause the Spreadsheet does not have the correct format");
