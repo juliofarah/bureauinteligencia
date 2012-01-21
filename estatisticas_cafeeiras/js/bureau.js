@@ -312,8 +312,10 @@ function spreadSheetDivs(){
 }
 
 function mostraPlanilha(json){
-    if(json.status){
-        var link = "<a class='spreadsheet-link' href='"+json.planilha+"'>Planilha</a>";
+    if(json.status){                
+        var spreadsheetPath = json.planilha.split("spreadsheet/");
+        var spreadsheetFilename = spreadsheetPath[1];
+        var link = "<a class='spreadsheet-link' href='"+json.planilha+"'>"+spreadsheetFilename+"</a>";
         $("#spreadsheet-view").append(json.asHtml);
         $("#spreadsheet-link").append("<span class='spreadsheet'>Clique aqui para baixar sua planilha: " + link + "</span>");
     }
