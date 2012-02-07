@@ -86,11 +86,20 @@ class DatacenterController {
                                   ->addValue("planilha",$path)
                                   //->addValue("asHtml", $this->buildExcelHTML($spreadsheetName))
                                   ->withoutHeader()->serialize();
-    }
+    }        
     
     private function buildExcelHTML($spreadsheetFile){        
         $data = new Spreadsheet_Excel_Reader($spreadsheetFile);
         return $data->dump(true, true);
+    }
+    
+    //GET ://datacenter/statistics/
+    public function getSampleStandardDeviation(){
+        
+    }
+    
+    public function getPopulationStandardDeviation(){
+        
     }
     
     //POST ://datacenter/save
@@ -138,7 +147,6 @@ class DatacenterController {
                 if($group1->values()->count() > 0 && $group2->values()->count() > 0){
                     $this->chartType = "MSColumn3DLineDY.swf";
                 }else
-                    echo "chessus";
                     //$this->chartType = "MSColumnLine3D.swf";
                     $this->chartType = "MSLine.swf";
             }     

@@ -162,11 +162,12 @@ $(document).ready(function(){
 	});
 	
 	$('#tab-1').click(function(){
+                tableDiv();
 		if ($('#content-1').html() == '') {
 			$.getJSON('../datacenter/table', data,
 				function(tables){
 					$(tables.tabela).each(function(i, table){
-						$('#content-1').append(montaTabela(table));
+						$('#table-view').append(montaTabela(table));
 					});
 				});
 		}
@@ -269,11 +270,12 @@ $(document).ready(function(){
 		$('.tabcontent').html('');                
 		
 		if ($('#tab-1.sel').length == 1) {
+                        tableDiv();
 			// Tabela
 			$.getJSON('../datacenter/table', data,
 				function(tables){
 					$(tables.tabela).each(function(i, table){
-						$('#content-1').append(montaTabela(table));
+						$('#table-view').append(montaTabela(table, i));
 					});
 				});
 		} else if ($('#tab-2.sel').length == 1) {
@@ -321,8 +323,17 @@ function mostraPlanilha(json){
     }
 }
 
-function montaTabela(json) {
-	table = '<table id="datatable">';
+function tableDiv(){
+    var div = "<div id='table-view'></div>";
+    $("#content-1").html(div);
+}
+
+function montaTabela(json, i) {
+        var subgroups = $('#subgrupo .options li.sel');        
+        //console.log("["+i+"] => " + $(subgroups[i]).text());
+        
+        table = "<span class='subgroup-name'>"+$(subgroups[i]).text()+"</span>";
+	table += '<table id="datatable">';
 
 	table += '        <thead>';
 	table += '	            <tr>';

@@ -2,7 +2,8 @@
 require_once '../../util/excel/writer/MapToExcel.php';
 require_once '../../core/Datacenter/TableBuilder.php';
 require_once '../../core/Datacenter/TableExcelBuilder.php';
-require_once '../../util/excel/writer/ExcelWriter.php';
+require_once '../../util/excel/writer/Classes/PHPExcel.php';
+//require_once '../../util/excel/writer/ExcelWriter.php';
 require_once '../../util/excel/writer/ExcelOutputFile.php';
 /**
  * Description of DatacenterExcelBuilderTest

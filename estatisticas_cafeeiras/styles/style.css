@@ -192,11 +192,24 @@ a.confirmar {
 }
 
 /* Tabela */
+#table-view{
+    width: auto;
+    height: auto;
+    margin: 20px 0;
+    text-align: center;
+}
 
+span.subgroup-name{
+    /*color: #666699;*/
+    color: #333;
+    font-weight: bold;
+}
 table
 {
 	font-size: 12px;
-	margin: 45px auto;
+	/*margin: 45px auto;*/
+        margin: 0px auto;
+        margin-bottom: 30px;
 	width: 480px;
 	text-align: left;
 	border-collapse: collapse;
