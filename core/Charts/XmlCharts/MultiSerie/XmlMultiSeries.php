@@ -32,7 +32,7 @@ abstract class XmlMultiSeries extends XmlChart {
         $this->categories()->addAttribute($name, $value);
     }
     
-    public function addCategory($cattegoryName){        
+    public function addCategory($cattegoryName){
         $categories = $this->categories();
         $categories->addChild("category")->addAttribute("label", $cattegoryName);
     }
@@ -84,7 +84,8 @@ abstract class XmlMultiSeries extends XmlChart {
     public function renderDatasetAsLine($seriesName){
         $dataset = $this->getDataset($seriesName);
         if($dataset != null){
-            $dataset->addAttribute("renderAs", "Line");
+            if(!$this->attributeExists($dataset->attributes(), "renderAs"))
+                $dataset->addAttribute("renderAs", "Line");
         }
     }
     /**
@@ -115,6 +116,14 @@ abstract class XmlMultiSeries extends XmlChart {
         if($dataset == null){
             $this->root->addChild("dataset")->addAttribute("seriesName", $seriesName);
         }        
+    }
+    
+    protected function attributeExists($attributes, $att){
+        foreach($attributes as $attName => $attValue){            
+            if($attName == $att)
+                return true;
+        }
+        return false;
     }
     
 }

@@ -135,14 +135,17 @@ class DatacenterController {
             $group2 = $this->grouper->groupDataValues($this->getListAsAnArrayObject($listValues->offsetGet(1)));
             $groupedValues = array($group1, $group2);
             if($builderType == 'chart'){
-                if($group1->values()->count() > 0 && $group2->values()->count() > 0)
+                if($group1->values()->count() > 0 && $group2->values()->count() > 0){
                     $this->chartType = "MSColumn3DLineDY.swf";
-                else
-                    $this->chartType = "MSColumnLine3D.swf";
+                }else
+                    echo "chessus";
+                    //$this->chartType = "MSColumnLine3D.swf";
+                    $this->chartType = "MSLine.swf";
             }     
         }else{
             $groupedValues = $this->grouper->groupDataValues($this->getListAsAnArrayObject($values));
-            $this->chartType = "MSColumnLine3D.swf";
+            //$this->chartType = "MSColumnLine3D.swf";
+            $this->chartType = "MSLine.swf";
         }       
         $builder = $this->getBuilder($builderType);
         $built = $builder->build($groupedValues, $years);

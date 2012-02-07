@@ -27,14 +27,6 @@ class XmlMultiSeriesCombinationColumnLine extends XmlMultiSeries{
                 $dataset->addAttribute("parentYAxis", $type);
         }
     }
-    
-    private function attributeExists($attributes, $att){
-        foreach($attributes as $attName => $attValue){            
-            if($attName == $att)
-                return true;
-        }
-        return false;
-    }
 }
 
 ?>
