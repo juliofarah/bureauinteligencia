@@ -161,15 +161,15 @@ $(document).ready(function(){
 		$('#content-'+$(this).attr('id').replace('tab-', '')).show();
 	});
 	
-	$('#tab-1').click(function(){
+	$('#tab-1').click(function(){                
+            if ($('#content-1').html() == '') {
                 tableDiv();
-		if ($('#content-1').html() == '') {
-			$.getJSON('../datacenter/table', data,
-				function(tables){
-					$(tables.tabela).each(function(i, table){
-						$('#table-view').append(montaTabela(table));
-					});
-				});
+                $.getJSON('../datacenter/table', data,
+                        function(tables){
+                            $(tables.tabela).each(function(i, table){                                                
+                                $('#table-view').append(montaTabela(table, i));
+                            });
+                        });
 		}
 	});
 	
@@ -324,7 +324,7 @@ function mostraPlanilha(json){
 }
 
 function tableDiv(){
-    var div = "<div id='table-view'></div>";
+    var div = "<div id='table-view'></div>";    
     $("#content-1").html(div);
 }
 
