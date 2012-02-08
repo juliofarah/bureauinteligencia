@@ -64,7 +64,7 @@ class ChartBuilderTest extends PHPUnit_Framework_TestCase{
         if($dualY)
             $xml = '<chart bgColor="FFFFFF" PYAxisName="subgrupo" SYAxisName="subgrupo2">';
         else
-            $xml = '<chart bgColor="FFFFFF">';
+            $xml = '<chart bgColor="FFFFFF" caption="subgrupo">';
         $xml .= '<categories>';
         $xml .= '<category label="1989"/>';
         $xml .= '<category label="1990"/>';
@@ -79,7 +79,7 @@ class ChartBuilderTest extends PHPUnit_Framework_TestCase{
     }
     
     private function xml2(){
-        $xml = '<chart bgColor="FFFFFF">';
+        $xml = '<chart bgColor="FFFFFF" caption="subgrupo">';
         $xml .= '<categories>';
         $xml .= '<category label="1989"/>';
         $xml .= '<category label="1990"/>';
