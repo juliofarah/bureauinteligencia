@@ -214,6 +214,7 @@ table
 	text-align: left;
 	border-collapse: collapse;
 }
+
 table th
 {
 	font-size: 14px;
@@ -241,6 +242,7 @@ table tr:hover td
 
 #grafico {
 	text-align: center;
+        margin: 30px auto;
 }
 
 #content-1 {

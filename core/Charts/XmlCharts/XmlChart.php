@@ -18,7 +18,19 @@ abstract class XmlChart {
     public function addChartAttribute( $attribute,  $value){
         $this->root->addAttribute($attribute, $value);
     }
-
+    
+    public function setChartTitle($title){
+        $this->addChartAttribute("caption", $title);
+    }
+    
+    public function setXAxisName($name){
+        $this->addChartAttribute("xAxisName", $name);
+    }
+    
+    public function setYAxisName($name){
+        $this->addChartAttribute("yAxisName", $name);
+    }
+    
     public function buildXml($xml){
         $this->root->asXML($xml);    
         $xmlContent = $this->getContentXMLFile($xml);

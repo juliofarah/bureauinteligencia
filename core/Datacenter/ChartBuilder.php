@@ -25,15 +25,20 @@ class ChartBuilder implements Builder {
         $this->years($years);
         if(is_array($mapWithGroupedValues)){
             //if($mapWithGroupedValues[0]->containsKey(0) && $mapWithGroupedValues[1]->containsKey(0)){
+            $this->setTitleToMultigroupsValuesWhenOneOfThenHasNoValue($mapWithGroupedValues);
             $this->setMultigroupsValues($mapWithGroupedValues);
             $this->setMultiChartValues($years, $mapWithGroupedValues); 
             //}
-        }else
+        }else{
+            $title = $mapWithGroupedValues->get(0)->offsetGet(0)->getSubgroupName();            
+            $this->xml->setChartTitle($title);
             $this->setValues($years, $mapWithGroupedValues);
+        }
         $xml = $this->xml->buildXml($this->path."chart_".rand(1,28304908).".xml");
         return $xml;
     }
         
+    
     private function years(array $years){
         foreach($this->arrayYears($years) as $year){
             $this->xml->addCategory($year);
@@ -45,6 +50,19 @@ class ChartBuilder implements Builder {
             $this->xml->setPYAxisName($mapWithGroupedValues[0]->get(0)->offsetGet(0)->getSubgroupName());
         if($mapWithGroupedValues[1]->containsKey(0))
             $this->xml->setSYAxisName($mapWithGroupedValues[1]->get(0)->offsetGet(0)->getSubgroupName());        
+    }
+    
+    private function setTitleToMultigroupsValuesWhenOneOfThenHasNoValue(array $mapWithGroupedValues){
+        $group1 = $mapWithGroupedValues[0];
+        $group2 = $mapWithGroupedValues[1];
+        if($group1->containsKey(0) && !$group2->containsKey(0)){
+            $title = $group1->get(0)->offsetGet(0)->getSubgroupName();            
+            $this->xml->setChartTitle($title);
+        }
+        if(!$group1->containsKey(0) && $group2->containsKey(0)){
+            $title = $group2->get(0)->offsetGet(0)->getSubgroupName();            
+            $this->xml->setChartTitle($title);
+        }
     }
     
     private function setMultiChartValues(array $years, array $mapWithGroupedValues){
