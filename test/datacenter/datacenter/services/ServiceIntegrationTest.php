@@ -1,5 +1,6 @@
 <?php
 
+require_once '../../core/Datacenter/Statistic/Statistic.php';
 /**
  * Description of ServiceIntegrationTest
  *
@@ -27,22 +28,39 @@ class ServiceIntegrationTest extends PHPUnit_Framework_TestCase{
         $this->repository = $this->getMock('DatacenterRepository');
         $this->statistic = new Statistic();
         $this->service = new DatacenterService($this->repository, null, $this->statistic);
+        $this->repository->expects($this->any())
+                         ->method('getValuesWithMultipleParamsSelected')
+                         ->with(1, $this->equalTo(array(1,2)), $this->equalTo(array(1,2)), 
+                                 $this->equalTo(1), $this->equalTo(1), $this->equalTo(1))
+                         ->will($this->returnValue($this->listFilteredByOneSubgroup(true)));        
     }
             
     /**
      * @test 
      */
-    public function getStandarDeviation(){
-        $this->repository->expects($this->at(0))
-                         ->method('getValuesWithMultipleParamsSelected')
-                         ->with(1, $this->equalTo(array(1,2)), $this->equalTo(array(1,2)), 
-                                 $this->equalTo(1), $this->equalTo(1), $this->equalTo(1))
-                         ->will($this->returnValue($this->listFilteredByOneSubgroup(true)));
+    public function getStandardDeviation(){
         $subgroup = 1;
         $font = $origin = $destiny = 1;
         $variety = $type = array(1,2);
         $values = $this->service->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);
         $this->assertEquals(200, $this->service->getAverage($values));
+        $values->rewind();
+        $this->assertEquals(100, $this->service->getSampleStandardDeviation($values));
+        $values->rewind();
+        $this->assertEquals(81.65, $this->service->getPopulationalStandardDeviation($values));        
+    }
+    
+    /**
+     * @test
+     */
+    public function getVariance(){
+        $subgroup = 1;
+        $font = $origin = $destiny = 1;
+        $variety = $type = array(1,2);
+        $values = $this->service->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);
+        $this->assertEquals(10000, $this->service->getSampleVariance($values));
+        $values->rewind();
+        $this->assertEquals(6666.67, $this->service->getPopulationalVariance($values));
     }
 
     /***these methods are used to build the return for the mocked object***/

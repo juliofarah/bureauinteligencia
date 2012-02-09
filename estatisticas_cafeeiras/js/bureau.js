@@ -192,6 +192,18 @@ $(document).ready(function(){
                         });
             }
         });
+        
+        $("#tab-4").click(function(){
+            if($("#content-4").html() == ''){
+                tableStatiticDiv(); 
+                $.getJSON('../datacenter/statistics', data, 
+                    function(tables){
+                        $(tables.tabela).each(function(i, table){                                                
+                            $('#table-statistic-view').append(montaTabela(table, i));
+                        });
+                    });
+            }
+        });
 	
 	$('.confirmar').click(function(){
 		data = {
@@ -293,6 +305,13 @@ $(document).ready(function(){
                                 });
 		} else if ($('#tab-4.sel').length == 1) {
 			// Estatísticas
+                        tableStatiticDiv(); 
+                        $.getJSON('../datacenter/statistics', data, 
+                            function(tables){
+                                $(tables.tabela).each(function(i, table){                                                
+                                    $('#table-statistic-view').append(montaTabela(table, i));
+                                });
+                            });                        
 		}
 		
 		// Verifica qual aba esta aberta
@@ -326,6 +345,11 @@ function mostraPlanilha(json){
 function tableDiv(){
     var div = "<div id='table-view'></div>";    
     $("#content-1").html(div);
+}
+
+function tableStatiticDiv(){
+    var div = "<div id='table-statistic-view'></div>"
+    $("#content-4").html(div);
 }
 
 function montaTabela(json, i) {

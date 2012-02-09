@@ -159,7 +159,7 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function buildTableAsJson(){
-        $this->mockObjects();        
+        $this->mockObjects();
         $TableJsonBuilder = $this->getMockBuilder("TableJsonBuilder")
                              ->disableOriginalConstructor()
                              ->getMock();

@@ -136,9 +136,7 @@ class ReadSpreadSheetTest extends PHPUnit_Framework_TestCase{
             }
         $this->printIfAreNotEquals($equals, $expected, $actual);
         return $equals;
-    }
-    
-    
+    }    
 }
 
 ?>

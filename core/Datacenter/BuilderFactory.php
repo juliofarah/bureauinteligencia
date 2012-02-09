@@ -15,6 +15,7 @@ class BuilderFactory {
             case 'spreadsheet': return new TableExcelBuilder(new MapToExcel(), rand(0,150000)); break;
             case 'table': return new TableJsonBuilder(); break;
             case 'chart': return new ChartBuilder(new XmlMultiSeriesCombinationColumnLine()); break;
+            case 'statistic': return new TableStatisticsJsonBuilder(); break;
             default: throw new WrongTypeException(); break;
         }
     }

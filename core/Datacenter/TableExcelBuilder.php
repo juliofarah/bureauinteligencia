@@ -54,7 +54,7 @@ class TableExcelBuilder extends TableBuilder{
         return $this->dataToExcel->getAllLinesValues();
     }
 
-    protected function setDefinedTitles(array $definedTitles, array $years) {
+    protected function setDefinedTitles(array $definedTitles, array $years = null) {
         $this->titles = $definedTitles;             
         parent::years($years);        
         $this->dataToExcel->setTitles($this->titles);

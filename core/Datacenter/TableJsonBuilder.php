@@ -5,8 +5,8 @@
  * @author Ramon
  */
 class TableJsonBuilder extends TableBuilder{//implements Builder{
-    private $json;
     
+    protected $json;    
     
     public function TableJsonBuilder(){
         $this->json = '';
@@ -53,20 +53,23 @@ class TableJsonBuilder extends TableBuilder{//implements Builder{
         $this->json .= '"tabela_'.$i.'":';        
     }
     
-    protected function setDefinedTitles(array $definedTitles, array $years){
+    protected function setDefinedTitles(array $definedTitles, array $years = null){
         $this->json .= '"thead":[';
         foreach($definedTitles as $title){
             $this->json .= '{';
             $this->json .= '"th":"'.$title.'"';
             $this->json .= '},';
-        }
-        $this->years($years);
+        }        
+        if(!is_null($years))
+            $this->years($years);
+        else
+            $this->config();
         $this->json .= ']';;
     }
     
     protected function config(){
-        if(substr($this->json, -1) != '[')
-            $this->json = substr($this->json,0,-1);        
+        if(substr($this->json, -1) != '[' && substr($this->json, -1) != ']')
+            $this->json = substr($this->json,0,-1);       
     }
     
     protected function buildTitleYears($year){
@@ -83,7 +86,7 @@ class TableJsonBuilder extends TableBuilder{//implements Builder{
         $this->json .= '},';        
     }
     
-    private function listValues(ArrayObject $group,array $years){
+    protected function listValues(ArrayObject $group,array $years){
         $this->json .= '[';        
         $this->listValuesVerifyingTheYearOfThat($group, $years);
         $this->json .= ']';       

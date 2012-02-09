@@ -20,7 +20,7 @@ abstract class TableBuilder implements Builder{
         $this->setDefinedTitles(array("Variedade", "Tipo", "Origem", "Destino"), $years);
     }
     
-    protected abstract function setDefinedTitles(array $definedTitles, array $years);    
+    protected abstract function setDefinedTitles(array $definedTitles, array $years = null);    
  
     protected function years(array $years){
         foreach($this->arrayYears($years) as $year){

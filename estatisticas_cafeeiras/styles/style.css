@@ -192,7 +192,7 @@ a.confirmar {
 }
 
 /* Tabela */
-#table-view{
+#table-view, #table-statistic-view{
     width: auto;
     height: auto;
     margin: 20px 0;

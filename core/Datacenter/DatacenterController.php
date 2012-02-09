@@ -93,12 +93,20 @@ class DatacenterController {
         return $data->dump(true, true);
     }
     
+    public function getStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
+        $jsonTable = $this->buildStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny, $years);        
+        $jsonTable = utf8_encode($jsonTable);
+        $jsonTable = json_decode($jsonTable);
+        return $this->jsonResponse->response(true, null)->addValue("tabela", $jsonTable)
+                                  ->withoutHeader()->serialize();
+    }
+    
     //GET ://datacenter/statistics/
-    public function getSampleStandardDeviation(){
+    public function getSampleStandardDeviation($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
         
     }
     
-    public function getPopulationStandardDeviation(){
+    public function getPopulationalStandardDeviation($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
         
     }
     
@@ -124,6 +132,10 @@ class DatacenterController {
     
     public function buildChart($subgroup, $font, $type, $variety, $origin, $destiny, $years) {
         return $this->buildAnything("chart", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    }
+    
+    public function buildStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny,array $years = null){
+        return $this->buildAnything("statistic", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
     }
     
     public function buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny,array $years = null) {
