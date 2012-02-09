@@ -139,7 +139,6 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals('Conilon', $values->get(1)->offsetGet(0)->getVariety());
         $this->assertEquals('Arábica', $values->get(0)->offsetGet(0)->getVariety());
     }
-        
     /**************************************************************************/
     /***these methods are used to build the return for the mocked object***/
     private function listFilteredByOneSubgroup(){
@@ -149,10 +148,10 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
         $type = new CoffeType("Verde");
         $variety = new Variety("Arábica");
         $origin = new Country("Brasil");
-        $destiny = new Country("USA");               
+        $destiny = new Country("USA");
         $list->append(new Data(1990, $subgroup, $font, $type, $variety, $origin, $destiny));
         $list->append(new Data(1991, $subgroup, $font, $type, $variety, $origin, $destiny));
-        $list->append(new Data(1992, $subgroup, $font, $type, $variety, $origin, $destiny));        
+        $list->append(new Data(1992, $subgroup, $font, $type, $variety, $origin, $destiny));            
         return $list;
     }
     

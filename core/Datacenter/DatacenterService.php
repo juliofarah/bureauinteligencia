@@ -16,9 +16,14 @@ class DatacenterService {
      */
     private $countryMap;
     
-    public function DatacenterService(DatacenterRepository $repository, CountryMap $countryMap = null){
+    /**
+     * @var Statistic 
+     */
+    private $statistic;
+    public function DatacenterService(DatacenterRepository $repository, CountryMap $countryMap = null, Statistic $statistic = null){
         $this->repository = $repository;     
         $this->countryMap = $countryMap;
+        $this->statistic = $statistic;
     }
     
     public function insertValues(ExcelInputFile $excelInputFile, $subgroup, $destiny, $type, $variety, $font) {
@@ -112,6 +117,10 @@ class DatacenterService {
             $listValues = $this->repository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);        
             return $listValues;           
         }
+    }
+    
+    public function getAverage(ArrayIterator $values) {
+        return $this->statistic->average($values);
     }
 }
 ?>
