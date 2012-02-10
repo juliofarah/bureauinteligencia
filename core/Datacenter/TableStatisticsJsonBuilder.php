@@ -17,7 +17,15 @@ class TableStatisticsJsonBuilder extends TableJsonBuilder{
     }
     
     protected function setTitles(array $years){
-        $this->setDefinedTitles(array("Variedade", "Tipo", "Origem", "Destino",  utf8_decode("Média"), utf8_decode("Desvio Padrão"),utf8_decode("Variância")));
+        $this->setDefinedTitles(array(
+                    "Variedade", 
+                    "Tipo", 
+                    "Origem", 
+                    "Destino",  
+                    utf8_decode("Média"),
+                    "Mediana",
+                    utf8_decode("Desvio Padrão"),
+                    utf8_decode("Variância")));
     }
     
     protected function listValues(ArrayObject $group, array $years) {
@@ -25,6 +33,8 @@ class TableStatisticsJsonBuilder extends TableJsonBuilder{
         $values2 = $this->getValuesFromData($group);
         $this->json .= '[';
         $this->json .= '{"value":"'.number_format($this->statistic->average($values),2,',','.').'"}';
+        $this->json .= ',';
+        $this->json .= '{"value":"'.number_format($this->statistic->getMedian($values),2,',','.').'"}';
         $this->json .= ',';
         $SD = $this->statistic->sampleStandardDeviation($values2);
         $SD = number_format($SD, 2, ',','.');

@@ -119,38 +119,5 @@ class DatacenterService {
             return $listValues;           
         }
     }
-    
-    /** statistics services **/
-    public function getAverage(ArrayIterator $values) {        
-        return $this->statistic->average($this->getValuesFromData($values));
-    }
-    
-    public function getSampleStandardDeviation(ArrayIterator $values) {
-        return $this->statistic->sampleStandardDeviation($this->getValuesFromData($values));
-    }
-
-    public function getPopulationalStandardDeviation(ArrayIterator $values) {
-        return $this->statistic->populationStandardDeviation($this->getValuesFromData($values));
-    }
-    
-    public function getSampleVariance($values) {
-        return $this->statistic->sampleVariance($this->getValuesFromData($values));
-    }
-    
-    public function getPopulationalVariance($values) {
-        return $this->statistic->populationVariance($this->getValuesFromData($values));
-    }
-    
-    private function getValuesFromData(ArrayIterator $dataValues){        
-        $values = array();
-        while($dataValues->valid()){
-            if($dataValues->current() instanceof Data)
-                array_push($values, $dataValues->current()->getValue());
-            $dataValues->next();
-        }
-        if(sizeof($values) > 0)
-            return new ArrayIterator($values);
-        return $dataValues;
-    }
 }
 ?>

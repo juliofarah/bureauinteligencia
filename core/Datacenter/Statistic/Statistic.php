@@ -10,6 +10,31 @@ class Statistic {
     public function Statistic(){        
     }
     
+    public function getMedian($arrayValues) {
+        if($arrayValues instanceof ArrayIterator)
+            $arrayValues = $arrayValues->getArrayCopy();
+        $totalNumbers = sizeof($arrayValues);
+        sort($arrayValues);
+        if($this->isEven($totalNumbers)){
+            $medianUpperPosition = $totalNumbers/2;
+            $medianLowerPosition = $medianUpperPosition - 1;
+            $firstNumber = $arrayValues[$medianLowerPosition];
+            $secondNumber = $arrayValues[$medianUpperPosition];
+            return round(($firstNumber + $secondNumber)/2,2);
+        }elseif($this->isOdd($totalNumbers)){
+            $medianPosition = (($totalNumbers+1)/2)-1;
+            return round($arrayValues[$medianPosition],2);
+        }
+    }
+    
+    private function isEven($numberOfItems){
+        return $numberOfItems % 2 == 0;
+    }
+    
+    private function isOdd($numberOfItems){
+        return $numberOfItems % 2 == 1;
+    }
+    
     public function average(ArrayIterator $values){
         $sum = 0;
         while($values->valid()){
