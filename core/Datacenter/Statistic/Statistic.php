@@ -10,6 +10,27 @@ class Statistic {
     public function Statistic(){        
     }
     
+    public function getMode($values) {
+        if($values instanceof ArrayIterator)
+            $values = $values->getArrayCopy ();
+        $repetition = array_count_values($values);
+        arsort($repetition);
+        $mode = array();
+        $mode_repetition = 0;
+        foreach($repetition as $number => $n_repetition){
+            if(count($mode) == 0 && $n_repetition > 1){
+                array_push($mode, $number);
+                $mode_repetition = $n_repetition;
+            }else{
+                if($mode_repetition == $n_repetition){
+                    array_push($mode, $number);
+                }
+            }
+        }
+        sort($mode);
+        return $mode;
+    }
+    
     public function getMedian($arrayValues) {
         if($arrayValues instanceof ArrayIterator)
             $arrayValues = $arrayValues->getArrayCopy();

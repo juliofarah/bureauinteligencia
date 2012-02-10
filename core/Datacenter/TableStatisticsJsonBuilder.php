@@ -23,7 +23,8 @@ class TableStatisticsJsonBuilder extends TableJsonBuilder{
                     "Origem", 
                     "Destino",  
                     utf8_decode("Média"),
-                    "Mediana",
+                    "Mediana", 
+                    "Moda",
                     utf8_decode("Desvio Padrão"),
                     utf8_decode("Variância")));
     }
@@ -32,19 +33,62 @@ class TableStatisticsJsonBuilder extends TableJsonBuilder{
         $values = $this->getValuesFromData($group);
         $values2 = $this->getValuesFromData($group);
         $this->json .= '[';
-        $this->json .= '{"value":"'.number_format($this->statistic->average($values),2,',','.').'"}';
+        $this->average($values);
         $this->json .= ',';
-        $this->json .= '{"value":"'.number_format($this->statistic->getMedian($values),2,',','.').'"}';
+        $this->median($values);
         $this->json .= ',';
-        $SD = $this->statistic->sampleStandardDeviation($values2);
-        $SD = number_format($SD, 2, ',','.');
-        $this->json .= '{"value":"'.$SD.'"}';//standard deviation
+        $this->mode($values);
         $this->json .= ',';
-        $V = number_format($this->statistic->sampleVariance($values),2,",",".");
-        $this->json .= '{"value":"'.$V.'"}'; //variance;
+        $this->standardDeviation($values2);
+        $this->json .= ',';
+        $this->variance($values);
         $this->json .= ']';
-    }  
-
+    }
+    
+    private function average($values){
+        $this->writeValue($this->statistic->average($values));
+    }
+    
+    private function median($values){
+        $this->writeValue($this->statistic->getMedian($values));
+    }
+    
+    private function mode($values){        
+        $this->json .= '{';
+        $this->json .= '"value":';
+        $mode = $this->statistic->getMode($values);
+        if(count($mode) > 0){
+            $this->json .= '"';
+            $i = 1; 
+            foreach($mode as $value){
+                $this->json .= $this->formatNumber($value);
+                if($i < count($mode))
+                    $this->json .= '; ';
+                $i++;
+            }
+            $this->json .= '"';
+        }else{
+            $this->json .= '"-"';
+        }        
+        $this->json .= '}';
+    }
+    
+    private function variance($values){
+        $this->writeValue($this->statistic->sampleVariance($values));
+    }
+    
+    private function standardDeviation($values){        
+        $this->writeValue($this->statistic->sampleStandardDeviation($values));
+    }
+    
+    private function writeValue($value){        
+        $this->json .= '{"value":"'.$this->formatNumber($value).'"}';
+    }
+    
+    private function formatNumber($number){
+        return number_format($number,2,',','.');
+    }
+    
     private function getValuesFromData(ArrayObject $dataValues){        
         $values = array();
         $dataValues = $dataValues->getIterator();

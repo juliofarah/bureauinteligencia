@@ -62,6 +62,18 @@ class StatisticsTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals(5.5, $this->statistic->getMedian($arrayEven));
     }
     
+    /**
+     * @test
+     */
+    public function getModeFromAnArray(){
+        $numbers = array(3,3,6,8,2,9,2,1,7,6,5,1,4,2,3,5,8,11,1,8,5,2,2,7,8,11,10,8,7);
+        $this->assertEquals(array(2,8), $this->statistic->getMode($numbers));        
+        array_push($numbers, 8);
+        $this->assertEquals(array(8), $this->statistic->getMode($numbers));
+        $numbers = array(1,2,3,4,5,9,8,7,0,11);
+        $this->assertEquals(0, count($this->statistic->getMode($numbers)));
+    }   
+    
     private function getValuesFromData(ArrayIterator $dataValues){        
         $values = array();
         while($dataValues->valid()){
