@@ -79,14 +79,13 @@ class DatacenterController {
     
     //GET ://datacenter/spreadsheet
     public function getExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
-        //TODO build routine to return the excelTable;
         $spreadsheetName = $this->buildExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, $years);
         $path = LinkController::getBaseURL() . "/" . $spreadsheetName;
         return $this->jsonResponse->response(true, null)
                                   ->addValue("planilha",$path)
                                   //->addValue("asHtml", $this->buildExcelHTML($spreadsheetName))
                                   ->withoutHeader()->serialize();
-    }        
+    }    
     
     private function buildExcelHTML($spreadsheetFile){        
         $data = new Spreadsheet_Excel_Reader($spreadsheetFile);
@@ -145,32 +144,55 @@ class DatacenterController {
     public function buildExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
         return $this->buildAnything("spreadsheet", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
     }
+
+    public function buildTableSearchingDistinctGroups($g1, $g2, $years) {
+        $groups = array($g1,$g2);
+        return $this->generalBuilderForTwoDifferentGroupsSelected("table", $groups, $years);
+    }
+    
+    public function buildChartSearchingDistinctGroups($g1, $g2, $years) {        
+        $groups = array($g1,$g2);
+        return $this->generalBuilderForTwoDifferentGroupsSelected("chart",$groups,$years);
+    }
+
+    private function generalBuilderForTwoDifferentGroupsSelected($builderType, array $groups, $years){
+        $array_groups = array();
+        foreach($groups as $g){
+            $group_values = $this->getValues($g["subgroup"],$g['font'],$g['type'],$g['variety'],$g['origin'],$g['destiny'],$years);
+            $group = $this->grouper->groupDataValues($this->getListAsAnArrayObject($group_values));
+            array_push($array_groups, $group);
+        }        
+        return $this->buildForGroupedData($builderType, $array_groups, $years);        
+    }
     
     private function buildAnything($builderType, $subgroup, $font, $type, $variety, $origin, $destiny,array $years = null){        
         $asJson = $this->asJson;
         $this->asJson = false;
         $values = $this->getValues($subgroup, $font, $type, $variety, $origin, $destiny,$years);        
+        $this->asJson = $asJson;
         if($values instanceof HashMap){
             $listValues = $values->values();
             $group1 = $this->grouper->groupDataValues($this->getListAsAnArrayObject($listValues->offsetGet(0)));
             $group2 = $this->grouper->groupDataValues($this->getListAsAnArrayObject($listValues->offsetGet(1)));
-            $groupedValues = array($group1, $group2);
-            if($builderType == 'chart'){
-                if($group1->values()->count() > 0 && $group2->values()->count() > 0){
-                    $this->chartType = "MSColumn3DLineDY.swf";
-                }else
-                    //$this->chartType = "MSColumnLine3D.swf";
-                    $this->chartType = "MSLine.swf";
-            }     
+            return $this->buildForGroupedData($builderType, array($group1, $group2), $years);
         }else{
             $groupedValues = $this->grouper->groupDataValues($this->getListAsAnArrayObject($values));
-            //$this->chartType = "MSColumnLine3D.swf";
+            return $this->buildForGroupedData($builderType, $groupedValues, $years);   
+        }
+    }
+    
+    private function buildForGroupedData($builderType, $groupedValues, array $years){
+        if(is_array($groupedValues)){
+            if($builderType == 'chart'){
+                if($groupedValues[0]->values()->count() > 0 && $groupedValues[1]->values()->count() > 0)
+                    $this->chartType = "MSColumn3DLineDY.swf";
+                else
+                    $this->chartType = "MSLine.swf";
+            }
+        }else{
             $this->chartType = "MSLine.swf";
-        }       
-        $builder = $this->getBuilder($builderType);
-        $built = $builder->build($groupedValues, $years);
-        $this->asJson = $asJson;
-        return $built;
+        }
+        return $this->getBuilder($builderType)->build($groupedValues, $years);
     }
     
     private function getListAsAnArrayObject($list){
@@ -212,7 +234,7 @@ class DatacenterController {
     }
         
     public function getValuesFilteringByTwoSubgroups(array $subgroup, $font, $type, $variety, $origin, $destiny, array $years = null) {
-        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font,$years);        
+        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font,$years);
         if($this->asJson)
             return $this->hashMapFilteredToJSON($values);
         return $values;

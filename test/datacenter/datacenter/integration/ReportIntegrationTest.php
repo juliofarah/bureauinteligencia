@@ -35,6 +35,7 @@ class ReportIntegrationTest{
         $controller = new DatacenterController($service, $statistic, $jsonResponse, $grouper, $factory);
         return $controller;
     }
+    
     /**;
      * @test
      */
