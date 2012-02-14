@@ -100,15 +100,6 @@ class DatacenterController {
                                   ->withoutHeader()->serialize();
     }
     
-    //GET ://datacenter/statistics/
-    public function getSampleStandardDeviation($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
-        
-    }
-    
-    public function getPopulationalStandardDeviation($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
-        
-    }
-    
     //POST ://datacenter/save
     public function saveValues(ExcelInputFile $excelInputFile, $subgroup, $font, $destiny, $coffeType, $variety){
         if(SessionAdmin::isLogged()){
