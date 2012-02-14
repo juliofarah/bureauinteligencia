@@ -95,19 +95,38 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         $pdo = Connection::connectToTest();        
         $this->emptyDatabase($pdo);
         $pdo->prepare($this->insertDataToTestDistinctGroups())->execute();
-        //print_r($this->controller->buildTableAsJson(array(8,9), array(1,2), 1, 1, 1, 1, array(1990,1992)));
-        
+       
         $tableJson = "";
         $years = array(1990,1991);
         $paramsGroup1 = array("subgroup"=>8,"font"=>1,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
         $paramsGroup2 = array("subgroup"=>9,"font"=>2,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
         $tableJson = $this->controller->buildTableSearchingDistinctGroups($paramsGroup1, $paramsGroup2, $years);
         $this->assertEquals($this->tableAlternative(),$tableJson);
-        
+    }
+    
+    /**
+     * @test
+     */
+    public function distinctGroupsTestChart(){
+        $years = array(1990,1991);
+        $paramsGroup1 = array("subgroup"=>8,"font"=>1,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
+        $paramsGroup2 = array("subgroup"=>9,"font"=>2,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
         $paramsGroup1["font"] = 2; $paramsGroup2["font"] = 1;
         $chart = $this->controller->buildChartSearchingDistinctGroups($paramsGroup1,$paramsGroup2,$years);
         $chart = trim(str_replace('<?xml version="1.0"?>', '', $chart));
         $this->assertEquals($this->alternativeChart(),$chart);
+    }
+    
+    /**
+     * @test
+     */
+    public function distincGroupsTestStatisticTable(){
+        $tableJson = "";
+        $years = array(1990,1991);
+        $paramsGroup1 = array("subgroup"=>8,"font"=>1,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
+        $paramsGroup2 = array("subgroup"=>9,"font"=>2,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
+        $tableJson = $this->controller->buildStatisticTableSearchingDistinctGroups($paramsGroup1,$paramsGroup2,$years);
+        $this->assertEquals($this->tableAlternative(true),$tableJson);
     }
     
     private function alternativeChart(){
@@ -125,11 +144,17 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         return trim(str_replace('<?xml version="1.0"?>', '', $xml));
     }
     
-    private function tableAlternative(){
+    private function tableAlternative($statistics = false){
         $json = '[';
-        $json .= $this->contentTableAlternative();
-        $json .= ',';
-        $json .= $this->contentTableAlternative(true);
+        if($statistics){
+            $json .= $this->contentTableStatistics();
+            $json .= ",";
+            $json .= $this->contentTableStatistics(true);
+        }else{
+            $json .= $this->contentTableAlternative();
+            $json .= ',';
+            $json .= $this->contentTableAlternative(true);            
+        }
         $json .= ']';        
         return $json;
     }
@@ -150,6 +175,25 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
             $json .= ']';
         $json .= '}';
         return $json;
+    }
+    
+    private function contentTableStatistics($withoutValue = false){
+        $json = '{';
+            $json .= '"thead":[';
+            $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},';
+            $media = utf8_decode("Média"); $var = utf8_decode("Variância"); $dp = utf8_decode("Desvio Padrão");
+            $json .= '{"th":"'.$media.'"},{"th":"Mediana"},{"th":"Moda"},{"th":"'.$dp.'"},{"th":"'.$var.'"}';
+            $json .= '],';
+            $json .= '"tbody":[';
+            $arabica = utf8_decode("Arábica");
+            $json .= '{"variety":"'.$arabica.'","type":"Verde","origin":"Brasil","destiny":"Brasil",';
+            if(!$withoutValue)
+                $json .= '"values":[{"value":"250,00"},{"value":"250,00"},{"value":"-"},{"value":"70,71"},{"value":"5.000,00"}]}';
+            else
+                $json .= '"values":[{"value":"700,00"},{"value":"700,00"},{"value":"-"},{"value":"141,42"},{"value":"20.000,00"}]}';
+            $json .= ']';
+        $json .= '}';
+        return $json;        
     }
  
        

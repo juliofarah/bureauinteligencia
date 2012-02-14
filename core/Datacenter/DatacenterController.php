@@ -150,6 +150,11 @@ class DatacenterController {
         return $this->generalBuilderForTwoDifferentGroupsSelected("table", $groups, $years);
     }
     
+    public function buildStatisticTableSearchingDistinctGroups($paramsGroup1, $paramsGroup2, $years) {
+        $groups = array($paramsGroup1,$paramsGroup2);
+        return $this->generalBuilderForTwoDifferentGroupsSelected("statistic", $groups, $years);        
+    }
+
     public function buildChartSearchingDistinctGroups($g1, $g2, $years) {        
         $groups = array($g1,$g2);
         return $this->generalBuilderForTwoDifferentGroupsSelected("chart",$groups,$years);
