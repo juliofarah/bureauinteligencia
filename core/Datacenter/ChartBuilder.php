@@ -105,7 +105,7 @@ class ChartBuilder implements Builder {
                     $seriesName = $data->getSubgroupName().'-'.$data->getOriginName().'-'.$data->getDestinyName();
                 else
                     $seriesName = $data->getOriginName().'-'.$data->getDestinyName();
-                if($data->getYear() == $y){                    
+                if($data->getYear() == $y){
                     $foundValueOfThisYear = $data;
                 }
             }            

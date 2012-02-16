@@ -104,7 +104,7 @@ class Data {
     }
     
     public function getSubgroupName(){
-        return $this->subgroup->name();
+        return utf8_encode($this->subgroup->name());
     }
     
     public function getSubgroupId(){
