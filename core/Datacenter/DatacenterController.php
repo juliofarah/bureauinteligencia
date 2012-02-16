@@ -63,18 +63,36 @@ class DatacenterController {
     //GET ://datacenter/chart
     public function getChart($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
         $xmlChart = $this->buildChart($subgroup, $font, $type, $variety, $origin, $destiny, $years);
+        return $this->buildChartJsonResponse($xmlChart);
+    }
+    
+    private function buildChartJsonResponse($xmlChart){
         $xmlChart = str_replace("\"", "'", trim($xmlChart));
         $this->jsonResponse->response(true, null)->addValue("chart", trim($xmlChart));
         $this->jsonResponse->addValue("typeChart", $this->chartType);
-        return $this->jsonResponse->withoutHeader()->serialize();
+        return $this->jsonResponse->withoutHeader()->serialize();        
+    }
+    
+    public function getDistinctGroupChart($g1, $g2, array $years){
+        $xmlChart = $this->buildChartSearchingDistinctGroups($g1, $g2, $years);
+        return $this->buildChartJsonResponse($xmlChart);
     }
     
     //GET ://datacenter/table
     public function getTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
         $jsonTable = $this->buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny, $years);
+        return $this->buildTableJsonResponse($jsonTable);                
+    }
+
+    private function buildTableJsonResponse($jsonTable){
         $jsonTable = utf8_encode($jsonTable);
         $jsonTable = json_decode($jsonTable);
         return $this->jsonResponse->response(true, null)->addValue("tabela",$jsonTable)->withoutHeader()->serialize();        
+    }
+    
+    public function getDistinctGroupsTable($g1,$g2,array $years){
+        $jsonTable = $this->buildTableSearchingDistinctGroups($g1, $g2, $years);
+        return $this->buildTableJsonResponse($jsonTable);
     }
     
     //GET ://datacenter/spreadsheet
@@ -92,6 +110,7 @@ class DatacenterController {
         return $data->dump(true, true);
     }
     
+    // table statistics
     public function getStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
         $jsonTable = $this->buildStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny, $years);        
         $jsonTable = utf8_encode($jsonTable);

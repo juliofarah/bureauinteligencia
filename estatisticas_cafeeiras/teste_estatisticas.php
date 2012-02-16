@@ -21,8 +21,10 @@
                 
                 getTable();
                 getMultiTable();
+                getTableTwoGroups();
                 getChart();
                 getMultiChart();
+                getChartsTwoGroups();
             });
                         
             //functions
@@ -71,9 +73,9 @@
                     'tipo': 1,
                     'variedade': 1,
                     'origem': 1,
-                    'destino': 1,
+                    'destino': 8,
                     'fonte': 1,
-                    'ano': new Array(1989,1991)
+                    'ano': new Array(1989,1993)
                 }
                 return data;
             }
@@ -84,7 +86,7 @@
                     'tipo': new Array(1,2,3),
                     'variedade': new Array(1,2,3),
                     'origem': new Array(1,2,3),
-                    'destino': new Array(1,2,3),
+                    'destino': new Array(1,2,3,8),
                     'fonte': new Array(1,2),
                     'ano': new Array(1989,1991)
                 }
@@ -98,7 +100,7 @@
                 
                 //testando modificação nos links
                 url["chart"] = 'http://localhost/BureauInteligencia/datacenter/chart';
-                url["table"] = 'http://localhost/BureauInteligencia/datacenter/table';
+                url["table"] = 'http://localhost/BureauInteligencia/datacenter/table';                
                 return url;
             }
             
@@ -114,22 +116,48 @@
                 request(data,url["table"]);
             }
             
+            function getTableTwoGroups(){
+                var url = getUrl();
+                var data_1 = simpleData();
+                var data_2 = simpleData();
+                data_2.subgrupo = 8;
+                data_2.origem = 5;
+                data_2.destino = 9;
+                delete(data_1.ano);
+                delete(data_2.ano);
+                var params = {"0":data_1,"1":data_2,'ano': new Array(1989,1998)};
+                request(params,url["table"]);
+            }
+            
             function getChart(){
                 var url = getUrl();
                 var data = simpleData();
-                request(data, url["chart"]);                
+                request(data, url["chart"], true,"chart-test");
             };
             
             function getMultiChart(){                
                 var url = getUrl();
                 var data = multiData();
-                data.subgrupo = 1;
-                request(data,url["chart"], true);
+                //data.subgrupo = 1;
+                //request(data,url["chart"], true);
                 data.subgrupo = new Array(1,2);
-                request(data,url["chart"]);
+                request(data,url["chart"], true,"multi-subgroup-chart");
             };
             
-            function request(data, url, buildChart){
+            function getChartsTwoGroups(){
+                var url = getUrl();
+                var data_1 = simpleData();
+                var data_2 = simpleData();
+                data_2.subgrupo = 8;
+                data_2.origem = 5;
+                data_2.destino = 9;
+                delete(data_1.ano);
+                delete(data_2.ano);
+                var params = {"0":data_1,"1":data_2,'ano': new Array(1989,1997)};
+               request(params,url["chart"],true,"two-groups-chart");
+            }
+            
+            function request(data, url, buildChart, divChart){
                 if(buildChart == undefined) buildChart = false;
                 $.get(url, data, function(jsonResponse){                    
                     if(jsonResponse.tabela != undefined){
@@ -141,7 +169,7 @@
                             var swf = "../fusion/"+jsonResponse.typeChart;
                             //var xml = "<chart bgColor='FFFFFF'><categories><category label='1989'/><category label='1990'/><category label='1991'/></categories><dataset seriesName='Brasil-Brasil'><set value='0'/><set value='150'/><set value='200'/></dataset></chart>";
                             var xml = jsonResponse.chart;
-                            builder.buildCombinationChart("chart-test", 800, 430, xml, swf);
+                            builder.buildCombinationChart(divChart, 800, 430, xml, swf);
                         }
                     }
                 }, 'json');
@@ -170,6 +198,10 @@
             };            
         </script>
         <style type="text/css">
+            body{
+                font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+                color: #333;
+            }
             .params{
                 display: inline;
                 float: left;
@@ -236,6 +268,12 @@
             </div>
             <h3>Test chart</h3>
             <div id="chart-test" style="border: 1px solid #CCC; width: 100%; height: 450px"></div>
+            
+            <h3>Test multi subgroups chart</h3>
+            <div id="multi-subgroup-chart" style="border: 1px solid #CCC; width: 100%;height: 450px"></div>
+            
+            <h3>Test two groups selected</h3>
+            <div id="two-groups-chart" style="border: 1px solid #CCC; width: 100%;height:450px"></div>
         </div>
     </body>
 </html>

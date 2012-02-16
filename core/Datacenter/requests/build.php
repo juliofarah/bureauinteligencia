@@ -33,3 +33,15 @@
         $controller = new DatacenterController($service, $statistic, $jsonResponse, $grouper, $factory);         
     }
 ?>
+<?
+function fillParams($param, &$subgroup, &$font, &$type, &$variety, &$origin, &$destiny, &$array_group = null){
+        $subgroup = $param['subgrupo']; 
+        $font = $param['fonte'];
+        $type = $param['tipo'];
+        $variety = $param['variedade']; 
+        $origin = $param['origem'];
+        $destiny = $param['destino'];         
+        if(!is_null($array_group))
+            $array_group = array("subgroup"=>$subgroup,"font"=>$font,"type"=>$type,"variety"=>$variety,"origin"=>$origin,"destiny"=>$destiny);
+}
+?>
