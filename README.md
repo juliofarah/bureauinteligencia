@@ -1,6 +1,7 @@
-#Projeto Bureau Inteligência do Café
+#Projeto Bureau Inteligência do Café#
 
+Projeto Bureau.
 
-##Classe PHPUnit: PHPUnit_Framework_TestCase
+####Classe PHPUnit: PHPUnit_Framework_TestCase####
 
-Herdar esta classe para realizar os testes
+Utilizar a PHPUnit para realizar os testes unitários dos sistema. 
