@@ -9,8 +9,33 @@ var data = {
 	'ano': []
 }
 
+// Guarda se há requests
+var requests = new Array();
+
 $(document).ready(function(){
     
+	$('body').append('<div id="advise"><p>Aviso aqui!</p><a class="ok" href="#ok" style="float:none;">Ok</a></div>');
+	$('#advise a').click(function(){
+		$('#advise').hide();
+		return false;
+	});
+	
+	/* EXIBE O LOADING... A CADA REQUEST */
+	$('body').append('<div id="loading">Carregando...</div>');
+	
+	$('#loading').ajaxStart(function(){
+		requests.push(true);
+		$(this).show();
+	});
+
+	$('#loading').ajaxStop(function(){
+		requests.pop();
+		if (requests[0] != true) {
+			$(this).hide();
+		}
+	});
+	/* FIM DO LOADING */
+
 	// Esconde o conteúdo das abas
 	$('.tabcontent').hide();
         
@@ -129,7 +154,7 @@ $(document).ready(function(){
 				&& $(this).html() != 'Todos'
 				&& $(this).html() != 'Todas'
 				&& $(this).parents('.options').find('.sel').length == 2) {
-				alert("Você pode selecionar no máximo 2 campos");
+				advise("Você pode selecionar no máximo 2 campos");
 			} else {
 				// Se a opção selecionada for Todos, desmarca as outras opções
 				if ($(this).html() == 'Todos' || $(this).html() == 'Todas') {
@@ -275,7 +300,7 @@ $(document).ready(function(){
 			|| data.fonte == undefined
 			|| data.ano == undefined) {
 			
-			alert('É necessário selecionar todos os campos.');
+			advise('É necessário selecionar todos os campos.');
                         return false;
 		}
 		
@@ -395,10 +420,16 @@ function montaTabela(json, i) {
 function mostraGrafico(json) {
 	$('#content-2').html('<div id="grafico"></div>');
 	if (json.status == false) {
-		alert('Houve um problema na geração do gráfico: ' + json.message);
+		advise('Houve um problema na geração do gráfico: ' + json.message);
 	} else {
 		var myChart = new FusionCharts( "fusion/"+json.typeChart, "myChartId", "730", "413", "0", "1" );
 		myChart.setDataXML(json.chart);
 		myChart.render("grafico");
 	}
+}
+
+function advise(text) {
+	$('#advise p').html(text);
+	$('#advise').css('margin-top', (-1 * $('#advise').height()) + 'px');
+	$('#advise').show();
 }
