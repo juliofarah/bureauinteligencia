@@ -1,2 +1,5 @@
 *.xls
 *.xlsx
+
+Databaselocal.php
+Connection.php

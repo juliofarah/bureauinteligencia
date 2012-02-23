@@ -95,28 +95,28 @@ $(document).ready(function(){
 	$.getJSON('../datacenter/param', {type: "Variety"},//, id: null},
 		function(data){
 			$(data).each(function(i, param){
-				$('#variedade .options ul').append('<li id="'+param.id+'">'+param.name+'</li>');
+				$('#variedade .model ul').append('<li id="'+param.id+'">'+param.name+'</li>').hide();
 			});
 		});
 	
 	$.getJSON('../datacenter/param', {type: "CoffeType"},//, id: null},
 		function(data){
 			$(data).each(function(i, param){
-				$('#tipo .options ul').append('<li id="'+param.id+'">'+param.name+'</li>');
+				$('#tipo .model ul').append('<li id="'+param.id+'">'+param.name+'</li>').hide();
 			});
 		});
 	
 	$.getJSON('../datacenter/param', {type: "origin"},//, id: null},
 		function(data){
 			$(data).each(function(i, param){
-				$('#origem .options ul').append('<li id="'+param.id+'">'+param.name+'</li>');
+				$('#origem .model ul').append('<li id="'+param.id+'">'+param.name+'</li>').hide();
 			});
 		});
 		
 	$.getJSON('../datacenter/param', {type: "destiny"},//, id: null},
 		function(data){
 			$(data).each(function(i, param){
-				$('#destino .options ul').append('<li id="'+param.id+'">'+param.name+'</li>');
+				$('#destino .model ul').append('<li id="'+param.id+'">'+param.name+'</li>').hide();
 			});
 		});
 	
@@ -143,6 +143,7 @@ $(document).ready(function(){
 	}
 	
 	$('.options ul li').live('click', function(){
+		if ($(this).parents('ul').hasClass('nosel')) return false;
 		if ($(this).is('.sg')) {return false;}
 		if ($(this).is('.sel')) {
 			$(this).removeClass('sel');
@@ -177,7 +178,69 @@ $(document).ready(function(){
 			$('#subgrupo .options ul#dogrupo-'+$(this).attr('id')).show();
 			$('#fonte .options ul#dogrupo-'+$(this).attr('id')).show();
 		});
+		
+		if ($(this).hasClass('sel')) {
+			$('#origem .options').append($('#origem .model ul').clone().attr('id', 'ordogrupo-'+$(this).attr('id')).
+			prepend('<li class="sg">'+$(this).html()+'</li>').show());
+			$('#destino .options').append($('#destino .model ul').clone().attr('id', 'dedogrupo-'+$(this).attr('id')).
+			prepend('<li class="sg">'+$(this).html()+'</li>').show());
+		} else {
+			$('#origem #ordogrupo-'+$(this).attr('id')).remove();
+			$('#destino #dedogrupo-'+$(this).attr('id')).remove();
+		}
 	});
+	
+	$('#subgrupo .options ul li').live('click', function(){
+		if ($(this).hasClass('sel')) {
+			$('#variedade .options').append($('#variedade .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
+			prepend('<li class="sg">'+$(this).html()+'</li>').show());
+			$('#tipo .options').append($('#tipo .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
+			prepend('<li class="sg">'+$(this).html()+'</li>').show());
+		} else {
+			$('#dosubgrupo-'+$(this).attr('id')).remove();
+		}
+	});
+	
+	$('#origem .options ul li').live('click', function(){
+		if ($(this).parents('ul').find('.sel').length > 0) {
+			if ($(this).parents('ul').find('.sg').html() == 'Oferta'
+			 || $(this).parents('ul').find('.sg').html() == 'Demanda'
+			 || $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
+				$('#destino #'+$(this).parents('ul').attr('id').replace('ordogrupo', 'dedogrupo')).addClass('nosel');
+			}
+		} else {
+			if ($(this).parents('ul').find('.sg').html() == 'Oferta'
+			 || $(this).parents('ul').find('.sg').html() == 'Demanda'
+			 || $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
+				$('#destino #'+$(this).parents('ul').attr('id').replace('ordogrupo', 'dedogrupo')).removeClass('nosel');
+			}
+		}
+	});
+	
+	$('#destino .options ul li').live('click', function(){
+		if ($(this).parents('ul').find('.sel').length > 0) {
+			if ($(this).parents('ul').find('.sg').html() == 'Oferta'
+			 || $(this).parents('ul').find('.sg').html() == 'Demanda'
+			 || $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
+				$('#origem #'+$(this).parents('ul').attr('id').replace('dedogrupo', 'ordogrupo')).addClass('nosel');
+			}
+		} else {
+			if ($(this).parents('ul').find('.sg').html() == 'Oferta'
+			 || $(this).parents('ul').find('.sg').html() == 'Demanda'
+			 || $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
+				$('#origem #'+$(this).parents('ul').attr('id').replace('dedogrupo', 'ordogrupo')).removeClass('nosel');
+			}
+		}
+	});
+	
+	/*$('#variedade .options ul li').live('click', function(){
+		if ($(this).hasClass('sel')) {
+			$('#tipo .options').append($('#tipo .model ul').clone().attr('id', 'devariedade-'+$(this).attr('id')).
+			prepend('<li class="sg">'+$(this).html()+'</li>').show());
+		} else {
+			$('#devariedade-'+$(this).attr('id')).remove();
+		}
+	});*/
 	
 	$("#tabs ul li").click(function(){
 		$("#tabs ul li").removeClass('sel');
@@ -231,77 +294,161 @@ $(document).ready(function(){
         });
 	
 	$('.confirmar').click(function(){
-		data = {
-			'subgrupo': [],
-			'tipo': [],
-			'variedade': [],
-			'origem': [],
-			'destino': [],
-			'fonte': [],
-			'ano': []
-		}
 		
-		// Pega os campos que foram selecionados
-		if ($('#subgrupo .options li.sel').length > 1) {
-			$('#subgrupo .options li.sel').each(function(){
-				data.subgrupo.push($(this).attr('id'));
-			});
-		} else {
-			data.subgrupo = $('#subgrupo .options li.sel').attr('id');
-		}
-		
-		if ($('#tipo .options li.sel').length > 1) {
-			$('#tipo .options li.sel').each(function(){
-				data.tipo.push($(this).attr('id'));
-			});
-		} else {
-			data.tipo = $('#tipo .options li.sel').attr('id');
-		}
-		
-		if ($('#variedade .options li.sel').length > 1) {
-			$('#variedade .options li.sel').each(function(){
-				data.variedade.push($(this).attr('id'));
-			});
-		} else {
-			data.variedade = $('#variedade .options li.sel').attr('id');
-		}
-		
-		if ($('#origem .options li.sel').length > 1) {
-			$('#origem .options li.sel').each(function(){
-				data.origem.push($(this).attr('id'));
-			});
-		} else {
-			data.origem = $('#origem .options li.sel').attr('id');
-		}
-		
-		if ($('#destino .options li.sel').length > 1) {
-			$('#destino .options li.sel').each(function(){
-				data.destino.push($(this).attr('id'));
-			});
-		} else {
-			data.destino = $('#destino .options li.sel').attr('id');
-		}
-		
-		if ($('#fonte .options li.sel').length > 1) {
-			$('#fonte .options li.sel').each(function(){
-				data.fonte.push($(this).attr('id'));
-			});
-		} else {
-			data.fonte = $('#fonte .options li.sel').attr('id');
-		}
-		
-		data.ano = [$('#de').val(), $('#ate').val()];
-		
-		if (data.subgrupo == undefined
-			|| data.tipo == undefined
-			|| data.variedade == undefined
-			|| data.origem == undefined
-			|| data.destino == undefined
-			|| data.fonte == undefined
-			|| data.ano == undefined) {
+		if ($('#grupo .options li.sel').length == 1) {
 			
-			advise('É necessário selecionar todos os campos.');
-                        return false;
+			data = {
+				'subgrupo': [],
+				'tipo': [],
+				'variedade': [],
+				'origem': [],
+				'destino': [],
+				'fonte': [],
+				'ano': []
+			}
+
+			// Pega os campos que foram selecionados
+			if ($('#subgrupo .options li.sel').length > 1) {
+				$('#subgrupo .options li.sel').each(function(){
+					data.subgrupo.push($(this).attr('id'));
+				});
+			} else {
+				data.subgrupo = $('#subgrupo .options li.sel').attr('id');
+			}
+
+			if ($('#tipo .options li.sel').length > 1) {
+				$('#tipo .options li.sel').each(function(){
+					data.tipo.push($(this).attr('id'));
+				});
+			} else {
+				data.tipo = $('#tipo .options li.sel').attr('id');
+			}
+
+			if ($('#variedade .options li.sel').length > 1) {
+				$('#variedade .options li.sel').each(function(){
+					data.variedade.push($(this).attr('id'));
+				});
+			} else {
+				data.variedade = $('#variedade .options li.sel').attr('id');
+			}
+
+			if ($('#origem .options li.sel').length > 1) {
+				$('#origem .options li.sel').each(function(){
+					data.origem.push($(this).attr('id'));
+				});
+			} else {
+				data.origem = $('#origem .options li.sel').attr('id');
+			}
+
+			if ($('#destino .options li.sel').length > 1) {
+				$('#destino .options li.sel').each(function(){
+					data.destino.push($(this).attr('id'));
+				});
+			} else {
+				data.destino = $('#destino .options li.sel').attr('id');
+			}
+
+			if ($('#fonte .options li.sel').length > 1) {
+				$('#fonte .options li.sel').each(function(){
+					data.fonte.push($(this).attr('id'));
+				});
+			} else {
+				data.fonte = $('#fonte .options li.sel').attr('id');
+			}
+
+			data.ano = [$('#de').val(), $('#ate').val()];
+
+			if (data.subgrupo == undefined
+				|| data.tipo == undefined
+				|| data.variedade == undefined
+				|| data.origem == undefined
+				|| data.destino == undefined
+				|| data.fonte == undefined
+				|| data.ano == undefined) {
+
+				advise('É necessário selecionar todos os campos.');
+	                        return false;
+			}
+			
+			console.log(data);
+			
+		} else {
+			
+			datas = [];
+			
+			$('#grupo .options ul li.sel').each(function(){
+				
+				title = $(this).html();
+				
+				data = {
+					'subgrupo': [],
+					'tipo': [],
+					'variedade': [],
+					'origem': [],
+					'destino': [],
+					'fonte': []
+				}
+
+				// Pega os campos que foram selecionados
+				$('#subgrupo .options li.sel').each(function(){
+					if ($(this).parents('ul').find('.sg').html() == title) {
+						data.subgrupo.push($(this).attr('id'));
+					}
+				});
+				
+				$('#tipo .options li.sel').each(function(){
+					if ($(this).parents('ul').find('.sg').html() == title) {
+						data.tipo.push($(this).attr('id'));
+					}
+				});
+
+				$('#variedade .options li.sel').each(function(){
+					
+					label = $(this).parents('ul').find('.sg').html();
+					
+					$('#subgrupo .options ul li.sel').each(function(){
+						if ($(this).html() == label) {
+							if ($(this).parents('ul').find('.sg').html() == title) {
+								data.variedade.push($(this).attr('id'));
+							}
+						}
+					});
+					
+				});
+
+				$('#origem .options li.sel').each(function(){
+					if ($(this).parents('ul').find('.sg').html() == title) {
+						data.origem.push($(this).attr('id'));
+					}
+				});
+
+				$('#destino .options li.sel').each(function(){
+					if ($(this).parents('ul').find('.sg').html() == title) {
+						data.destino.push($(this).attr('id'));
+					}
+				});
+				
+				$('#fonte .options li.sel').each(function(){
+					if ($(this).parents('ul').find('.sg').html() == title) {
+						data.fonte.push($(this).attr('id'));
+					}
+				});
+				
+				if (data.subgrupo.length == 1) data.subgrupo = data.subgrupo[0];
+				if (data.tipo.length == 1) data.tipo = data.tipo[0];
+				if (data.variedade.length == 1) data.variedade = data.variedade[0];
+				if (data.origem.length == 1) data.origem = data.origem[0];
+				if (data.destino.length == 1) data.destino = data.destino[0];
+				if (data.fonte.length == 1) data.fonte = data.fonte[0];
+				
+				datas.push(data);
+				
+			});
+			
+			data = {"0": datas[0], "1": datas[1], "ano": [$('#de').val(), $('#ate').val()]};
+			
+			console.log(data);
+			
 		}
 		
 		$('.tabcontent').html('');                
