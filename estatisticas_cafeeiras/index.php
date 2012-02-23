@@ -93,6 +93,11 @@ if(!Session::isLogged()){
 	
 	<div id="variedade" class="selector">
 		<div class="header">Variedade</div>
+		<div class="model" style="display:none;">
+			<ul>
+				
+			</ul>
+		</div>
 		<div class="options">
 			<ul>
 				
@@ -102,6 +107,11 @@ if(!Session::isLogged()){
 	
 	<div id="tipo" class="selector">
 		<div class="header">Tipo</div>
+		<div class="model" style="display:none;">
+			<ul>
+				
+			</ul>
+		</div>
 		<div class="options">
 			<ul>
 				
@@ -111,6 +121,11 @@ if(!Session::isLogged()){
 	
 	<div id="origem" class="selector">
 		<div class="header">Origem</div>
+		<div class="model" style="display:none;">
+			<ul>
+				
+			</ul>
+		</div>
 		<div class="options">
 			<ul>
 				
@@ -120,6 +135,11 @@ if(!Session::isLogged()){
 	
 	<div id="destino" class="selector">
 		<div class="header">Destino</div>
+		<div class="model" style="display:none;">
+			<ul>
+				
+			</ul>
+		</div>
 		<div class="options">
 			<ul>
 				

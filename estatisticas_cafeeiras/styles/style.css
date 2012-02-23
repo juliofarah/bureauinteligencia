@@ -263,6 +263,11 @@ a.spreadsheet-link{
     color: blue;
 }
 
+.nosel li, .selector .options ul.nosel li:hover {
+	color: #888;
+	background: #fff;
+}
+
 #loading {
 	position: absolute;
 	top: 0;
