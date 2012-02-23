@@ -1,5 +1,2 @@
 *.xls
 *.xlsx
-
-#database config files
-core/Database/*

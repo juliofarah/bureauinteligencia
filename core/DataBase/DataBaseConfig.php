@@ -6,7 +6,7 @@
  */
 class DataBaseConfig {
 
-    public static $HOST = "localhsot";
+    public static $HOST = "localhost";
 
     public static $USER = "root";
 
