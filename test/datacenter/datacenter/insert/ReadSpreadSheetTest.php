@@ -20,7 +20,7 @@ class ReadSpreadSheetTest extends PHPUnit_Framework_TestCase{
     private $spreadsheetReader;
     
     protected function setUp(){
-       $file =__DIR__."\Teste.xls";            
+       $file =__DIR__."/Teste.xls";            
        $this->spreadsheetReader = new Spreadsheet_Excel_Reader($file);
        
        $this->excelInputFile = new ExcelInputFile($this->spreadsheetReader); 

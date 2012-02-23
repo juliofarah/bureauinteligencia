@@ -22,7 +22,7 @@ class ReadSpreadSheetIntegrationTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function wrongFormatException(){
-        $file =__DIR__."\Teste_WrongFormat.xls";
+        $file =__DIR__."/Teste_WrongFormat.xls";
         $this->spreadsheetReader = new Spreadsheet_Excel_Reader($file);              
         $this->setExpectedException('WrongFormatException');
         $this->inputFile = new ExcelInputFile($this->spreadsheetReader);
@@ -33,7 +33,7 @@ class ReadSpreadSheetIntegrationTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function correctFormat(){
-        $file =__DIR__."\Teste.xls";
+        $file =__DIR__."/Teste.xls";
         $this->spreadsheetReader = new Spreadsheet_Excel_Reader($file);    
         $this->inputFile = new ExcelInputFile($this->spreadsheetReader);
         $values = $this->inputFile->getYears();

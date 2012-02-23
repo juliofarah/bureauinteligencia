@@ -22,7 +22,7 @@ class IntegrationServiceInsertDataTest extends PHPUnit_Framework_TestCase{
     private $dao;
     
     protected function setUp(){
-        $file = __DIR__."\Teste_2.xls";
+        $file = __DIR__."/Teste_2.xls";
         $this->spreadsheetReader = new Spreadsheet_Excel_Reader($file);
         $this->inputFile = new ExcelInputFile($this->spreadsheetReader);
         $this->dao = new DatacenterDao(Connection::connectToTest());        
@@ -53,7 +53,7 @@ class IntegrationServiceInsertDataTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals(2, $service->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1)->count());
         $this->emptyDatabase();
         
-        $file = __DIR__."\Teste.xls";
+        $file = __DIR__."/Teste.xls";
         $this->spreadsheetReader = new Spreadsheet_Excel_Reader($file);
         $this->inputFile->setNewSpreadsheet($this->spreadsheetReader);
         $service->insertValues($this->inputFile, 1, 1, 1, 1, 1);

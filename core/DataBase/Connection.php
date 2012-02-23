@@ -11,7 +11,7 @@ class Connection {
             $session = new PDO("mysql:host=localhost;
                         dbname=bureau_inteligencia_test",
                         "root",
-                        "");
+                        "ramonox8925");
             $session->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $session;
         }catch(PDOException $error){

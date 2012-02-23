@@ -15,7 +15,7 @@ class DataBaseConfig {
 
     public static $USER = "root";
 
-    public static $PASSWORD = "";
+    public static $PASSWORD = "ramonox8925";
 
     public static $DB_NAME = "bureau_inteligencia";
 
