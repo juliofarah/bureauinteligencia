@@ -283,7 +283,13 @@ function eventInsertDataWithFile(){
         var validResponse = valid($form);
         if(validResponse.valid){            
             var data = getData($(this).attr("class"));
-            var request = AdminAjax();            
+            var request = AdminAjax();
+            if($("div.country_radios").is(":visible")){
+                if(data.typeCountry == undefined){
+                    alert('Selecione o grupo de países a que os dados da planilha pertencem');
+                    return false;
+                }
+            }
             request.saveWithFile($form, data);
         }else{
             var insertClass = $(this).attr("class");
