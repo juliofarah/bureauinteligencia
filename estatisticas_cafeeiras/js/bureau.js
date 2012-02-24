@@ -438,13 +438,43 @@ $(document).ready(function(){
 				});
 				
 				if (data.subgrupo.length == 1) data.subgrupo = data.subgrupo[0];
+				else if (data.subgrupo.length == 0) data.subgrupo = null;
 				if (data.tipo.length == 1) data.tipo = data.tipo[0];
+				else if (data.tipo.length == 0) data.tipo = null;
 				if (data.variedade.length == 1) data.variedade = data.variedade[0];
+				else if (data.variedade.length == 0) data.variedade = null;
 				if (data.origem.length == 1) data.origem = data.origem[0];
+				else if (data.origem.length == 0) data.origem = null;
 				if (data.destino.length == 1) data.destino = data.destino[0];
+				else if (data.destino.length == 0) data.destino = null;
 				if (data.fonte.length == 1) data.fonte = data.fonte[0];
+				else if (data.fonte.length == 0) data.fonte = null;
 				
 				datas.push(data);
+				
+			});
+			
+			$(datas).each(function(i, data){
+				
+				if (data.subgrupo == undefined
+					|| data.tipo == undefined
+					|| data.variedade == undefined
+					|| data.fonte == undefined) {
+
+					advise('É necessário selecionar os campos corretamente.');
+					return false;
+				} else {
+
+					if (data.subgrupo == 1
+						&& (data.origem == undefined || data.destino == undefined)) {
+							advise('É necessário selecionar os campos de Origem e Destino');
+							return false;
+					} else if (data.origem == undefined && data.destino == undefined) {
+						advise('É necessário selecionar um valor em Origem ou Destino');
+						return false;
+					}
+
+				}
 				
 			});
 			
@@ -488,10 +518,6 @@ $(document).ready(function(){
                                 });
                             });                        
 		}
-		
-		// Verifica qual aba esta aberta
-		
-		// Requisita
 		
 		return false;
 	});
