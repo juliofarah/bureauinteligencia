@@ -178,7 +178,7 @@ class DatacenterController {
             $group_values = $this->getValues($g["subgroup"],$g['font'],$g['type'],$g['variety'],$g['origin'],$g['destiny'],$years);
             $group = $this->grouper->groupDataValues($this->getListAsAnArrayObject($group_values));
             array_push($array_groups, $group);
-        }        
+        }
         return $this->buildForGroupedData($builderType, $array_groups, $years);        
     }
     
@@ -224,9 +224,9 @@ class DatacenterController {
             return $this->getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny,$years);
         }else{            
             if(is_array($subgroup)){                
-                return $this->getValuesFilteringByTwoSubgroups($subgroup, $font, $type, $variety, $origin, $destiny);
+                return $this->getValuesFilteringByTwoSubgroups($subgroup, $font, $type, $variety, $origin, $destiny,$years);
             }else{                
-                return $this->getValuesWithMultipleParams($subgroup, $font, $type, $variety, $origin, $destiny);
+                return $this->getValuesWithMultipleParams($subgroup, $font, $type, $variety, $origin, $destiny,$years);
             }
         }
     }

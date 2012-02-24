@@ -106,7 +106,7 @@ class DatacenterService {
      * @return ArrayIterator 
      */
     public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font,array $years = null) {
-        return $this->repository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
+        return $this->repository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font,$years);
     }
     
     /**
@@ -121,14 +121,14 @@ class DatacenterService {
      */
     public function getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font,array $years = null) {
         if(is_array($subgroup)){
-            $listValues1 = $this->repository->getValuesWithMultipleParamsSelected($subgroup[0], $variety, $type, $origin, $destiny, $font);
-            $listValues2 = $this->repository->getValuesWithMultipleParamsSelected($subgroup[1], $variety, $type, $origin, $destiny, $font);
+            $listValues1 = $this->repository->getValuesWithMultipleParamsSelected($subgroup[0], $variety, $type, $origin, $destiny, $font,$years);
+            $listValues2 = $this->repository->getValuesWithMultipleParamsSelected($subgroup[1], $variety, $type, $origin, $destiny, $font,$years);
             $map = new HashMap();
             $map->put(0, $listValues1);
             $map->put(1, $listValues2);
             return $map;
         }else{
-            $listValues = $this->repository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font);        
+            $listValues = $this->repository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font,$years);        
             return $listValues;           
         }
     }
