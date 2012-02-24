@@ -29,6 +29,9 @@
 
 .selector .options ul {
 	margin: 0;
+}
+
+#menu_selecoes {
 	-webkit-user-select: none;
 	-khtml-user-select: none;
 	-moz-user-select: none;
@@ -295,5 +298,4 @@ a.spreadsheet-link{
 	-webkit-box-shadow: 0 0 5px #888;
 	box-shadow: 0 0 5px #888;
 	display: none;
-	z-index: 100;
 }
