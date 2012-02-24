@@ -295,7 +295,7 @@ $(document).ready(function(){
 	
 	$('.confirmar').click(function(){
 		
-		if ($('#grupo .options li.sel').length == 1) {
+		if ($('#subgrupo .options li.sel').length == 1) {
 			
 			data = {
 				'subgrupo': [],
@@ -376,9 +376,10 @@ $(document).ready(function(){
 			
 			datas = [];
 			
-			$('#grupo .options ul li.sel').each(function(){
+			$('#subgrupo .options ul li.sel').each(function(){
 				
-				title = $(this).html();
+				group = $(this).parents('ul').find('.sg').html();
+				subgroup = $(this).html();
 				
 				data = {
 					'subgrupo': [],
@@ -391,45 +392,43 @@ $(document).ready(function(){
 
 				// Pega os campos que foram selecionados
 				$('#subgrupo .options li.sel').each(function(){
-					if ($(this).parents('ul').find('.sg').html() == title) {
+					if ($(this).parents('ul').find('.sg').html() == group
+						|| $(this).parents('ul').find('.sg').html() == subgroup) {
 						data.subgrupo.push($(this).attr('id'));
 					}
 				});
 				
 				$('#tipo .options li.sel').each(function(){
-					if ($(this).parents('ul').find('.sg').html() == title) {
+					if ($(this).parents('ul').find('.sg').html() == group
+						|| $(this).parents('ul').find('.sg').html() == subgroup) {
 						data.tipo.push($(this).attr('id'));
 					}
 				});
 
 				$('#variedade .options li.sel').each(function(){
-					
-					label = $(this).parents('ul').find('.sg').html();
-					
-					$('#subgrupo .options ul li.sel').each(function(){
-						if ($(this).html() == label) {
-							if ($(this).parents('ul').find('.sg').html() == title) {
-								data.variedade.push($(this).attr('id'));
-							}
-						}
-					});
-					
+					if ($(this).parents('ul').find('.sg').html() == group
+						|| $(this).parents('ul').find('.sg').html() == subgroup) {
+						data.variedade.push($(this).attr('id'));
+					}
 				});
 
 				$('#origem .options li.sel').each(function(){
-					if ($(this).parents('ul').find('.sg').html() == title) {
+					if ($(this).parents('ul').find('.sg').html() == group
+						|| $(this).parents('ul').find('.sg').html() == subgroup) {
 						data.origem.push($(this).attr('id'));
 					}
 				});
 
 				$('#destino .options li.sel').each(function(){
-					if ($(this).parents('ul').find('.sg').html() == title) {
+					if ($(this).parents('ul').find('.sg').html() == group
+						|| $(this).parents('ul').find('.sg').html() == subgroup) {
 						data.destino.push($(this).attr('id'));
 					}
 				});
 				
 				$('#fonte .options li.sel').each(function(){
-					if ($(this).parents('ul').find('.sg').html() == title) {
+					if ($(this).parents('ul').find('.sg').html() == group
+						|| $(this).parents('ul').find('.sg').html() == subgroup) {
 						data.fonte.push($(this).attr('id'));
 					}
 				});
