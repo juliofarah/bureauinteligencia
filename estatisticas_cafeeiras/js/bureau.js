@@ -464,29 +464,38 @@ $(document).ready(function(){
 				
 			});
 			
+			var error = false;
+			
 			$(datas).each(function(i, data){
 				
-				if (data.subgrupo == undefined
-					|| data.tipo == undefined
+				if (data.tipo == undefined
 					|| data.variedade == undefined
 					|| data.fonte == undefined) {
 
-					advise('É necessário selecionar os campos corretamente.');
+					advise('É necessário selecionar os campos correspondentes ao sub-grupo <strong>'+
+							$('#subgrupo .options li[id='+data.subgrupo+']').html()+'</strong>');
+					error = true;
 					return false;
 				} else {
 
 					if (data.subgrupo == 1
 						&& (data.origem == undefined || data.destino == undefined)) {
-							advise('É necessário selecionar os campos de Origem e Destino');
+							advise('É necessário selecionar os campos de Origem e Destino correspondentes'+
+							'ao sub-grupo <strong>'+$('#subgrupo .options li[id='+data.subgrupo+']').html()+'</strong>');
+							error = true;
 							return false;
 					} else if (data.origem == undefined && data.destino == undefined) {
-						advise('É necessário selecionar um valor em Origem ou Destino');
+						advise('É necessário selecionar um valor em Origem ou Destino correspondente ao'
+						+ ' sub-grupo <strong>'+$('#subgrupo .options li[id='+data.subgrupo+']').html()+'</strong>');
+						error = true;
 						return false;
 					}
 
 				}
 				
 			});
+			
+			if (error) { return false; }
 			
 			data = {"0": datas[0], "1": datas[1], "ano": [$('#de').val(), $('#ate').val()]};
 			
