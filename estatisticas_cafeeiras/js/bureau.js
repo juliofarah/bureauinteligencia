@@ -389,6 +389,9 @@ $(document).ready(function(){
 				
 			}
 			
+			if (data.origem.length == 0) data.origem = 0;
+			if (data.destino.length == 0) data.destino = 0;
+			
 			console.log(data);
 			
 		} else {
@@ -448,17 +451,17 @@ $(document).ready(function(){
 				});
 				
 				if (data.subgrupo.length == 1) data.subgrupo = data.subgrupo[0];
-				else if (data.subgrupo.length == 0) data.subgrupo = null;
+				else if (data.subgrupo.length == 0) data.subgrupo = 0;
 				if (data.tipo.length == 1) data.tipo = data.tipo[0];
-				else if (data.tipo.length == 0) data.tipo = null;
+				else if (data.tipo.length == 0) data.tipo = 0;
 				if (data.variedade.length == 1) data.variedade = data.variedade[0];
-				else if (data.variedade.length == 0) data.variedade = null;
+				else if (data.variedade.length == 0) data.variedade = 0;
 				if (data.origem.length == 1) data.origem = data.origem[0];
-				else if (data.origem.length == 0) data.origem = null;
+				else if (data.origem.length == 0) data.origem = 0;
 				if (data.destino.length == 1) data.destino = data.destino[0];
-				else if (data.destino.length == 0) data.destino = null;
+				else if (data.destino.length == 0) data.destino = 0;
 				if (data.fonte.length == 1) data.fonte = data.fonte[0];
-				else if (data.fonte.length == 0) data.fonte = null;
+				else if (data.fonte.length == 0) data.fonte = 0;
 				
 				datas.push(data);
 				
