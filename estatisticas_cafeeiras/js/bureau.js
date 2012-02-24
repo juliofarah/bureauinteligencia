@@ -295,7 +295,7 @@ $(document).ready(function(){
 	
 	$('.confirmar').click(function(){
 		
-		if ($('#subgrupo .options li.sel').length == 1) {
+		if ($('#subgrupo .options li.sel').length <= 1) {
 			
 			data = {
 				'subgrupo': [],
@@ -361,13 +361,22 @@ $(document).ready(function(){
 			if (data.subgrupo == undefined
 				|| data.tipo == undefined
 				|| data.variedade == undefined
-				|| data.origem == undefined
-				|| data.destino == undefined
 				|| data.fonte == undefined
 				|| data.ano == undefined) {
 
-				advise('É necessário selecionar todos os campos.');
-	                        return false;
+				advise('É necessário selecionar os campos corretamente.');
+				return false;
+			} else {
+				
+				if ($('#grupo .options ul li.sel').html() == 'Comércio Internacional'
+					&& (data.origem == undefined || data.destino == undefined)) {
+						advise('É necessário selecionar os campos de Origem e Destino');
+						return false;
+				} else if (data.origem == undefined && data.destino == undefined) {
+					advise('É necessário selecionar um valor em Origem ou Destino');
+					return false;
+				}
+				
 			}
 			
 			console.log(data);
@@ -391,12 +400,7 @@ $(document).ready(function(){
 				}
 
 				// Pega os campos que foram selecionados
-				$('#subgrupo .options li.sel').each(function(){
-					if ($(this).parents('ul').find('.sg').html() == group
-						|| $(this).parents('ul').find('.sg').html() == subgroup) {
-						data.subgrupo.push($(this).attr('id'));
-					}
-				});
+				data.subgrupo.push($(this).attr('id'));
 				
 				$('#tipo .options li.sel').each(function(){
 					if ($(this).parents('ul').find('.sg').html() == group
