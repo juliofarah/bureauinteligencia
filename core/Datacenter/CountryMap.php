@@ -13,9 +13,16 @@ class CountryMap {
      */
     private $map;
     
+    /**
+     * @var HashMap 
+     */
+    private $map2;
+    
     public function CountryMap(){
         $this->map = new HashMap();
+        $this->map2 = new HashMap();
         $this->populateMap();
+        $this->populateDestinyCountries();
     }
     
     private function populateMap(){
@@ -28,11 +35,26 @@ class CountryMap {
         $this->map->put("Quênia", 6);
         $this->map->put("Outros", 7);
     }
+   
+    private function populateDestinyCountries(){
+        $this->map2->put("EUA", 8);
+        $this->map2->put("França", 9);
+        $this->map2->put("Alemanha", 10);
+        $this->map2->put("Canadá", 11);
+        $this->map2->put("Itália", 12);
+        $this->map2->put("Japão", 13);
+        $this->map2->put("Outros", 14);
+    }
     
     public function getCountryId($countryName){
         if($this->map->containsKey($countryName))
             return $this->map->get($countryName);
-        return $this->getCountryId("Outros");
+        else
+            return $this->getCountryId("Outros");
+        if($this->map2->containsKey($countryName))
+            return $this->map2->get ($countryName);
+        else
+            return $this->map2->get ("Outros");
     }
 }
 
