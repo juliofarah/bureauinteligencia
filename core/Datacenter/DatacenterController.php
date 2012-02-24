@@ -95,6 +95,17 @@ class DatacenterController {
         return $this->buildTableJsonResponse($jsonTable);
     }
     
+    // table statistics
+    public function getStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
+        $jsonTable = $this->buildStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny, $years);
+        return $this->buildTableJsonResponse($jsonTable);
+    }
+    
+    public function getDistinctStatisticTable($g1, $g2, array $years){
+        $jsonTable = $this->buildStatisticTableSearchingDistinctGroups($g1, $g2, $years);
+        return $this->buildTableJsonResponse($jsonTable);
+    }
+    
     //GET ://datacenter/spreadsheet
     public function getExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
         $spreadsheetName = $this->buildExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, $years);
@@ -108,20 +119,6 @@ class DatacenterController {
     private function buildExcelHTML($spreadsheetFile){        
         $data = new Spreadsheet_Excel_Reader($spreadsheetFile);
         return $data->dump(true, true);
-    }
-    
-    // table statistics
-    public function getStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
-        $jsonTable = $this->buildStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny, $years);        
-        $jsonTable = utf8_encode($jsonTable);
-        $jsonTable = json_decode($jsonTable);
-        return $this->jsonResponse->response(true, null)->addValue("tabela", $jsonTable)
-                                  ->withoutHeader()->serialize();
-    }
-    
-    public function getDistinctStatisticTable($g1, $g2, array $years){
-        $jsonTable = $this->buildStatisticTableSearchingDistinctGroups($g1, $g2, $years);
-        return $this->buildTableJsonResponse($jsonTable);
     }
     
     //POST ://datacenter/save
