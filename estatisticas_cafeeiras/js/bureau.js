@@ -187,6 +187,15 @@ $(document).ready(function(){
 		} else {
 			$('#origem #ordogrupo-'+$(this).attr('id')).remove();
 			$('#destino #dedogrupo-'+$(this).attr('id')).remove();
+			
+			group = $(this).html()
+			
+			$('#subgrupo .options ul').each(function(){
+				if ($(this).find('.sg').html() == group) {
+					$(this).find('li.sel').trigger('click');
+				}
+			});
+			
 		}
 	});
 	
@@ -197,7 +206,8 @@ $(document).ready(function(){
 			$('#tipo .options').append($('#tipo .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg">'+$(this).html()+'</li>').show());
 		} else {
-			$('#dosubgrupo-'+$(this).attr('id')).remove();
+			$('#variedade #dosubgrupo-'+$(this).attr('id')).remove();
+			$('#tipo #dosubgrupo-'+$(this).attr('id')).remove();
 		}
 	});
 	
