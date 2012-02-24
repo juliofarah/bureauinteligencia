@@ -171,8 +171,31 @@ function listGroupsToDatacenter(request, url, data, $select){
         groupChange();
     }
 }
+
+function writeARadioBoxForCountriesIfGroupCannotHaveOriginAndDestinyAtTheSameTime(group){
+    var comercioInternacional = 1;
+    var $destiny = $("select#destiny");
+    if(group != comercioInternacional){
+        $destiny
+            .hide()
+            .attr("disabled", "disabled")
+            .prev("label").hide();
+            $destiny.val(0);
+            $("div.country_radios").show();
+    }else{
+        if(!$destiny.is(":visible")){
+            $destiny
+                .removeAttr("disabled")
+                .show()
+                .prev("label").show();
+            $destiny.val('');
+            $("div.country_radios").hide();
+        }
+    }
+}
+
 function groupChange(){
-    $("select#groups").live("change",function(){
+    $("select#groups").live("change",function(){       
        if($(this).val() != ''){
            var idGroup = $(this).val();
            var request = AdminAjax();
@@ -180,6 +203,7 @@ function groupChange(){
            request.list_to_select("../../datacenter/param", $("select#subgroups"), data);
            data.type = "font";
            request.list_to_select("../../datacenter/param", $("select#font"), data);
+           writeARadioBoxForCountriesIfGroupCannotHaveOriginAndDestinyAtTheSameTime(idGroup); 
        }       
     });
 }
@@ -219,9 +243,14 @@ function dataDatacenter(){
         "subgroup":$("#subgroups").val(),
         "font":$("#font").val(),
         "coffetype":$("#coffetype").val(),
-        "variety":$("#variety").val(),
-        "destiny":$("#destiny").val()
+        "variety":$("#variety").val()        
     };    
+    if($("#destiny").is(":visible")){
+        data.destiny = $("#destiny").val();
+    }else{
+        data.destiny = -1;
+        data.typeCountry = $("input[name=country_group]:checked").val();
+    }
     return data;
 }
 
@@ -247,8 +276,8 @@ function getData(type){
     return data;
 }
 
-function eventInsertDataWithFile(){
-    $(".button-insert-paper, .button-insert-spreadsheet").click(function(){        
+function eventInsertDataWithFile(){    
+    $(".button-insert-paper, .button-insert-spreadsheet").click(function(){                
         var $form = $(this).parents("form");
         removeErrors($form);
         var validResponse = valid($form);
@@ -281,7 +310,7 @@ function valid($form){
     var invalid_inputs = new Array();
     var formAction = $form.attr("action");    
     $(id + " input, select").each(function(i, obj){
-        if(obj.value == ''){
+        if($(obj).is(":visible") && obj.value == ''){
             isvalid = isvalid && false;
             invalid_inputs.push("#"+obj.id);
         }else{

@@ -18,7 +18,11 @@ if(RequestsPatterns::postParamsSetted('subgroup', 'font', 'coffetype', 'variety'
         $coffeType = $_POST['coffetype'];
         $variety = $_POST['variety'];
         $destiny = $_POST['destiny'];
-                        
+        if(isset($_POST['typeCountry'])){
+            $typeCountry = $_POST['typeCountry'];
+            $destiny = 0;
+        }        
+
         $repository = new DatacenterDao(Connection::connect());
         $service = new DatacenterService($repository, new CountryMap());
         $statistic = new Statistic();
@@ -30,7 +34,7 @@ if(RequestsPatterns::postParamsSetted('subgroup', 'font', 'coffetype', 'variety'
         $reader = new Spreadsheet_Excel_Reader($_FILES['Planilha']['tmp_name']);        
         try{
             $inputFile = new ExcelInputFile($reader);
-            $response = $controller->saveValues($inputFile, $subgroup, $font, $destiny, $coffeType, $variety);
+            $response = $controller->saveValues($inputFile, $subgroup, $font, $destiny, $coffeType, $variety,$typeCountry);
             //print_r($jsonResponse->response(false, "buceta vila")->withoutHeader()->serialize());            
             print_r($response);
         }catch(WrongFormatException $exception){

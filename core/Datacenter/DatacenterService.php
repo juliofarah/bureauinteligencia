@@ -27,11 +27,19 @@ class DatacenterService {
         $this->statistic = $statistic;
     }
     
-    public function insertValues(ExcelInputFile $excelInputFile, $subgroup, $destiny, $type, $variety, $font) {
+    public function insertValues(ExcelInputFile $excelInputFile, $subgroup, $destiny, $type, $variety, $font, $typeCountry = null) {
         $countries = $excelInputFile->getValuesOfColumn(1);        
         $dataToSave = new ArrayObject();
         foreach($countries as $country){
-            $origin = $this->countryMap->getCountryId($country);            
+            if($typeCountry == 'origin'){
+                $origin = $this->countryMap->getCountryId($country);
+                $destiny = 0;
+            }elseif($typeCountry == 'destiny'){
+                $destiny = $this->countryMap->getCountryId($country);
+                $origin = 0;
+            }else{
+                $origin = $this->countryMap->getCountryId($country);
+            }
             $dataOfCurrentCountry = $this->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
             $yearsToInsert = $this->insertValuesIfACountryDoesNotHaveItStoredYet($dataOfCurrentCountry, $excelInputFile, $country);
             if($yearsToInsert->count() > 0){         

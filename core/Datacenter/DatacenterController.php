@@ -122,10 +122,10 @@ class DatacenterController {
     }
     
     //POST ://datacenter/save
-    public function saveValues(ExcelInputFile $excelInputFile, $subgroup, $font, $destiny, $coffeType, $variety){
+    public function saveValues(ExcelInputFile $excelInputFile, $subgroup, $font, $destiny, $coffeType, $variety, $typeCountry = null){
         if(SessionAdmin::isLogged()){
             try{
-                if($this->datacenterService->insertValues($excelInputFile, $subgroup, $destiny, $coffeType, $variety, $font)){
+                if($this->datacenterService->insertValues($excelInputFile, $subgroup, $destiny, $coffeType, $variety, $font,$typeCountry)){
                     return $this->jsonResponse->response(true, "Dados inseridos com sucesso!")->serialize();
                 }else{
                     $message = "Dados não inseridos. Verifique a possibilidade de já existirem dados referentes a esta planilha";
