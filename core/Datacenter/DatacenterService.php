@@ -33,9 +33,14 @@ class DatacenterService {
         foreach($countries as $country){
             if($typeCountry == 'origin'){
                 $origin = $this->countryMap->getCountryId($country);
+                if(is_null($origin)){
+                    $origin = $this->countryMap->getOuthersForOrigin();
+                }
                 $destiny = 0;
             }elseif($typeCountry == 'destiny'){
                 $destiny = $this->countryMap->getCountryId($country);
+                if(is_null($destiny))
+                    $destiny = $this->countryMap->getOthersForDestiny();
                 $origin = 0;
             }else{
                 $origin = $this->countryMap->getCountryId($country);
