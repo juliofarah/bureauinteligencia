@@ -119,6 +119,11 @@ class DatacenterController {
                                   ->withoutHeader()->serialize();
     }
     
+    public function getDistinctStatisticTable($g1, $g2, array $years){
+        $jsonTable = $this->buildStatisticTableSearchingDistinctGroups($g1, $g2, $years);
+        return $this->buildTableJsonResponse($jsonTable);
+    }
+    
     //POST ://datacenter/save
     public function saveValues(ExcelInputFile $excelInputFile, $subgroup, $font, $destiny, $coffeType, $variety){
         if(SessionAdmin::isLogged()){
