@@ -388,9 +388,11 @@ $(document).ready(function(){
 				}
 				
 			}
-			
-			if (data.origem.length == 0) data.origem = 0;
-			if (data.destino.length == 0) data.destino = 0;
+                        
+                                                      if($("#grupo .options ul li.sel").html() != 'Comércio Internacional'){
+                                                          if (data.origem == undefined || data.origem.length == 0) data.origem = 0;
+                                                          if (data.destino == undefined || data.destino.length == 0) data.destino = 0;
+                                                      }
 			
 			console.log(data);
 			
