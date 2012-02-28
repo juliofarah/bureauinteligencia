@@ -18,6 +18,7 @@ if(RequestsPatterns::postParamsSetted('subgroup', 'font', 'coffetype', 'variety'
         $coffeType = $_POST['coffetype'];
         $variety = $_POST['variety'];
         $destiny = $_POST['destiny'];
+        $typeCountry = null;
         if(isset($_POST['typeCountry'])){
             $typeCountry = $_POST['typeCountry'];
             $destiny = 0;
