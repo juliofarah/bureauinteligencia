@@ -113,8 +113,10 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         
         $values = $this->daoRepository->getValuesWhenTheOptionAllWasSelected($sg, $variety, $type, $origin, $destiny, $font, $years);
    
-        $this->assertEquals(400, $values->offsetGet(4)->getValue());
-        $this->assertEquals(450, $values->offsetGet(1)->getValue());
+        $this->assertEquals(450, $values->offsetGet(4)->getValue());
+        $this->assertEquals(200, $values->offsetGet(1)->getValue());
+        $this->assertEquals(150, $values->offsetGet(0)->getValue());
+        $this->assertEquals(400, $values->offsetGet(5)->getValue());
     }
     
     /**
@@ -127,6 +129,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $list->append($this->newData(1991, 232));
         $list->append($this->newData(1992, 458));
         $this->daoRepository->save($list);
+        echo "\n\n------------teste insert\n\n";
         $values = $this->daoRepository->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1);
         $this->assertEquals(3,$values->count());
         $values = $this->daoRepository->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1, array(1991,1992));
@@ -149,8 +152,6 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
     }
     
     private function populatesDatabase() {
-        //echo $this->persistDataForTest();
-        echo $this->persistDataForTest();
         $this->connection->prepare($this->persistDataForTest())->execute();
     }
 

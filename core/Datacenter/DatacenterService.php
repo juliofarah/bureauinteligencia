@@ -106,9 +106,20 @@ class DatacenterService {
      * @return ArrayIterator 
      */
     public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font,array $years = null) {
+        if($this->theOptionAllHasBeenSelected($subgroup, $variety, $type, $origin, $destiny, $font)){
+            return $this->repository->getValuesWhenTheOptionAllWasSelected($subgroup, $variety, $type, $origin, $destiny, $font, $years);
+        }
         return $this->repository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font,$years);
     }
     
+    private function theOptionAllHasBeenSelected(){
+        $numberOfParams = func_num_args();
+        for ($i = 0; $i < $numberOfParams; $i++){
+            if(func_get_arg($i) == DatacenterRepository::ALL)
+                return true;
+        }
+        return false;
+    }
     /**
      *
      * @param type $subgroup    
@@ -128,7 +139,10 @@ class DatacenterService {
             $map->put(1, $listValues2);
             return $map;
         }else{
-            $listValues = $this->repository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font,$years);        
+            if($this->theOptionAllHasBeenSelected($variety, $type, $origin, $destiny, $font)){
+                $listValues = $this->repository->getValuesWhenTheOptionAllWasSelected($subgroup, $variety, $type, $origin, $destiny, $font, $years);
+            }else
+                $listValues = $this->repository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font,$years);        
             return $listValues;           
         }
     }
