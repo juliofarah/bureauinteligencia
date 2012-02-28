@@ -37,7 +37,7 @@ class DatacenterExcelBuilderTest extends PHPUnit_Framework_TestCase{
         $this->excelBuilder->build($map, array(1989,1992));
         $titles = $this->excelBuilder->getTitles();        
         $this->assertTrue($this->arraysAreEquals($this->expectedTitles(), 
-                $titles->getArrayCopy()));
+        $titles->getArrayCopy()));
     }
     
     /**
@@ -52,15 +52,15 @@ class DatacenterExcelBuilderTest extends PHPUnit_Framework_TestCase{
     }
     
     private function expectedTitles(){
-        return array("Variedade","Tipo","Origem","Destino","1989","1990","1991","1992");
+        return array("Variedade","Tipo","Origem","Destino","Fonte","1989","1990","1991","1992");
     }
        
     
     private function expectedValues(){
         return array(
-                    array("variety","type","origin","destiny","150","220","285","-"),
-                    array("variety2","type2","origin2","destiny2","188","302","254","195"),
-                    array("variety3","type3","origin3","destiny2","-","101","148","157"));
+                    array("variety","type","origin","destiny","fonte","150","220","285","-"),
+                    array("variety2","type2","origin2","destiny2","fonte","188","302","254","195"),
+                    array("variety3","type3","origin3","destiny2","fonte1","-","101","148","157"));
     }
     
     private function arraysAreEquals(array $expected,array $actual){

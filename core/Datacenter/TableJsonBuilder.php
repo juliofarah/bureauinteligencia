@@ -82,6 +82,7 @@ class TableJsonBuilder extends TableBuilder{//implements Builder{
         $this->json .= '"type":"'.$data->getTypeName().'",';
         $this->json .= '"origin":"'.utf8_decode($data->getOriginName()).'",';
         $this->json .= '"destiny":"'.utf8_decode($data->getDestinyName()).'",';
+        $this->json .= '"font":"'.  utf8_decode($data->getFontName()).'",';
         $this->json .= '"values":'; $this->listValues($group, $years);
         $this->json .= '},';        
     }

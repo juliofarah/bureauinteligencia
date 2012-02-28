@@ -201,16 +201,16 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
    private function contentTableAlternative($withoutValue = false){
         $json = '{';
             $json .= '"thead":[';
-            $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},';
+            $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},{"th":"Fonte"},';
             $json .= '{"th":"1990"},{"th":"1991"}';
             $json .= '],';
             $json .= '"tbody":[';
             $arabica = utf8_decode("Arábica");
             $json .= '{"variety":"'.$arabica.'","type":"Verde","origin":"Brasil","destiny":"Brasil",';
             if(!$withoutValue)
-                $json .= '"values":[{"value":200},{"value":300}]}';
+                $json .= '"font":"OIC","values":[{"value":200},{"value":300}]}';
             else
-                $json .= '"values":[{"value":600},{"value":800}]}';
+                $json .= '"font":"USDA","values":[{"value":600},{"value":800}]}';
             $json .= ']';
         $json .= '}';
         return $json;
@@ -219,7 +219,7 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
     private function contentTableStatistics($withoutValue = false){
         $json = '{';
             $json .= '"thead":[';
-            $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},';
+            $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},{"th":"Fonte"},';
             $media = utf8_decode("Média"); $var = utf8_decode("Variância"); $dp = utf8_decode("Desvio Padrão");
             $json .= '{"th":"'.$media.'"},{"th":"Mediana"},{"th":"Moda"},{"th":"'.$dp.'"},{"th":"'.$var.'"}';
             $json .= '],';
@@ -227,9 +227,9 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
             $arabica = utf8_decode("Arábica");
             $json .= '{"variety":"'.$arabica.'","type":"Verde","origin":"Brasil","destiny":"Brasil",';
             if(!$withoutValue)
-                $json .= '"values":[{"value":"250,00"},{"value":"250,00"},{"value":"-"},{"value":"70,71"},{"value":"5.000,00"}]}';
+                $json .= '"font":"OIC","values":[{"value":"250,00"},{"value":"250,00"},{"value":"-"},{"value":"70,71"},{"value":"5.000,00"}]}';
             else
-                $json .= '"values":[{"value":"700,00"},{"value":"700,00"},{"value":"-"},{"value":"141,42"},{"value":"20.000,00"}]}';
+                $json .= '"font":"USDA","values":[{"value":"700,00"},{"value":"700,00"},{"value":"-"},{"value":"141,42"},{"value":"20.000,00"}]}';
             $json .= ']';
         $json .= '}';
         return $json;        
@@ -249,16 +249,16 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         
         $json = '[{';
         $json .= '"thead":[';
-        $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},';
+        $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},{"th":"Fonte"},';
         $json .= '{"th":"1990"},{"th":"1991"}';
         $json .= '],';
         $json .= '"tbody":[';
         $arabica = utf8_decode("Arábica");
-        $json .= '{"variety":"' . $arabica . '","type":"Verde","origin":"Brasil","destiny":"Todos",';
+        $json .= '{"variety":"' . $arabica . '","type":"Verde","origin":"Brasil","destiny":"Todos","font":"OIC",';
         $json .= '"values":[{"value":150},{"value":200}]}';
-        $json .= ',{"variety":"' . $arabica . '","type":"Verde","origin":"Brasil","destiny":"Todos",';
+        $json .= ',{"variety":"' . $arabica . '","type":"Verde","origin":"Brasil","destiny":"Todos","font":"USDA",';
         $json .= '"values":[{"value":200},{"value":250}]}';        
-        $json .= ',{"variety":"Conilon","type":"'.  utf8_decode("Solúvel") .'","origin":"Brasil","destiny":"Todos",';
+        $json .= ',{"variety":"Conilon","type":"'.  utf8_decode("Solúvel") .'","origin":"Brasil","destiny":"Todos","font":"OIC",';
         $json .= '"values":[{"value":450},{"value":400}]}';
         $json .= ']';
         $json .= '}]';
@@ -268,12 +268,12 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
     private function contentTable($withoutValue = false){
         $json = '{';
             $json .= '"thead":[';
-            $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},';
+            $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},{"th":"Fonte"},';
             $json .= '{"th":"1990"},{"th":"1991"},{"th":"1992"},{"th":"1993"}';
             $json .= '],';
             $json .= '"tbody":[';
             $arabica = utf8_decode("Arábica");
-            $json .= '{"variety":"'.$arabica.'","type":"Verde","origin":"Brasil","destiny":"Brasil",';
+            $json .= '{"variety":"'.$arabica.'","type":"Verde","origin":"Brasil","destiny":"Brasil","font":"OIC",';
             if(!$withoutValue)
                 $json .= '"values":[{"value":222},{"value":452},{"value":453},{"value":234}]}';
             else

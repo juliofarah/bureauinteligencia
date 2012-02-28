@@ -36,18 +36,18 @@ class DatacenterStatisticsTableBuilderTest extends PHPUnit_Framework_TestCase{
     private function table(){
         $json = '{';
             $json .= '"thead":[';
-            $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},';
+            $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},{"th":"Fonte"},';
             $json .= '{"th":"'.utf8_decode("Média").'"},';
             $json .= '{"th":"Mediana"},';
             $json .= '{"th":"Moda"},';
             $json .= '{"th":"'.utf8_decode("Desvio Padrão").'"},{"th":"'.utf8_decode("Variância").'"}';            
             $json .= '],';
             $json .= '"tbody":[';
-            $json .= '{"variety":"variety","type":"type","origin":"origin","destiny":"destiny",';
+            $json .= '{"variety":"variety","type":"type","origin":"origin","destiny":"destiny","font":"fonte",';
             $json .=    '"values":[{"value":"2,00"},{"value":"2,00"},{"value":"-"},{"value":"1,00"},{"value":"1,00"}]}';
-            $json .= ',{"variety":"variety2","type":"type2","origin":"origin2","destiny":"destiny2",';
+            $json .= ',{"variety":"variety2","type":"type2","origin":"origin2","destiny":"destiny2","font":"fonte",';
             $json .=    '"values":[{"value":"2,50"},{"value":"2,50"},{"value":"2,00; 3,00"},{"value":"0,57"},{"value":"0,33"}]}';
-            $json .= ',{"variety":"variety3","type":"type3","origin":"origin3","destiny":"destiny2",';
+            $json .= ',{"variety":"variety3","type":"type3","origin":"origin3","destiny":"destiny2","font":"fonte1",';
             $json .=    '"values":[{"value":"6,00"},{"value":"6,00"},{"value":"-"},{"value":"1,00"},{"value":"1,00"}]}';
             $json .= ']';
         $json .= '}';

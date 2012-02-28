@@ -582,8 +582,7 @@ function tableStatiticDiv(){
 
 function montaTabela(json, i) {
         var subgroups = $('#subgrupo .options li.sel');        
-        //console.log("["+i+"] => " + $(subgroups[i]).text());
-        
+        //console.log("["+i+"] => " + $(subgroups[i]).text());        
         table = "<span class='subgroup-name'>"+$(subgroups[i]).text()+"</span>";
 	table += '<table id="datatable">';
 
@@ -607,6 +606,7 @@ function montaTabela(json, i) {
 		
 		table += '                <td>'+column.destiny+'</td>';
 		
+                                    table += '                <td>'+column.font+'</td>';
 		$(column.values).each(function(i, value){
 			table += '                <td>'+value.value+'</td>';
 		});

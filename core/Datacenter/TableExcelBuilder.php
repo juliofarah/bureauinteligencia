@@ -73,6 +73,7 @@ class TableExcelBuilder extends TableBuilder{
         array_push($this->valuesOfARow, $data->getTypeName());
         array_push($this->valuesOfARow, $data->getOriginName());
         array_push($this->valuesOfARow, $data->getDestinyName());
+        array_push($this->valuesOfARow, $data->getFontName());
         parent::listValuesVerifyingTheYearOfThat($group, $years);
         $this->dataToExcel->setValues($this->valuesOfARow);
         $this->valuesOfARow = array();
