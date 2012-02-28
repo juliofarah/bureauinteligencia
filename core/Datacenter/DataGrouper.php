@@ -17,8 +17,8 @@ class DataGrouper {
             $list = $listOfData->getIterator();
             $list2 = $listOfData->getIterator();
             $dataAux = null;
-            $i = 0;              
-            while ($list->valid()) {                
+            $i = 0;            
+            while ($list->valid()) {          
                 $auxList = $this->getDataOfSameTypeAndPutIntoList($list2, $dataToGroup, $dataAux);                
                 $this->changePointers($list, $list2, $dataAux, $dataToGroup);
                 $this->changeDataToGroup($list, $dataToGroup);

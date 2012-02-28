@@ -67,6 +67,8 @@ class DatacenterDao implements DatacenterRepository{
         $sql .= "AND value.font_id = :font";
         if($year != null)
             $sql .= " AND ".$this->yearCondition($year); 
+        $sql .= " ORDER BY origin, destiny, variety, type, font, subgroup, ano ASC";
+        
         $query = $this->session->prepare($sql);
         $query->execute(array(":subgroup"=>$subgroup,":variety"=>$variety,":type"=>$type,
                         ":origin"=>$origin,":destiny"=>$destiny,":font"=>$font));
@@ -79,14 +81,14 @@ class DatacenterDao implements DatacenterRepository{
      * @return ArrayIterator 
      */
     private function buildSimpleObjects(array $values){
-        $list = new ArrayObject();        
+        $list = new ArrayObject();
         foreach($values as $value){
             $subgroup = new Subgroup($value['subgroup']);
                         
             $type = new CoffeType($value['type']);
             $variety = new Variety($value['variety']);
             
-            if(isset($_value['font']))
+            if(isset($value['font']))
                 $font = new Font($value['font']);
             else
                 $font = new Font("Todas");            
@@ -134,20 +136,25 @@ class DatacenterDao implements DatacenterRepository{
         $sql .= "AND ".$this->in("value.destiny_id", $destiny);
         $sql .= "AND ".$this->in("value.font_id", $font);
         if($year != null)
-            $sql .= "AND ".$this->yearCondition($year);        
+            $sql .= "AND ".$this->yearCondition($year);
+        $sql .= " ORDER BY origin, destiny, variety, type, font, subgroup, ano ASC";
         $query = $this->session->prepare($sql);
         $query->execute();
         return $this->buildSimpleObjects($query->fetchAll(PDO::FETCH_ASSOC));
     }
     
     public function getValuesWhenTheOptionAllWasSelected($sg, $variety, $type, $origin, $destiny, $font, $years) {
-        $paramsToGroup = array("font" => $font, "origin" => $origin, "destiny" => $destiny);
+        $paramsToGroup = array("origin" => $origin, "destiny" => $destiny, "font" => $font);
         $sql = $this->selectForSumQuery($paramsToGroup);
         $sql .= " FROM data value ";
         $sql .= $this->leftOuterJoin();
-        $paramsToGroup["subgroup"] = $sg; $paramsToGroup["variety"] = $variety; $paramsToGroup["type"] = $type;
+        array_splice($paramsToGroup, 2, 1);
+        $paramsToGroup["variety"] = $variety; $paramsToGroup["type"] = $type;
+        $paramsToGroup["font"] = $font;
+        $paramsToGroup["subgroup"] = $sg; 
         $sql .= $this->whereClauseForSumQuery($paramsToGroup, $years);
         $sql .= $this->groupBy($paramsToGroup);
+        $sql .= $this->orderBy($paramsToGroup);
         
         $query = $this->session->prepare($sql);
         $query->execute();
@@ -209,6 +216,13 @@ class DatacenterDao implements DatacenterRepository{
         return $group;
     }
     
+    private function orderBy(array $params){
+        $orderBy = " ORDER BY";
+        $atts = $this->putAttOnSQLIfParamAllWasNotSelected($params);
+        $atts = substr($atts, 1);
+        $orderBy .= $atts . ", ano ASC";
+        return $orderBy;
+    }
     private function yearCondition($year){
         $sql = "ano ";
         if(is_array($year)){

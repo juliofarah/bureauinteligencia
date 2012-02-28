@@ -35,8 +35,12 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         $values3 = "(1990,2,1,3,2,1,2,250), ";
         $values4 = "(1991,2,1,3,2,1,2,300), ";
         $values5 = "(1990,2,2,1,1,1,1,200), ";
-        $values6 = "(1991,2,2,1,1,1,1,250)";
-        return $sql . $values1 . $values2 . $values3 . $values4 . $values5 . $values6;            
+        $values6 = "(1991,2,2,1,1,1,1,250), ";
+        $values7 = "(1990,2,1,3,2,1,3,200), ";
+        $values8 = "(1991,2,1,3,2,1,3,100)";
+        
+        return $sql . $values1 . $values3 . $values5 . $values7 . $values2 .  $values4 .  $values6 . $values8;
+        //return $sql . $values1 . $values2 . $values3 . $values4 . $values5 . $values6 . $values7 . $values8;
     }
     /**
      * @test
@@ -56,6 +60,41 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals($this->chart(), $chart);
     }
     
+    private function persistDataForSUM() {
+        //$data = new Data($year, $subgroup, $font, $type, $variety, $origin, $destiny);
+        $sql = "INSERT INTO data (ano, subgroup_id, font_id, type_id, variety_id, origin_id, destiny_id, value) VALUES ";
+        $values1 = "(1990,1,1,1,1,1,1,150), ";
+        $values2 = "(1991,1,1,1,1,1,1,200), ";
+        $values3 = "(1990,1,1,3,2,1,2,250), ";
+        $values4 = "(1991,1,1,3,2,1,2,300), ";
+        $values5 = "(1990,1,2,1,1,1,1,200), ";
+        $values6 = "(1991,1,2,1,1,1,1,250), ";
+        $values7 = "(1990,1,1,3,2,1,3,200), ";
+        
+        $values8 = "(1991,1,1,3,2,1,3,100)";
+        
+        return $sql . $values1 . $values3 . $values5 . $values7 . $values2 .  $values4 .  $values6 . $values8;
+    }
+        /**
+     * @test 
+     */
+    public function getSumForAQuery(){
+        $pdo = Connection::connectToTest();        
+        $this->emptyDatabase($pdo);
+        $pdo->prepare($this->persistDataForSUM())->execute();
+        
+        $sg = 1; $font = array(1,2); $type = array(1,3); $variety = array(1,2); $origin = 1; $years = array(1990,1991);
+        //$destiny = DatacenterRepository::ALL;
+        $destiny = array(1,2,3);
+        echo "\n\nTESTANDO SUM \n\n";                      
+        $destiny = DatacenterRepository::ALL;
+        echo "\n";
+        $tableJson = $this->controller->buildTableAsJson($sg, $font, $type, $variety, $origin, $destiny, $years);        
+        
+        echo "\n\nfim teste sum\n\n";
+        
+        $this->assertEquals($this->tableForOptionAll(), $tableJson);
+    }
     
     private function sqlToDistinctGroups(){
         $sql = "INSERT INTO data (ano, subgroup_id, font_id, type_id, variety_id, origin_id, destiny_id, value) VALUES ";
@@ -205,6 +244,26 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         $json .= ']';
         return $json;
     }    
+    
+    private function tableForOptionAll() {
+        
+        $json = '[{';
+        $json .= '"thead":[';
+        $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},';
+        $json .= '{"th":"1990"},{"th":"1991"}';
+        $json .= '],';
+        $json .= '"tbody":[';
+        $arabica = utf8_decode("Arábica");
+        $json .= '{"variety":"' . $arabica . '","type":"Verde","origin":"Brasil","destiny":"Todos",';
+        $json .= '"values":[{"value":150},{"value":200}]}';
+        $json .= ',{"variety":"' . $arabica . '","type":"Verde","origin":"Brasil","destiny":"Todos",';
+        $json .= '"values":[{"value":200},{"value":250}]}';        
+        $json .= ',{"variety":"Conilon","type":"'.  utf8_decode("Solúvel") .'","origin":"Brasil","destiny":"Todos",';
+        $json .= '"values":[{"value":450},{"value":400}]}';
+        $json .= ']';
+        $json .= '}]';
+        return $json;
+    }
     
     private function contentTable($withoutValue = false){
         $json = '{';
