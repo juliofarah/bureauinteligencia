@@ -155,7 +155,6 @@ class DatacenterDao implements DatacenterRepository{
         $sql .= $this->whereClauseForSumQuery($paramsToGroup, $years);
         $sql .= $this->groupBy($paramsToGroup);
         $sql .= $this->orderBy($paramsToGroup);
-        
         $query = $this->session->prepare($sql);
         $query->execute();
         return ($this->buildSimpleObjects($query->fetchAll(PDO::FETCH_ASSOC)));        

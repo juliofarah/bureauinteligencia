@@ -174,7 +174,7 @@ $(document).ready(function(){
 	});
 	
 	/* Quando clica em um grupo exibe o subgrupo e a fonte */
-	$('#grupo .options ul li').live('click', function(){
+	$('#grupo .options ul li').live('click', function(){                                    
 		$('#subgrupo .options ul').hide();
 		$('#fonte .options ul').hide();
 		$('#grupo .options ul li.sel').each(function(){
@@ -184,9 +184,9 @@ $(document).ready(function(){
 		
 		if ($(this).hasClass('sel')) {
 			$('#origem .options').append($('#origem .model ul').clone().attr('id', 'ordogrupo-'+$(this).attr('id')).
-			prepend('<li class="sg">'+$(this).html()+'</li>').show());
+			prepend('<li class="sg" grupo="'+$(this).html()+'">'+$(this).html()+'</li>').show());
 			$('#destino .options').append($('#destino .model ul').clone().attr('id', 'dedogrupo-'+$(this).attr('id')).
-			prepend('<li class="sg">'+$(this).html()+'</li>').show());
+			prepend('<li class="sg" grupo="'+$(this).html()+'">'+$(this).html()+'</li>').show());
 		} else {
 			$('#origem #ordogrupo-'+$(this).attr('id')).remove();
 			$('#destino #dedogrupo-'+$(this).attr('id')).remove();
@@ -197,17 +197,39 @@ $(document).ready(function(){
 				if ($(this).find('.sg').html() == group) {
 					$(this).find('li.sel').trigger('click');
 				}
-			});
-			
+			});			
 		}
 	});
 	
-	$('#subgrupo .options ul li').live('click', function(){
+	$('#subgrupo .options ul li').live('click', function(){                                    
 		if ($(this).hasClass('sel')) {
 			$('#variedade .options').append($('#variedade .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg">'+$(this).html()+'</li>').show());
 			$('#tipo .options').append($('#tipo .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg">'+$(this).html()+'</li>').show());
+                                                      if($("#grupo .options ul li.sel").length > 1){
+                                                          var thisGroup = $(this).parent().children("li.sg").html();
+                                                          var thisName = $(this).html();
+                                                          $("#origem .options ul li.sg").each(function(i, li){
+                                                              //alert($(li).html());
+                                                              if($(li).html() == thisGroup || $(li).attr('grupo') == thisGroup){                                                                  
+                                                                  $(li).html(thisName);
+                                                                  $(li).attr("grupo", thisGroup);
+                                                              }
+                                                          });
+                                                          $("#destino .options ul li.sg").each(function(i,li){
+                                                                if($(li).html() == thisGroup || $(li).attr('grupo') == thisGroup){
+                                                                    $(li).html(thisName);
+                                                                    $(li).attr('grupo', thisGroup);
+                                                                }
+                                                          });
+                                                          $("#fonte .options ul li.sg").each(function(i,li){
+                                                              if($(li).html() == thisGroup || $(li).attr('grupo') == thisGroup){
+                                                                  $(li).html(thisName);
+                                                                  $(li).attr('grupo',thisGroup);
+                                                              }
+                                                          });
+                                                      }
 		} else {
 			$('#variedade #dosubgrupo-'+$(this).attr('id')).remove();
 			$('#tipo #dosubgrupo-'+$(this).attr('id')).remove();
@@ -216,15 +238,21 @@ $(document).ready(function(){
 	
 	$('#origem .options ul li').live('click', function(){
 		if ($(this).parents('ul').find('.sel').length > 0) {
-			if ($(this).parents('ul').find('.sg').html() == 'Oferta'
-			 || $(this).parents('ul').find('.sg').html() == 'Demanda'
-			 || $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
-				$('#destino #'+$(this).parents('ul').attr('id').replace('ordogrupo', 'dedogrupo')).addClass('nosel');
+			//if ($(this).parents('ul').find('.sg').html() == 'Oferta'
+                                                        if($(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
+			 //|| $(this).parents('ul').find('.sg').html() == 'Demanda'
+                                                        || $(this).parents('ul').find('.sg').attr('grupo') == 'Demanda'
+			 //|| $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
+                                                        || $(this).parents('ul').find('.sg').attr('grupo') == 'Indicadores Econômicos'){
+                                                                $('#destino #'+$(this).parents('ul').attr('id').replace('ordogrupo', 'dedogrupo')).addClass('nosel');
 			}
 		} else {
-			if ($(this).parents('ul').find('.sg').html() == 'Oferta'
-			 || $(this).parents('ul').find('.sg').html() == 'Demanda'
-			 || $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
+			//if ($(this).parents('ul').find('.sg').html() == 'Oferta'
+                                                        if($(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
+			 //|| $(this).parents('ul').find('.sg').html() == 'Demanda'
+                                                       || $(this).parent('ul').find('.sg').attr('grupo') == 'Demanda'
+			 //|| $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
+                                                       || $(this).parents('ul').find('.sg').attr('grupo')== 'Demanda'){
 				$('#destino #'+$(this).parents('ul').attr('id').replace('ordogrupo', 'dedogrupo')).removeClass('nosel');
 			}
 		}
@@ -232,15 +260,21 @@ $(document).ready(function(){
 	
 	$('#destino .options ul li').live('click', function(){
 		if ($(this).parents('ul').find('.sel').length > 0) {
-			if ($(this).parents('ul').find('.sg').html() == 'Oferta'
-			 || $(this).parents('ul').find('.sg').html() == 'Demanda'
-			 || $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
+			//if ($(this).parents('ul').find('.sg').html() == 'Oferta'
+                                                       if( $(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
+			 //|| $(this).parents('ul').find('.sg').html() == 'Demanda'
+                                                       || $(this).parents('ul').find('.sg').attr('grupo') == 'Demanda'
+			 //|| $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
+                                                       || $(this).parents('ul').find('.sg').attr('grupo') == 'Indicadores Econômicos'){ 
 				$('#origem #'+$(this).parents('ul').attr('id').replace('dedogrupo', 'ordogrupo')).addClass('nosel');
 			}
 		} else {
-			if ($(this).parents('ul').find('.sg').html() == 'Oferta'
-			 || $(this).parents('ul').find('.sg').html() == 'Demanda'
-			 || $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
+			//if ($(this).parents('ul').find('.sg').html() == 'Oferta'
+                                                       if ($(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
+			 //|| $(this).parents('ul').find('.sg').html() == 'Demanda'
+                                                       || $(this).parents('ul').find('.sg').attr('grupo') == 'Demanda'
+			 //|| $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
+                                                       || $(this).parents('ul').find('.sg').attr('grupo') == 'Indicadores Econômicos'){ 
 				$('#origem #'+$(this).parents('ul').attr('id').replace('dedogrupo', 'ordogrupo')).removeClass('nosel');
 			}
 		}
@@ -434,7 +468,7 @@ $(document).ready(function(){
 					}
 				});
 
-				$('#origem .options li.sel').each(function(){
+				$('#origem .options li.sel').each(function(){                                                                                        
 					if ($(this).parents('ul').find('.sg').html() == group
 						|| $(this).parents('ul').find('.sg').html() == subgroup) {
 						data.origem.push($(this).attr('id'));
