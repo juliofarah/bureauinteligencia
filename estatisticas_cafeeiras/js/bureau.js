@@ -88,6 +88,7 @@ $(document).ready(function(){
 						$(data).each(function(i, param){
 							$('#fonte .options ul#dogrupo-'+id).append('<li id="'+param.id+'">'+param.name+'</li>');
 						});
+						$('#fonte .options ul#dogrupo-'+id).append('<li id="all">Todos</li>');
 					});
 			});
 		});
@@ -111,6 +112,7 @@ $(document).ready(function(){
 			$(data).each(function(i, param){
 				$('#origem .model ul').append('<li id="'+param.id+'">'+param.name+'</li>').hide();
 			});
+			$('#origem .model ul').append('<li id="all">Todos</li>');
 		});
 		
 	$.getJSON('../datacenter/param', {type: "destiny"},//, id: null},
@@ -118,6 +120,7 @@ $(document).ready(function(){
 			$(data).each(function(i, param){
 				$('#destino .model ul').append('<li id="'+param.id+'">'+param.name+'</li>').hide();
 			});
+			$('#destino .model ul').append('<li id="all">Todos</li>');
 		});
 	
 	/*var dates = $( "#from, #to" ).datepicker({
@@ -159,7 +162,7 @@ $(document).ready(function(){
 			} else {
 				// Se a opção selecionada for Todos, desmarca as outras opções
 				if ($(this).html() == 'Todos' || $(this).html() == 'Todas') {
-					$(this).parents('ul').find('li').removeClass('sel').css('background', 'none');
+					$(this).parents('ul').find('li.sel').removeClass('sel').css('background', 'none');
 				} else {
 					// Senão, procura por uma opção todos marcada
 					$(this).parents('ul').find("li:contains('Todos'), li:contains('Todas')").removeClass('sel').css('background', 'none');
