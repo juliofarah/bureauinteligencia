@@ -82,11 +82,23 @@ class DatacenterDao implements DatacenterRepository{
         $list = new ArrayObject();        
         foreach($values as $value){
             $subgroup = new Subgroup($value['subgroup']);
-            $font = new Font($value['font']);
+                        
             $type = new CoffeType($value['type']);
             $variety = new Variety($value['variety']);
-            $origin = new Country($value['origin']);
-            $destiny = new Country($value['destiny']);
+            
+            if(isset($_value['font']))
+                $font = new Font($value['font']);
+            else
+                $font = new Font("Todas");            
+            if(isset($value['origin']))
+                $origin = new Country($value['origin']);
+            else
+                $origin = new Country("Todos");
+            if(isset($value['destiny']))
+                $destiny = new Country($value['destiny']);
+            else
+                $destiny = new Country("Todos");
+            
             $data = new Data($value['ano'], $subgroup, $font, $type, $variety, $origin, $destiny);
             $data->setValue($value['value']);
             $list->append($data);
@@ -126,6 +138,75 @@ class DatacenterDao implements DatacenterRepository{
         $query = $this->session->prepare($sql);
         $query->execute();
         return $this->buildSimpleObjects($query->fetchAll(PDO::FETCH_ASSOC));
+    }
+    
+    public function getValuesWhenTheOptionAllWasSelected($sg, $variety, $type, $origin, $destiny, $font, $years) {
+        $paramsToGroup = array("font" => $font, "origin" => $origin, "destiny" => $destiny);
+        $sql = $this->selectForSumQuery($paramsToGroup);
+        $sql .= " FROM data value ";
+        $sql .= $this->leftOuterJoin();
+        $paramsToGroup["subgroup"] = $sg; $paramsToGroup["variety"] = $variety; $paramsToGroup["type"] = $type;
+        $sql .= $this->whereClauseForSumQuery($paramsToGroup, $years);
+        $sql .= $this->groupBy($paramsToGroup);
+        
+        $query = $this->session->prepare($sql);
+        $query->execute();
+        return ($this->buildSimpleObjects($query->fetchAll(PDO::FETCH_ASSOC)));        
+    }
+    
+    private function selectForSumQuery(array $params){
+        $sql = "SELECT SUM(value.value) AS value, value.ano, value.subgroup_id, value.variety_id, value.type_id";
+        $sql .= $this->putAttOnSQLIfParamAllWasNotSelected($params);
+        
+        $sql .= ", subgroup.name AS subgroup, coffetype.name AS type, variety.name AS variety";
+        $sql .= $this->putJoinAttonSQLIfParamAllWasNotSelected($params);
+        return $sql;
+    }
+    
+    private function putJoinAttonSQLIfParamAllWasNotSelected(array $params){
+        $joinParams = "";
+        foreach($params as $nameParam => $valueParam){
+            if($this->paramIsNotForAll($valueParam))
+                $joinParams .= ", " . $nameParam . ".name AS $nameParam";                
+        }
+        return $joinParams;
+    }
+    
+    private function putAttOnSQLIfParamAllWasNotSelected(array $params){
+        $sql = "";        
+        foreach($params as $nameParam => $valueParam){
+            if($this->paramIsNotForAll($valueParam))
+                $sql .= ", value.".$nameParam."_id";
+        }
+        return $sql;
+    }
+    
+    private function paramIsNotForAll($param){
+        return $param != DatacenterRepository::ALL;
+    }
+    
+    private function whereClauseForSumQuery(array $params, array $years){
+        $where = " WHERE ";
+        $where .= $this->in("value.subgroup_id", $params["subgroup"]);
+        $where .= "AND " . $this->in("value.variety_id", $params["variety"]);
+        $where .= "AND " . $this->in("value.type_id", $params["type"]);        
+        
+        if($this->paramIsNotForAll($params["font"]))
+            $where .= "AND " . $this->in("value.font_id", $params["font"]);
+        if($this->paramIsNotForAll($params["origin"]))
+            $where .= "AND " . $this->in ("value.origin_id", $params["origin"]);
+        if($this->paramIsNotForAll($params["destiny"]))
+            $where .= "AND ".$this->in (("value.destiny_id"), $params['destiny']);
+        $where .= "AND " . $this->yearCondition($years);
+        
+        return $where;
+    }
+    
+    private function groupBy(array $params){
+        $group = "GROUP BY ano";
+        $groupByAtts = $this->putAttOnSQLIfParamAllWasNotSelected($params);
+        $group .= $groupByAtts;
+        return $group;
     }
     
     private function yearCondition($year){

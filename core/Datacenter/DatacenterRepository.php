@@ -5,6 +5,7 @@
  */
 interface DatacenterRepository {
 
+    const ALL = "all";
     /**
      * @return ArrayIterator
      */
@@ -19,6 +20,8 @@ interface DatacenterRepository {
      * @return boolean
      */
     public function save(ArrayObject $dataList);
+    
+    public function getValuesWhenTheOptionAllWasSelected($sg, $variety, $type, $origin, $destiny, $font, $year);
     
     /**
      * @return ArrayIterator

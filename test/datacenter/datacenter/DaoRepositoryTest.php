@@ -45,8 +45,10 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $values3 = "(1990,1,1,3,2,1,2,250), ";
         $values4 = "(1991,1,1,3,2,1,2,300), ";
         $values5 = "(1990,1,2,1,1,1,1,200), ";
-        $values6 = "(1991,1,2,1,1,1,1,250)";
-        return $sql . $values1 . $values2 . $values3 . $values4 . $values5 . $values6;
+        $values6 = "(1991,1,2,1,1,1,1,250), ";
+        $values7 = "(1990,1,1,3,2,1,3,200), ";
+        $values8 = "(1991,1,1,3,2,1,3,100)";
+        return $sql . $values1 . $values2 . $values3 . $values4 . $values5 . $values6 . $values7 . $values8;
     }
     
     /**
@@ -102,6 +104,20 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
     }
     
     /**
+     * @test 
+     */
+    public function getValuesWhenAParameterIsALL(){
+        //when the user selects the option "Todos" for the destiny countries
+        $sg = 1; $font = array(1,2); $type = array(1,3); $variety = array(1,2); $origin = 1; $years = array(1990,1991);
+        $destiny = DatacenterRepository::ALL;
+        
+        $values = $this->daoRepository->getValuesWhenTheOptionAllWasSelected($sg, $variety, $type, $origin, $destiny, $font, $years);
+   
+        $this->assertEquals(400, $values->offsetGet(4)->getValue());
+        $this->assertEquals(450, $values->offsetGet(1)->getValue());
+    }
+    
+    /**
      * @test
      */
     public function testInsertValues(){
@@ -134,6 +150,7 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
     
     private function populatesDatabase() {
         //echo $this->persistDataForTest();
+        echo $this->persistDataForTest();
         $this->connection->prepare($this->persistDataForTest())->execute();
     }
 
