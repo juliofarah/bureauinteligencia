@@ -9,12 +9,13 @@ interface DatacenterRepository {
     /**
      * @return ArrayIterator
      */
-    public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font, $year = null);
+    //public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font, $year = null);    
+    public function getValuesWithSimpleFilter($params, $years = null);
     
     /**
      * @return ArrayIterator
      */
-    public function getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, $year = null);
+    public function getValuesWithMultipleParamsSelected($params, $year = null);
     
     /**
      * @return boolean

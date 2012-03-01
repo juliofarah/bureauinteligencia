@@ -44,17 +44,18 @@ class DatacenterDao implements DatacenterRepository{
         return $query->rowCount() > 0;
     }
     
-    
+    /**
+     * @return DataParam
+     */
+    private function castDataParam($dataParam){
+        return $dataParam;
+    }
     /**     
-     * @param type $subgroup
-     * @param type $variety
-     * @param type $type
-     * @param type $origin
-     * @param type $destiny
-     * @param type $font
+     * @param DataParam $subgroup
      * @return ArrayIterator 
      */
-    public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font, $year = null) {
+    //public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font, $year = null) {
+    public function getValuesWithSimpleFilter($params, $years = null){
         $sql = "SELECT ".$this->allParams();
         $sql .= " FROM data value ";
         $sql .= $this->leftOuterJoin();
@@ -65,14 +66,30 @@ class DatacenterDao implements DatacenterRepository{
         $sql .= "AND value.origin_id = :origin ";
         $sql .= "AND value.destiny_id = :destiny ";
         $sql .= "AND value.font_id = :font";
-        if($year != null)
-            $sql .= " AND ".$this->yearCondition($year); 
+        if($years != null)
+            $sql .= " AND ".$this->yearCondition($years); 
         $sql .= " ORDER BY origin, destiny, variety, type, font, subgroup, ano ASC";
-        
-        $query = $this->session->prepare($sql);
-        $query->execute(array(":subgroup"=>$subgroup,":variety"=>$variety,":type"=>$type,
-                        ":origin"=>$origin,":destiny"=>$destiny,":font"=>$font));
+    
+        $query = $this->query($params, $sql);
+        $query->execute();
         return $this->buildSimpleObjects($query->fetchAll(PDO::FETCH_ASSOC));
+    }
+    
+    /**
+     *
+     * @param type $params
+     * @param type $sql
+     * @return PDOStatement
+     */
+    private function query(DataParam $params, $sql){
+        $query = $this->session->prepare($sql);                
+        $query->bindParam(":subgroup", $params->getSubgroup());
+        $query->bindParam(":variety", $params->getVariety());
+        $query->bindParam(":type", $params->getType());
+        $query->bindParam(":origin", $params->getOrigin());
+        $query->bindParam(":destiny", $params->getDestiny());
+        $query->bindParam(":font", $params->getFont());
+        return $query;
     }
     
     /**
@@ -124,17 +141,19 @@ class DatacenterDao implements DatacenterRepository{
         return $sql;
     }
         
-    public function getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, $year = null) {
+    //public function getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, $year = null) {
+    public function getValuesWithMultipleParamsSelected($params, $year = null) { 
+        $params = $this->castDataParam($params);
         $sql = "SELECT ".$this->allParams();
         $sql .= "FROM data value ";
         $sql .= $this->leftOuterJoin();
         $sql .= " WHERE ";
-        $sql .= $this->in("value.subgroup_id", $subgroup);
-        $sql .= "AND ".$this->in("value.variety_id", $variety);
-        $sql .= "AND ".$this->in("value.type_id", $type);
-        $sql .= "AND ".$this->in("value.origin_id", $origin);
-        $sql .= "AND ".$this->in("value.destiny_id", $destiny);
-        $sql .= "AND ".$this->in("value.font_id", $font);
+        $sql .= $this->in("value.subgroup_id", $params->getSubgroup());
+        $sql .= "AND ".$this->in("value.variety_id", $params->getVariety());
+        $sql .= "AND ".$this->in("value.type_id", $params->getType());
+        $sql .= "AND ".$this->in("value.origin_id", $params->getOrigin());
+        $sql .= "AND ".$this->in("value.destiny_id", $params->getDestiny());
+        $sql .= "AND ".$this->in("value.font_id", $params->getFont());
         if($year != null)
             $sql .= "AND ".$this->yearCondition($year);
         $sql .= " ORDER BY origin, destiny, variety, type, font, subgroup, ano ASC";

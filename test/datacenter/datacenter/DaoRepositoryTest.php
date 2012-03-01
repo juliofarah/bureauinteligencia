@@ -1,8 +1,7 @@
 <?php
-
 require_once '../../core/DataBase/Connection.php';
 require_once '../../core/Datacenter/DatacenterDao.php';
-
+require_once '../../core/Datacenter/DataParam.php';
 /**
  * Description of DaoRepositoryTest
  *
@@ -31,10 +30,14 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
     public function getValuesWithoutMultiParams() {
         $this->populatesDatabase();//Insert values on Database in the first test
         $subgroup = $variety = $type = $origin = $destiny = $font = 1;
-        $values = $this->daoRepository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font, array(1989,1991));
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+        echo "\n\nrepository\n\n";
+        echo $dataParam->getSubgroup();
+        $values = $this->daoRepository->getValuesWithSimpleFilter($dataParam, array(1989,19091));
         $this->assertEquals(2, $values->count());
         $this->assertTrue($values->offsetGet(0) instanceof Data && $values->offsetGet(0) instanceof Data);
-        $this->assertEquals(150, $values->offsetGet(0)->getValue());
+        $this->assertEquals(150, $values->offsetGet(0)->getValue());        
+        echo "\\n\n------\n\n";   
     }
 
     private function persistDataForTest() {
@@ -60,7 +63,8 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $variety = 2;
         $origin = 1;
         $destiny = 2;
-        $values = $this->daoRepository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font, array(1988,1991));
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+        $values = $this->daoRepository->getValuesWithSimpleFilter($dataParam, array(1988,1991));
         $this->assertEquals(2, $values->count());
         $this->assertTrue($values->offsetGet(0) instanceof Data && $values->offsetGet(0) instanceof Data);
         $this->assertEquals(300, $values->offsetGet(1)->getValue());
@@ -76,13 +80,15 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $variety = array(1,2);
         $origin = 1;
         $destiny = 1;
-        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, array(1988,1991));
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($dataParam, array(1988,1991));
         $this->assertEquals(2, $values->count());
         $this->assertEquals(200, $values->offsetGet(1)->getValue());
         
         //change de destiny country
         $destiny = array(1,2);
-        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, array(1989,1991));
+        $dataParam2 = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($dataParam2, array(1989,1991));
         $this->assertEquals(4, $values->count());
         $this->assertEquals(300, $values->offsetGet(3)->getValue());
     }
@@ -97,7 +103,8 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $origin = 1; 
         $destiny = array(1,2);
         $year = array(1989, 1990);
-        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font, $year);
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+        $values = $this->daoRepository->getValuesWithMultipleParamsSelected($dataParam, $year);
         $this->assertEquals(1,$values->count());
         $this->assertEquals(150,$values->offsetGet(0)->getValue());
         $this->assertEquals(1990,$values->offsetGet(0)->getYear());
@@ -130,11 +137,12 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $list->append($this->newData(1992, 458));
         $this->daoRepository->save($list);
         echo "\n\n------------teste insert\n\n";
-        $values = $this->daoRepository->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1);
+        $dataParam = new DataParam(1, 1, 1, 1, 1, 1);
+        $values = $this->daoRepository->getValuesWithSimpleFilter($dataParam);
         $this->assertEquals(3,$values->count());
-        $values = $this->daoRepository->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1, array(1991,1992));
+        $values = $this->daoRepository->getValuesWithSimpleFilter($dataParam, array(1991,1992));
         $this->assertEquals(2,$values->count());
-        $values = $this->daoRepository->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1, 1990);        
+        $values = $this->daoRepository->getValuesWithSimpleFilter($dataParam, 1990);        
         $this->assertEquals(1,$values->count());
         $this->assertEquals(1990, $values->offsetGet(0)->getYear());
     }
@@ -161,7 +169,8 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
 
     public function __destruct() {
         $this->emptyDatabase();
-        $values = $this->daoRepository->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1, 1990);       
+        $dataparam = new DataParam(1, 1, 1, 1, 1, 1);
+        $values = $this->daoRepository->getValuesWithSimpleFilter($dataparam, 1990);       
         if($values->count() > 0)
             die('erro ao limpar database');    
     }

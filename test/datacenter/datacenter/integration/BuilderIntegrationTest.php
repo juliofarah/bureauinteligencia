@@ -47,7 +47,10 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
      */
     public function tableTest(){
         $this->populatesDatabase();
-        $tableJson = $this->controller->buildTableAsJson(array(1,2), 1, 1, 1, 1, 1, array(1990,1993));
+        $subgroup=array(1,2);$font=1;$type=1;$variety=1;$origin=1;$destiny=1;
+        $dataParam = new DataParam($subgroup, $font,$type,$variety,$origin,$destiny);
+        
+        $tableJson = $this->controller->buildTableAsJson($dataParam, array(1990,1993));
         $this->assertEquals($this->table(), $tableJson);
     }
     
@@ -55,7 +58,8 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function chartTest(){
-        $chart = $this->controller->buildChart(array(1,2), 1, 1, 1, 1, 1, array(1990,1993));
+        $dataParam = new DataParam(array(1,2), 1, 1, 1, 1, 1);
+        $chart = $this->controller->buildChart($dataParam, array(1990,1993));
         $chart = trim(str_replace('<?xml version="1.0"?>', '', $chart));
         $this->assertEquals($this->chart(), $chart);
     }
@@ -89,7 +93,8 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         echo "\n\nTESTANDO SUM \n\n";                      
         $destiny = DatacenterRepository::ALL;
         echo "\n";
-        $tableJson = $this->controller->buildTableAsJson($sg, $font, $type, $variety, $origin, $destiny, $years);        
+        $dataParam = new DataParam($sg,$font,$type,$variety,$origin,$destiny);
+        $tableJson = $this->controller->buildTableAsJson($dataParam, $years);        
         
         echo "\n\nfim teste sum\n\n";
         
@@ -138,8 +143,14 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         $tableJson = "";
         $years = array(1990,1991);
         $paramsGroup1 = array("subgroup"=>8,"font"=>1,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
+        $dataParams_1 = new DataParam();
+        $dataParams_1->setParams($paramsGroup1);
+        
         $paramsGroup2 = array("subgroup"=>9,"font"=>2,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
-        $tableJson = $this->controller->buildTableSearchingDistinctGroups($paramsGroup1, $paramsGroup2, $years);
+        $dataParams_2 = new DataParam();
+        $dataParams_2->setParams($paramsGroup2);
+        
+        $tableJson = $this->controller->buildTableSearchingDistinctGroups($dataParams_1, $dataParams_2, $years);
         $this->assertEquals($this->tableAlternative(),$tableJson);
     }
     
@@ -151,7 +162,14 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         $paramsGroup1 = array("subgroup"=>8,"font"=>1,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
         $paramsGroup2 = array("subgroup"=>9,"font"=>2,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
         $paramsGroup1["font"] = 2; $paramsGroup2["font"] = 1;
-        $chart = $this->controller->buildChartSearchingDistinctGroups($paramsGroup1,$paramsGroup2,$years);
+        
+        $dataParam1 = new DataParam();
+        $dataParam1->setParams($paramsGroup1);
+        
+        $dataParam2 = new DataParam();
+        $dataParam2->setParams($paramsGroup2);
+        
+        $chart = $this->controller->buildChartSearchingDistinctGroups($dataParam1, $dataParam2,$years);
         $chart = trim(str_replace('<?xml version="1.0"?>', '', $chart));
         $this->assertEquals($this->alternativeChart(),$chart);
     }
@@ -164,7 +182,13 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         $years = array(1990,1991);
         $paramsGroup1 = array("subgroup"=>8,"font"=>1,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
         $paramsGroup2 = array("subgroup"=>9,"font"=>2,"type"=>1,"variety"=>1,"origin"=>1,"destiny"=>1);
-        $tableJson = $this->controller->buildStatisticTableSearchingDistinctGroups($paramsGroup1,$paramsGroup2,$years);
+        
+        $dataParam1 = new DataParam();
+        $dataParam1->setParams($paramsGroup1);       
+        $dataParam2 = new DataParam();
+        $dataParam2->setParams($paramsGroup2);
+        
+        $tableJson = $this->controller->buildStatisticTableSearchingDistinctGroups($dataParam1,$dataParam2,$years);
         $this->assertEquals($this->tableAlternative(true),$tableJson);
     }
     
@@ -245,8 +269,7 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         return $json;
     }    
     
-    private function tableForOptionAll() {
-        
+    private function tableForOptionAll() {        
         $json = '[{';
         $json .= '"thead":[';
         $json .= '{"th":"Variedade"},{"th":"Tipo"},{"th":"Origem"},{"th":"Destino"},{"th":"Fonte"},';

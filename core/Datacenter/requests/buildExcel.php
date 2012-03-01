@@ -12,15 +12,10 @@ error_reporting(E_ALL ^ E_NOTICE);
     require_once 'util/excel/reader/excel_reader2.php';    
 ?>
 <?
-    $subgroup = $_GET['subgrupo']; 
-    $font = $_GET['fonte'];
-    $type = $_GET['tipo'];
-    $variety = $_GET['variedade']; 
-    $origin = $_GET['origem'];
-    $destiny = $_GET['destino']; 
     $years = $_GET['ano'];
 ?>
 <?php
-    $json = $controller->getExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, $years);
+     $dataParam = fillParams($_GET, $subgroup, $font, $type, $variety, $origin, $destiny);
+    $json = $controller->getExcelTable($dataParam, $years);
     echo $json;
 ?>

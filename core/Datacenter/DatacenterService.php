@@ -45,7 +45,8 @@ class DatacenterService {
             }else{
                 $origin = $this->countryMap->getCountryId($country);
             }
-            $dataOfCurrentCountry = $this->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font);
+            $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+            $dataOfCurrentCountry = $this->getValuesWithSimpleFilter($dataParam);
             $yearsToInsert = $this->insertValuesIfACountryDoesNotHaveItStoredYet($dataOfCurrentCountry, $excelInputFile, $country);
             if($yearsToInsert->count() > 0){         
                 $this->getDataToSave($dataToSave,$yearsToInsert, $excelInputFile, $country, $subgroup, $font, $type, $variety, $origin, $destiny);
@@ -97,54 +98,44 @@ class DatacenterService {
     
     /**     
      * Este método faz a consultas no repositório que são filtradas apenas por um item de cada variável
-     * @param type $subgroup
-     * @param type $variety
-     * @param type $type
-     * @param type $origin
-     * @param type $destiny
-     * @param type $font
+     * @param DataParam $params
+     * @param array $years
      * @return ArrayIterator 
      */
-    public function getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font,array $years = null) {
-        if($this->theOptionAllHasBeenSelected($subgroup, $variety, $type, $origin, $destiny, $font)){
-            return $this->repository->getValuesWhenTheOptionAllWasSelected($subgroup, $variety, $type, $origin, $destiny, $font, $years);
+    public function getValuesWithSimpleFilter(DataParam $params, array $years = null){
+        if($params->theOptionAllHasBeenSelected()){
+            return $this->repository->getValuesWhenTheOptionAllWasSelected($params->getSubgroup(),$params->getVariety(), $params->getType(), $params->getOrigin(), $params->getDestiny(), $params->getFont(), $years);
         }
-        return $this->repository->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font,$years);
+        return $this->repository->getValuesWithSimpleFilter($params,$years);        
     }
-    
-    private function theOptionAllHasBeenSelected(){
-        $numberOfParams = func_num_args();
-        for ($i = 0; $i < $numberOfParams; $i++){
-            if(func_get_arg($i) == DatacenterRepository::ALL)
-                return true;
-        }
-        return false;
-    }
+
     /**
      *
-     * @param type $subgroup    
-     * @param type $variety
-     * @param type $type
-     * @param type $origin
-     * @param type $destiny
-     * @param type $font
+     * @param DataParam $params    
+     * @param array $years
      * @return ArrayIterator
      */
-    public function getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font,array $years = null) {
-        if(is_array($subgroup)){
-            $listValues1 = $this->repository->getValuesWithMultipleParamsSelected($subgroup[0], $variety, $type, $origin, $destiny, $font,$years);
-            $listValues2 = $this->repository->getValuesWithMultipleParamsSelected($subgroup[1], $variety, $type, $origin, $destiny, $font,$years);
+    public function getValuesFilteringWithMultipleParams(DataParam $params, array $years){
+        if(is_array($params->getSubgroup())){       
+            $subgroup = $params->getSubgroup();
+            $paramsForList1 = $params; 
+            $paramsForList1->setSubgroup($subgroup[0]);            
+            $listValues1 = $this->repository->getValuesWithMultipleParamsSelected($paramsForList1,$years);
+            $paramsForList2 = $params;
+            $paramsForList2->setSubgroup($subgroup[1]);
+            $listValues2 = $this->repository->getValuesWithMultipleParamsSelected($paramsForList2,$years);
             $map = new HashMap();
             $map->put(0, $listValues1);
             $map->put(1, $listValues2);
             return $map;
         }else{
-            if($this->theOptionAllHasBeenSelected($variety, $type, $origin, $destiny, $font)){
-                $listValues = $this->repository->getValuesWhenTheOptionAllWasSelected($subgroup, $variety, $type, $origin, $destiny, $font, $years);
-            }else
-                $listValues = $this->repository->getValuesWithMultipleParamsSelected($subgroup, $variety, $type, $origin, $destiny, $font,$years);        
+            if($params->theOptionAllHasBeenSelected()){                          
+                $listValues = $this->repository->getValuesWhenTheOptionAllWasSelected($params->getSubgroup(),$params->getVariety(), $params->getType(), $params->getOrigin(), $params->getDestiny(), $params->getFont(), $years);
+            }else{                
+                $listValues = $this->repository->getValuesWithMultipleParamsSelected($params,$years);        
+            }
             return $listValues;           
-        }
+        }        
     }
 }
 ?>

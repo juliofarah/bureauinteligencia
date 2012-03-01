@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Description of DatacenterController
  *
@@ -61,8 +60,8 @@ class DatacenterController {
     }
     
     //GET ://datacenter/chart
-    public function getChart($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
-        $xmlChart = $this->buildChart($subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    public function getChart(DataParam $dataParam, array $years){
+        $xmlChart = $this->buildChart($dataParam, $years);
         return $this->buildChartJsonResponse($xmlChart);
     }
     
@@ -79,8 +78,8 @@ class DatacenterController {
     }
     
     //GET ://datacenter/table
-    public function getTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
-        $jsonTable = $this->buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    public function getTable(DataParam $params, array $years){
+        $jsonTable = $this->buildTableAsJson($params, $years);
         return $this->buildTableJsonResponse($jsonTable);                
     }
 
@@ -96,8 +95,8 @@ class DatacenterController {
     }
     
     // table statistics
-    public function getStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
-        $jsonTable = $this->buildStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    public function getStatisticTable(DataParam $params, array $years){
+        $jsonTable = $this->buildStatisticTable($params, $years);
         return $this->buildTableJsonResponse($jsonTable);
     }
     
@@ -107,8 +106,8 @@ class DatacenterController {
     }
     
     //GET ://datacenter/spreadsheet
-    public function getExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
-        $spreadsheetName = $this->buildExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    public function getExcelTable(DataParam $params, array $years){
+        $spreadsheetName = $this->buildExcelTable($params, $years);
         $path = LinkController::getBaseURL() . "/" . $spreadsheetName;
         return $this->jsonResponse->response(true, null)
                                   ->addValue("planilha",$path)
@@ -140,24 +139,24 @@ class DatacenterController {
     }
         
     /**actions**/
-    
-    public function buildChart($subgroup, $font, $type, $variety, $origin, $destiny, $years) {
-        return $this->buildAnything("chart", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    //chart
+    public function buildChart(DataParam $params, array $years){
+        return $this->buildAnything("chart", $params, $years);
     }
     
-    public function buildStatisticTable($subgroup, $font, $type, $variety, $origin, $destiny,array $years = null){
-        return $this->buildAnything("statistic", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    public function buildStatisticTable(DataParam $params,array $years = null){
+        return $this->buildAnything("statistic", $params, $years);
     }
     
-    public function buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny,array $years = null) {
-        return $this->buildAnything("table", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    public function buildTableAsJson(DataParam $params, array $years) {
+        return $this->buildAnything("table", $params, $years);
     }
     
-    public function buildExcelTable($subgroup, $font, $type, $variety, $origin, $destiny, array $years){
-        return $this->buildAnything("spreadsheet", $subgroup, $font, $type, $variety, $origin, $destiny, $years);
+    public function buildExcelTable(DataParam $param, array $years){
+        return $this->buildAnything("spreadsheet", $param, $years);
     }
 
-    public function buildTableSearchingDistinctGroups($g1, $g2, $years) {
+    public function buildTableSearchingDistinctGroups(DataParam $g1, DataParam $g2, $years) {
         $groups = array($g1,$g2);
         return $this->generalBuilderForTwoDifferentGroupsSelected("table", $groups, $years);
     }
@@ -174,18 +173,18 @@ class DatacenterController {
 
     private function generalBuilderForTwoDifferentGroupsSelected($builderType, array $groups, $years){
         $array_groups = array();
-        foreach($groups as $g){
-            $group_values = $this->getValues($g["subgroup"],$g['font'],$g['type'],$g['variety'],$g['origin'],$g['destiny'],$years);
+        foreach($groups as $params){
+            $group_values = $this->getValues($params, $years);
             $group = $this->grouper->groupDataValues($this->getListAsAnArrayObject($group_values));
             array_push($array_groups, $group);
         }
         return $this->buildForGroupedData($builderType, $array_groups, $years);        
     }
     
-    private function buildAnything($builderType, $subgroup, $font, $type, $variety, $origin, $destiny,array $years = null){        
+    private function buildAnything($builderType, DataParam $params ,array $years = null){        
         $asJson = $this->asJson;
         $this->asJson = false;
-        $values = $this->getValues($subgroup, $font, $type, $variety, $origin, $destiny,$years);        
+        $values = $this->getValues($params,$years);
         $this->asJson = $asJson;
         if($values instanceof HashMap){
             $listValues = $values->values();
@@ -218,43 +217,30 @@ class DatacenterController {
         }
         return $list;
     }
- 
-    public function getValues($subgroup, $font, $type, $variety, $origin, $destiny,array $years = null) {
-        if(!$this->anyValueIsAnArray($subgroup, $font, $type, $variety, $origin, $destiny)){
-            return $this->getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny,$years);
+    
+    public function getValues(DataParam $params,array $years = null) {
+        if(!$params->anyValueIsArray()){
+            return $this->getValuesWithSimpleParams($params,$years);
         }else{            
-            if(is_array($subgroup)){                
-                return $this->getValuesFilteringByTwoSubgroups($subgroup, $font, $type, $variety, $origin, $destiny,$years);
-            }else{                
-                return $this->getValuesWithMultipleParams($subgroup, $font, $type, $variety, $origin, $destiny,$years);
-            }
+                return $this->getValuesWithMultipleParams($params,$years);
         }
     }
     
-    private function anyValueIsAnArray($subgroup, $font, $type, $variety, $origin, $destiny){
-        return (is_array($subgroup) || is_array($font) || is_array($type) || is_array($variety) 
-                || is_array($origin) || is_array($destiny));
-    }
-    
-    public function getValuesWithSimpleParams($subgroup, $font, $type, $variety, $origin, $destiny,array $years = null) {
-        $values = $this->datacenterService->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font,$years);
+    public function getValuesWithSimpleParams(DataParam $params, array $years){
+        $values = $this->datacenterService->getValuesWithSimpleFilter($params,$years);        
         if($this->asJson)
             return $this->toJson($values);        
         return $values;
     }
-        
-    public function getValuesWithMultipleParams($subgroup, $font, $type, $variety, $origin, $destiny,array $years = null) {
-        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font,$years);
-        if($this->asJson)
-            return $this->toJson($values);        
-        return $values;
-    }
-        
-    public function getValuesFilteringByTwoSubgroups(array $subgroup, $font, $type, $variety, $origin, $destiny, array $years = null) {
-        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font,$years);
-        if($this->asJson)
-            return $this->hashMapFilteredToJSON($values);
-        return $values;
+   
+    public function getValuesWithMultipleParams(DataParam $params, array $years){
+        $values = $this->datacenterService->getValuesFilteringWithMultipleParams($params,$years);
+        if($this->asJson){
+            if($values instanceof HashMap)
+                return $this->hashMapFilteredToJSON($values);
+            return $this->toJson($values);
+        }
+        return $values;        
     }
     
     public function calculateSampleStandardDeviation($group){

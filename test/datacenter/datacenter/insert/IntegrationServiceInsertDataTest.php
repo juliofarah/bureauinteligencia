@@ -36,7 +36,9 @@ class IntegrationServiceInsertDataTest extends PHPUnit_Framework_TestCase{
         $service = new DatacenterService($this->dao, $countryMap);
         $this->emptyDatabase();
         $service->insertValues($this->inputFile, 1, 1, 1, 1, 1);
-        $values = $service->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1);
+                                                                                
+        $dataParam = new DataParam(1, 1, 1, 1, 1, 1);
+        $values = $service->getValuesWithSimpleFilter($dataParam);
         $this->assertEquals(2, $values->count());
     }
     
@@ -50,14 +52,16 @@ class IntegrationServiceInsertDataTest extends PHPUnit_Framework_TestCase{
         $countryMap = new CountryMap();
         $service = new DatacenterService($this->dao, $countryMap);
         $service->insertValues($this->inputFile, 1, 1, 1, 1, 1);
-        $this->assertEquals(2, $service->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1)->count());
+        $dataParam = new DataParam(1, 1, 1, 1, 1, 1);
+        $this->assertEquals(2, $service->getValuesWithSimpleFilter($dataParam)->count());
         $this->emptyDatabase();
         
         $file = __DIR__."/Teste.xls";
         $this->spreadsheetReader = new Spreadsheet_Excel_Reader($file);
         $this->inputFile->setNewSpreadsheet($this->spreadsheetReader);
         $service->insertValues($this->inputFile, 1, 1, 1, 1, 1);
-        $this->assertEquals(4, $service->getValuesWithSimpleFilter(1, 1, 1, 1, 1, 1)->count());
+        $dataParam_2 = new DataParam(1, 1, 1, 1, 1, 1);
+        $this->assertEquals(4, $service->getValuesWithSimpleFilter($dataParam_2)->count());
     }
 }
 

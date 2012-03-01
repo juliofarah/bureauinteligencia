@@ -1,6 +1,7 @@
 <?php
 require_once '../../core/Datacenter/DatacenterController.php';
 require_once '../../core/Datacenter/Builder.php';
+//require_once '../../core/Datacenter/DataParam.php';
 /**
  * Description of DataCenterControllerTest
  *
@@ -77,21 +78,22 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
     public function getValuesWithSimpleParams(){        
         $this->controller->getValuesAsJson();
         $subgroup = $font = $type = $variety = $origin = $destiny = 1;
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
         $this->assertEquals($this->simpleQueryJsonExpected(),
-                $this->controller->getValuesWithSimpleParams($subgroup,$font,$type,$variety,$origin,$destiny));
+                $this->controller->getValuesWithSimpleParams($dataParam, array(1,2)));
     }
-    
+       
     /**
      * @test
      */
     public function getValuesWithMultipleParams(){
         //$this->mockObjects();
-
         $this->controller->getValuesAsJson();
         $subgroup = $font = $type = $origin = 1;
         $variety = $destiny = array(1,2);
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
         $this->assertEquals($this->multipleParamsJsonExpected(),
-                            $this->controller->getValuesWithMultipleParams($subgroup, $font, $type, $variety, $origin, $destiny));
+                        $this->controller->getValuesWithMultipleParams($dataParam, array(1,2)));
     }
     
     /**
@@ -113,8 +115,9 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $subgroup = array(1,8);
         $type = $font = $origin = $destiny = 1;        
         $variety = array(1,2);        
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
         $this->assertEquals($this->twoSubgroupsJsonExepcted(), 
-                    $this->controller->getValuesFilteringByTwoSubgroups($subgroup, $font, $type, $variety, $origin, $destiny));        
+                    $this->controller->getValuesWithMultipleParams($dataParam, array(1,2)));        
     }
     
     /**
@@ -123,12 +126,14 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
     public function makeControllerRedirectToCorrectMethodAccordingToParams(){          
         $this->controller->getValuesAsJson();
         $subgroup = $font = $type = $variety = $origin = $destiny = 1;
-        $this->assertEquals($this->simpleQueryJsonExpected(), $this->controller->getValues($subgroup, $font, $type, $variety, $origin, $destiny));        
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+        $this->assertEquals($this->simpleQueryJsonExpected(), $this->controller->getValues($dataParam, array(1,2)));        
         $variety = array(1,2,3);
         $type = array(1,2);
         $destiny = array(6,7,8,9);
+        $dataParam_2 = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
         $this->assertEquals($this->multipleParamsJsonExpected(), 
-                $this->controller->getValues($subgroup, $font, $type, $variety, $origin, $destiny));
+                $this->controller->getValues($dataParam_2, array(1,2)));
     }
     
     /**
@@ -151,8 +156,10 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $type = array(1,2);
         $destiny = array(6,7,8,9);
         $subgroup = array(1,2);
+        
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
         $this->assertEquals($this->twoSubgroupsJsonExepcted(), 
-                $this->controller->getValues($subgroup, $font, $type, $variety, $origin, $destiny));
+                $this->controller->getValues($dataParam, array(1,2)));
     }
     
     /**
@@ -181,13 +188,13 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         $this->stubTableJsonBuilder($TableJsonBuilder, $subgroup);
         $this->stubBuilderFactory($builderFactory,$TableJsonBuilder);
         
-        
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
         $this->assertEquals($this->singleTableJSONModel(), 
-                $controller->buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny,$years));
+                $controller->buildTableAsJson($dataParam,$years));
         $subgroup = array(1,2);        
         
         $this->assertEquals($this->doubleTableJSONModel(), 
-                $controller->buildTableAsJson($subgroup, $font, $type, $variety, $origin, $destiny,$years));
+                $controller->buildTableAsJson($dataParam,$years));
      }
      
      /**
@@ -205,7 +212,7 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
                 ->will($this->returnValue($groupedValues));
         $this->stubDatacenterService();
         $years = array(1,2);
-
+        
         $controller = new DatacenterController($this->dataCenterService, $this->statistic, 
                 $this->jsonResponse, $grouper, $builderFactory);
         $subgroup = $font = $type = $variety = $origin = $destiny = array(1,2);
@@ -214,12 +221,14 @@ class DataCenterControllerTest extends PHPUnit_Framework_TestCase{
         
         $builderFactory->expects($this->any())
                 ->method('getBuilder')
-                ->will($this->returnValue($chartBuilder));      
+                ->will($this->returnValue($chartBuilder));
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
         $this->assertEquals($this->singleChart(), 
-                $controller->buildChart($subgroup, $font, $type, $variety, $origin, $destiny,$years));
+                $controller->buildChart($dataParam,$years));
         $subgroup = array(1,2);
+        $dataParam2 = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
          $this->assertEquals($this->doubleChart(), 
-                $controller->buildChart($subgroup, $font, $type, $variety, $origin, $destiny,$years));
+                $controller->buildChart($dataParam2,$years));
      }
      
      private function singleChart(){

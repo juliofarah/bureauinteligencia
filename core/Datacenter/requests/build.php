@@ -20,6 +20,7 @@
     require_once $baseFileUrlGenerics . 'datacenter/CoffeType.php';
     require_once $baseFileUrlGenerics . 'datacenter/Country.php';    
     
+    require_once $baseFileUrlDatacenter . 'DataParam.php';
     require_once $baseFileUrlDatacenter . 'DatacenterController.php';
 ?>
 <?
@@ -41,7 +42,11 @@ function fillParams($param, &$subgroup, &$font, &$type, &$variety, &$origin, &$d
         $variety = $param['variedade']; 
         $origin = $param['origem'];
         $destiny = $param['destino'];         
-        if(!is_null($array_group))
-            $array_group = array("subgroup"=>$subgroup,"font"=>$font,"type"=>$type,"variety"=>$variety,"origin"=>$origin,"destiny"=>$destiny);
+        //if(!is_null($array_group))
+        //$array = null;
+        $array = array("subgroup"=>$subgroup,"font"=>$font,"type"=>$type,"variety"=>$variety,"origin"=>$origin,"destiny"=>$destiny);
+        $dataParam = new DataParam();
+        $dataParam->setParams($array);
+        return $dataParam;
 }
 ?>

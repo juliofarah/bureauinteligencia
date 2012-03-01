@@ -94,11 +94,12 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
      * @test
      */
     public function serviceGetValuesOfExportFromBrazilToUSAOfGreenArabicCoffe(){
-        $this->repository->expects($this->any())->method('getValuesFromAGroup')->will($this->returnValue(0));        
+        $this->repository->expects($this->any())->method('getValuesFromAGroup')->will($this->returnValue(0));
         $this->repository->expects($this->any())->method('getValuesWithSimpleFilter')->will($this->returnValue($this->listFilteredByOneSubgroup()));
         $subgroup = $variety = $type = $origin = $destiny = $font = array(1);
         //$this->assertEquals(3, $this->repository->getValuesByOneSubgroup($subgroup, $variety, $type, $origin, $destiny, $font)->count());
-        $this->assertEquals(3, $this->service->getValuesWithSimpleFilter($subgroup, $variety, $type, $origin, $destiny, $font)->count());        
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+        $this->assertEquals(3, $this->service->getValuesWithSimpleFilter($dataParam, array("ano1","ano2"))->count());        
     }        
     
     /**
@@ -111,27 +112,32 @@ class ServiceTest extends PHPUnit_Framework_TestCase{
         $subgroup = $font = $origin = $destiny = array(1);
         $subgroup = 1;
         $variety = $type = array(1,2);
-        $this->assertEquals(6, $this->service->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font)->count());
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+        $this->assertEquals(6, $this->service->getValuesFilteringWithMultipleParams($dataParam, array(1,2))->count());
     }   
     
     /**
-     * @test
+     *  @test
      */
-    public function getValuesWhenQueryHasTwoSubgroupsSelectedAndTheReturnMustContainsOneListOfValuesToEachSubgroup(){
-        $this->repository->expects($this->at(0))
-                         ->method('getValuesWithMultipleParamsSelected')
-                         ->with(1, $this->equalTo(array(1,2)), $this->equalTo(array(1,2)), 
-                                 $this->equalTo(1), $this->equalTo(1), $this->equalTo(1))
-                         ->will($this->returnValue($this->listFilteredByOneSubgroup()));
-        $this->repository->expects($this->at(1))
-                         ->method('getValuesWithMultipleParamsSelected')
-                         ->with(8, $this->equalTo(array(1,2)), $this->equalTo(array(1,2)), 
-                                 $this->equalTo(1), $this->equalTo(1), $this->equalTo(1))   
-                         ->will($this->returnValue($this->listFilteredByOtherSubgroup()));
+    public function getValuesWhenQueryHasTwoSubgroupsSelectedAndTheReturnMustContainsOneListOfValuesToEachSubgroup(){        
+       $subgroup = $origin = $destiny = $font = 1; $variety = $type = array(1,2); 
+       $dataParams = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+       $this->repository->expects($this->at(0))
+                    ->method('getValuesWithMultipleParamsSelected')
+                    ->with($this->equalTo($dataParams),$this->equalTo(array(1,2)))
+                    ->will($this->returnValue($this->listFilteredByOneSubgroup()));
+       $subgroup = 8; $origin = $destiny = $font = 1; $variety = $type = array(1,2); 
+       $dataParams2 = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+       $this->repository->expects($this->at(1))
+                    ->method('getValuesWithMultipleParamsSelected')
+                    ->with($this->equalTo($dataParams2),$this->equalTo(array(1,2)))
+                    ->will($this->returnValue($this->listFilteredByOtherSubgroup()));
+        
         $subgroup = array(1,8);
         $font = $origin = $destiny = 1;
         $variety = $type = array(1,2);
-        $values = $this->service->getValuesFilteringWithMultipleParams($subgroup, $variety, $type, $origin, $destiny, $font);
+        $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
+        $values = $this->service->getValuesFilteringWithMultipleParams($dataParam, array(1,2));
         $this->assertTrue($values instanceof HashMap);
         $this->assertEquals(1990, $values->get(0)->offsetGet(0)->getYear());
         $this->assertEquals('Brasil', $values->get(1)->offsetGet(0)->getOriginName());
