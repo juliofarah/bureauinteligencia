@@ -19,6 +19,8 @@ class ExcelOutputFile {
     
     private $spreadPath;
     
+    private $worksheetName = "Worksheet";
+    
     public function ExcelOutputFile(DataToExcel $dataToExcel, $spreadsheetName){
         $this->dataToExcel = $dataToExcel;
         $this->writer = new PHPExcel();
@@ -28,10 +30,14 @@ class ExcelOutputFile {
         $this->spreadPath = $spreadsheetName;
     }
         
+    public function setNewDataToExcel(DataToExcel $dataToExcel){
+        $this->dataToExcel = $dataToExcel;
+    }
+    
     private function putColumtTitlesInSpreadsheet(){
         $titlesIterator = $this->dataToExcel->getLineWithTitles()->getIterator();
         $currentSheet = $this->writer->getActiveSheet();
-        //$currentSheet->setTitle("");
+        $currentSheet->setTitle($this->worksheetName);
         while($titlesIterator->valid()){                       
             $currentSheet->setCellValueByColumnAndRow($titlesIterator->key(),1,$titlesIterator->current());            
             $currentSheet->getStyleByColumnAndRow($titlesIterator->key(),1)->getFont()->setBold(true);
@@ -60,16 +66,27 @@ class ExcelOutputFile {
         return $this->excelWriter->getFileName();
     }
     
-    public function buildSpreadSheet(){
-        $this->writer->setActiveSheetIndex(0);
+    public function buildSpreadSheet($worksheetName = null, $index = 0){
+        if($index != 0)
+            $this->writer->createSheet($index);
+        $this->writer->setActiveSheetIndex($index);        
+        if(!is_null($worksheetName))
+            $this->worksheetName = $this->shortsWorksheetName ($worksheetName);
         $this->putColumtTitlesInSpreadsheet();
         $this->putLineValuesInSpreadsheet();
-        $excelWriter = PHPExcel_IOFactory::createWriter($this->writer, 'Excel5');
+        
+        $this->writer->setActiveSheetIndex(0);
+        $excelWriter = PHPExcel_IOFactory::createWriter($this->writer, 'Excel5');        
         $excelWriter->save($this->spreadPath);        
     }
     
-    public function getSpreadSheetFilename(){        
+    public function getSpreadSheetFilename(){
         return $this->spreadPath;
+    }
+    
+    private function shortsWorksheetName($worksheetName){
+        $to_replace = array("(sc 60kg)", "(US$/sc 60kg)", "(sacas de 60kg)");
+        return str_replace($to_replace, "", $worksheetName);
     }
 }
 

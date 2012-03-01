@@ -13,9 +13,14 @@ error_reporting(E_ALL ^ E_NOTICE);
 ?>
 <?
     $years = $_GET['ano'];
-?>
-<?php
-     $dataParam = fillParams($_GET, $subgroup, $font, $type, $variety, $origin, $destiny);
-    $json = $controller->getExcelTable($dataParam, $years);
-    echo $json;
+    if(isset($_GET[0]) && isset($_GET[1])){
+        $g1 = $g2 = null;
+        $dataParam = fillParams($_GET[0], $subgroup, $font, $type, $variety, $origin, $destiny, $g1);    
+        $dataParam2 = fillParams($_GET[1], $subgroup, $font, $type, $variety, $origin, $destiny, $g2);
+        echo $controller->getDistinctGroupsExcelTable($dataParam,$dataParam2,$years);        
+    }else{
+        $dataParam = fillParams($_GET, $subgroup, $font, $type, $variety, $origin, $destiny);
+        $json = $controller->getExcelTable($dataParam, $years);
+        echo $json;
+    }
 ?>

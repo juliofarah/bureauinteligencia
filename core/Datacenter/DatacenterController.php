@@ -105,7 +105,16 @@ class DatacenterController {
         return $this->buildTableJsonResponse($jsonTable);
     }
     
-    //GET ://datacenter/spreadsheet
+    //GET ://datacenter/spreadsheet    
+    public function getDistinctGroupsExcelTable($g1, $g2, array $years){
+        $spreadSheetName = $this->buildExcelTableSearchingDistinctGroups($g1, $g2, $years);
+        $path = LinkController::getBaseURL() . "/" . $spreadSheetName;        
+        return $this->jsonResponse->response(true, null)
+                                  ->addValue("planilha",$path)
+                                  //->addValue("asHtml", $this->buildExcelHTML($spreadsheetName))
+                                  ->withoutHeader()->serialize();
+    }
+    
     public function getExcelTable(DataParam $params, array $years){
         $spreadsheetName = $this->buildExcelTable($params, $years);
         $path = LinkController::getBaseURL() . "/" . $spreadsheetName;
@@ -171,6 +180,11 @@ class DatacenterController {
         return $this->generalBuilderForTwoDifferentGroupsSelected("chart",$groups,$years);
     }
 
+    public function buildExcelTableSearchingDistinctGroups(DataParam $g1, DataParam $g2, $years){
+        $groups = array($g1, $g2);
+        return $this->generalBuilderForTwoDifferentGroupsSelected("spreadsheet", $groups, $years);
+    }
+    
     private function generalBuilderForTwoDifferentGroupsSelected($builderType, array $groups, $years){
         $array_groups = array();
         foreach($groups as $params){

@@ -44,6 +44,10 @@ class MapToExcel implements DataToExcel{
     public function getLineWithTitles() {
         return new ArrayObject($this->values->get("rowTitles"));
     }
+    
+    public function clearValues(){
+        $this->values->clear();
+    }
 }
 
 ?>
