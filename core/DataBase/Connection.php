@@ -7,11 +7,12 @@
 class Connection {
 
     public static function connectToTest(){
+        require_once 'Databaselocal.php';
         try{
             $session = new PDO("mysql:host=localhost;
-                        dbname=bureau_inteligencia_test",
-                        "root",
-                        "ramonox8925");
+                        dbname=".DataBaseConfig::$DB_NAME."_test",
+                        DataBaseConfig::$USER,
+                        DataBaseConfig::$PASSWORD);
             $session->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $session;
         }catch(PDOException $error){
