@@ -19,6 +19,8 @@ interface DataToExcel {
      * @return ArrayObject
      */
     public function getLineWithTitles();
+    
+    public function clearValues();
 }
 
 ?>
