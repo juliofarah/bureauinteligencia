@@ -39,6 +39,7 @@ class TableExcelBuilder extends TableBuilder{
     }
         
     public function build($mapWithGroupedValues, array $years) {
+        print_r($mapWithGroupedValues);
         parent::titles($years);
         parent::addValuesToARow($mapWithGroupedValues, $years);
         $spreadSheet = new ExcelOutputFile($this->dataToExcel, $this->spreadSheetName);

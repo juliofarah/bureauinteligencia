@@ -56,11 +56,10 @@ class DataParam {
     
     public function theOptionAllHasBeenSelected(){
         foreach($this->params as $param){
-            if($param == DatacenterRepository::ALL)
+            if(!is_array($param) && $param === 'all')
                 return true;
         }
         return false;
     }
-
 }
 ?>
