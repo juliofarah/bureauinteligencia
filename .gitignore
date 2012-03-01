@@ -2,3 +2,4 @@
 *.xlsx
 
 core/DataBase/Databaselocal.php
+info.php

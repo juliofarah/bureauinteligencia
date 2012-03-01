@@ -30,7 +30,8 @@ class ExcelOutputFile {
         
     private function putColumtTitlesInSpreadsheet(){
         $titlesIterator = $this->dataToExcel->getLineWithTitles()->getIterator();
-        $currentSheet = $this->writer->getActiveSheet();        
+        $currentSheet = $this->writer->getActiveSheet();
+        //$currentSheet->setTitle("");
         while($titlesIterator->valid()){                       
             $currentSheet->setCellValueByColumnAndRow($titlesIterator->key(),1,$titlesIterator->current());            
             $currentSheet->getStyleByColumnAndRow($titlesIterator->key(),1)->getFont()->setBold(true);

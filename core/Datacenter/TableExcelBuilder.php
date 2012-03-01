@@ -39,11 +39,16 @@ class TableExcelBuilder extends TableBuilder{
     }
         
     public function build($mapWithGroupedValues, array $years) {
-        parent::titles($years);
-        parent::addValuesToARow($mapWithGroupedValues, $years);
-        $spreadSheet = new ExcelOutputFile($this->dataToExcel, $this->spreadSheetName);
-        $spreadSheet->buildSpreadSheet();
-        return $spreadSheet->getSpreadSheetFilename();  
+        print_r($mapWithGroupedValues);
+        if(is_array($mapWithGroupedValues)){
+            echo "não construímos ainda";
+        }else{
+            parent::titles($years);
+            parent::addValuesToARow($mapWithGroupedValues, $years);
+            $spreadSheet = new ExcelOutputFile($this->dataToExcel, $this->spreadSheetName);
+            $spreadSheet->buildSpreadSheet();
+            return $spreadSheet->getSpreadSheetFilename();  
+        }
     }
     
     public function getTitles(){
