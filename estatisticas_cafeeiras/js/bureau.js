@@ -85,9 +85,9 @@ $(document).ready(function(){
 					function(data){
 						//$('#fonte .options ul#dogrupo-'+id).append('<li class="sg">'+sg+'</li>');
 						$(data).each(function(i, param){
-                                                                                                                  //console.log(param);
+							//console.log(param);
 							//$('#fonte .options ul#dogrupo-'+id).append('<li id="'+param.id+'">'+param.name+'</li>');
-                                                                                                                    $('#fonte .model ul#fonte_grupo_'+id).append("<li id='"+param.id+"'>"+param.name+"</li>").hide();
+                            $('#fonte .model ul#fonte_grupo_'+id).append("<li id='"+param.id+"'>"+param.name+"</li>").hide();
 						});
 						//$('#fonte .options ul#dogrupo-'+id).append('<li id="all">Todos</li>');
 					});
@@ -170,6 +170,7 @@ $(document).ready(function(){
 				}
 				$(this).addClass('sel');
 				$(this).css('background', '#eee');
+				//$(this).css('background', '#E9E9E9');
 			}
 		}
 	});
