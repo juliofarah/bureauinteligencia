@@ -204,15 +204,15 @@ $(document).ready(function(){
 	
 	$('#subgrupo .options ul li').live('click', function(){    
 		if ($(this).hasClass('sel')) {
-                                                var idLista = $(this).parent("ul").attr("id");
-                                                var indexOf = idLista.indexOf("-")+1;
-                                                var idDoGrupo = idLista.substring(indexOf, idLista.length);                                               
-                                                var grupoName =     $("#grupo .options").children("ul").children("li#"+idDoGrupo).html();                                              
+	        var idLista = $(this).parent("ul").attr("id");
+	        var indexOf = idLista.indexOf("-")+1;
+	        var idDoGrupo = idLista.substring(indexOf, idLista.length);
+	        var grupoName = $("#grupo .options").children("ul").children("li#"+idDoGrupo).html();                                              
                                                 
-                                                $('#origem .options').append($('#origem .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
+            $('#origem .options').append($('#origem .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg" grupo="'+grupoName+'">'+$(this).html()+'</li>').show());
                     
-                                                $('#destino .options').append($('#destino .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
+            $('#destino .options').append($('#destino .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg" grupo="'+grupoName+'">'+$(this).html()+'</li>').show());
                     
 			$('#variedade .options').append($('#variedade .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
@@ -220,34 +220,34 @@ $(document).ready(function(){
 			$('#tipo .options').append($('#tipo .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg">'+$(this).html()+'</li>').show());
                                                        
-                                                $('#fonte .options').append($('#fonte .model ul#fonte_grupo_'+idDoGrupo).clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
+            $('#fonte .options').append($('#fonte .model ul#fonte_grupo_'+idDoGrupo).clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg">'+$(this).html()+'</li>').show());
 		} else {                                                			
-                                                $('#origem #dosubgrupo-'+$(this).attr('id')).remove();
-                                                $('#destino #dosubgrupo-'+$(this).attr('id')).remove();
-                                                $('#variedade #dosubgrupo-'+$(this).attr('id')).remove();
-                                                $('#tipo #dosubgrupo-'+$(this).attr('id')).remove();
-                                                $('#fonte #dosubgrupo-'+$(this).attr('id')).remove();
+            $('#origem #dosubgrupo-'+$(this).attr('id')).remove();
+            $('#destino #dosubgrupo-'+$(this).attr('id')).remove();
+            $('#variedade #dosubgrupo-'+$(this).attr('id')).remove();
+            $('#tipo #dosubgrupo-'+$(this).attr('id')).remove();
+            $('#fonte #dosubgrupo-'+$(this).attr('id')).remove();
 		}
 	});
 	
 	$('#origem .options ul li').live('click', function(){
 		if ($(this).parents('ul').find('.sel').length > 0) {
 			//if ($(this).parents('ul').find('.sg').html() == 'Oferta'
-                                                        if($(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
+            if($(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
 			 //|| $(this).parents('ul').find('.sg').html() == 'Demanda'
-                                                        || $(this).parents('ul').find('.sg').attr('grupo') == 'Demanda'
+            || $(this).parents('ul').find('.sg').attr('grupo') == 'Demanda'
 			 //|| $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
-                                                        || $(this).parents('ul').find('.sg').attr('grupo') == 'Indicadores Econômicos'){
-                                                                $('#destino #'+$(this).parents('ul').attr('id').replace('ordogrupo', 'dedogrupo')).addClass('nosel');
+            || $(this).parents('ul').find('.sg').attr('grupo') == 'Indicadores Econômicos'){
+	            $('#destino #'+$(this).parents('ul').attr('id').replace('ordogrupo', 'dedogrupo')).addClass('nosel');
 			}
 		} else {
 			//if ($(this).parents('ul').find('.sg').html() == 'Oferta'
-                                                        if($(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
+         	if($(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
 			 //|| $(this).parents('ul').find('.sg').html() == 'Demanda'
-                                                       || $(this).parent('ul').find('.sg').attr('grupo') == 'Demanda'
+            || $(this).parent('ul').find('.sg').attr('grupo') == 'Demanda'
 			 //|| $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
-                                                       || $(this).parents('ul').find('.sg').attr('grupo')== 'Demanda'){
+            || $(this).parents('ul').find('.sg').attr('grupo')== 'Demanda'){
 				$('#destino #'+$(this).parents('ul').attr('id').replace('ordogrupo', 'dedogrupo')).removeClass('nosel');
 			}
 		}
@@ -256,20 +256,20 @@ $(document).ready(function(){
 	$('#destino .options ul li').live('click', function(){
 		if ($(this).parents('ul').find('.sel').length > 0) {
 			//if ($(this).parents('ul').find('.sg').html() == 'Oferta'
-                                                       if( $(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
+        	if( $(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
 			 //|| $(this).parents('ul').find('.sg').html() == 'Demanda'
-                                                       || $(this).parents('ul').find('.sg').attr('grupo') == 'Demanda'
+            || $(this).parents('ul').find('.sg').attr('grupo') == 'Demanda'
 			 //|| $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
-                                                       || $(this).parents('ul').find('.sg').attr('grupo') == 'Indicadores Econômicos'){ 
+            || $(this).parents('ul').find('.sg').attr('grupo') == 'Indicadores Econômicos'){ 
 				$('#origem #'+$(this).parents('ul').attr('id').replace('dedogrupo', 'ordogrupo')).addClass('nosel');
 			}
 		} else {
 			//if ($(this).parents('ul').find('.sg').html() == 'Oferta'
-                                                       if ($(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
+        	if ($(this).parents('ul').find('.sg').attr('grupo') == 'Oferta'
 			 //|| $(this).parents('ul').find('.sg').html() == 'Demanda'
-                                                       || $(this).parents('ul').find('.sg').attr('grupo') == 'Demanda'
+            || $(this).parents('ul').find('.sg').attr('grupo') == 'Demanda'
 			 //|| $(this).parents('ul').find('.sg').html() == 'Indicadores Econômicos') {
-                                                       || $(this).parents('ul').find('.sg').attr('grupo') == 'Indicadores Econômicos'){ 
+            || $(this).parents('ul').find('.sg').attr('grupo') == 'Indicadores Econômicos'){ 
 				$('#origem #'+$(this).parents('ul').attr('id').replace('dedogrupo', 'ordogrupo')).removeClass('nosel');
 			}
 		}
@@ -292,14 +292,14 @@ $(document).ready(function(){
 	});
 	
 	$('#tab-1').click(function(){                
-            if ($('#content-1').html() == '') {
-                tableDiv();
-                $.getJSON('../datacenter/table', data,
-                        function(tables){
-                            $(tables.tabela).each(function(i, table){                                                
-                                $('#table-view').append(montaTabela(table, i));
-                            });
-                        });
+        if ($('#content-1').html() == '') {
+            tableDiv();
+            $.getJSON('../datacenter/table', data,
+                function(tables){
+                    $(tables.tabela).each(function(i, table){                                                
+                        $('#table-view').append(montaTabela(table, i));
+                    });
+            });
 		}
 	});
 	
@@ -308,32 +308,32 @@ $(document).ready(function(){
 			$.getJSON('../datacenter/chart', data,
 				function(chart){
 					mostraGrafico(chart);
-				});
+			});
 		}
 	});
         
-        $('#tab-3').click(function(){
-            if($('#content-3').html() == ''){
-                spreadSheetDivs();
-                $.getJSON('../datacenter/spreadsheet', data,
-                        function(spreadsheet){
-                            //console.log(spreadsheet);
-                            mostraPlanilha(spreadsheet);
-                        });
-            }
-        });
+    $('#tab-3').click(function(){
+        if($('#content-3').html() == ''){
+            spreadSheetDivs();
+            $.getJSON('../datacenter/spreadsheet', data,
+                function(spreadsheet){
+              		//console.log(spreadsheet);
+                    mostraPlanilha(spreadsheet);
+            });
+        }
+    });
         
-        $("#tab-4").click(function(){
-            if($("#content-4").html() == ''){
-                tableStatiticDiv(); 
-                $.getJSON('../datacenter/statistics', data, 
-                    function(tables){
-                        $(tables.tabela).each(function(i, table){                                                
-                            $('#table-statistic-view').append(montaTabela(table, i));
-                        });
+    $("#tab-4").click(function(){
+        if($("#content-4").html() == ''){
+            tableStatiticDiv(); 
+            $.getJSON('../datacenter/statistics', data, 
+                function(tables){
+                    $(tables.tabela).each(function(i, table){                                                
+                        $('#table-statistic-view').append(montaTabela(table, i));
                     });
-            }
-        });
+            });
+        }
+    });
 	
 	$('.confirmar').click(function(){
 		
@@ -421,10 +421,10 @@ $(document).ready(function(){
 				
 			}
                         
-                                                      if($("#grupo .options ul li.sel").html() != 'Comércio Internacional'){
-                                                          if (data.origem == undefined || data.origem.length == 0) data.origem = 0;
-                                                          if (data.destino == undefined || data.destino.length == 0) data.destino = 0;
-                                                      }
+			if($("#grupo .options ul li.sel").html() != 'Comércio Internacional'){
+		  		if (data.origem == undefined || data.origem.length == 0) data.origem = 0;
+		  		if (data.destino == undefined || data.destino.length == 0) data.destino = 0;
+			}
 			
 			console.log(data);
 			
@@ -558,21 +558,21 @@ $(document).ready(function(){
 					mostraGrafico(chart);
 				});
 		} else if ($('#tab-3.sel').length == 1) {
-                        spreadSheetDivs();
+            spreadSheetDivs();
 			// Excel
-                        $.getJSON('../datacenter/spreadsheet', data,
-                                function(spreadsheet){
-                                    mostraPlanilha(spreadsheet);
-                                });
+            $.getJSON('../datacenter/spreadsheet', data,
+                function(spreadsheet){
+                    mostraPlanilha(spreadsheet);
+                });
 		} else if ($('#tab-4.sel').length == 1) {
 			// Estatísticas
-                        tableStatiticDiv(); 
-                        $.getJSON('../datacenter/statistics', data, 
-                            function(tables){
-                                $(tables.tabela).each(function(i, table){                                                
-                                    $('#table-statistic-view').append(montaTabela(table, i));
-                                });
-                            });                        
+	        tableStatiticDiv(); 
+	        $.getJSON('../datacenter/statistics', data, 
+	            function(tables){
+	                $(tables.tabela).each(function(i, table){                                                
+	                    $('#table-statistic-view').append(montaTabela(table, i));
+	                });
+	            });                        
 		}
 		
 		return false;
@@ -610,9 +610,9 @@ function tableStatiticDiv(){
 }
 
 function montaTabela(json, i) {
-        var subgroups = $('#subgrupo .options li.sel');        
+    var subgroups = $('#subgrupo .options li.sel');        
         //console.log("["+i+"] => " + $(subgroups[i]).text());        
-        table = "<span class='subgroup-name'>"+$(subgroups[i]).text()+"</span>";
+    table = "<span class='subgroup-name'>"+$(subgroups[i]).text()+"</span>";
 	table += '<table id="datatable">';
 
 	table += '        <thead>';
