@@ -78,24 +78,25 @@ $(document).ready(function(){
 			
 			/* Exibe as fontes */
 			$('#grupo .options ul li').each(function(){
-				$('#fonte .options').append('<ul id="dogrupo-'+$(this).attr('id')+'" class="subgroup"></ul>');
-				
+				//$('#fonte .options').append('<ul id="dogrupo-'+$(this).attr('id')+'" class="subgroup"></ul>');				
 				var sg = $(this).html();
 				var id = $(this).attr('id');
 				$.getJSON('../datacenter/param', {type: "font", id: $(this).attr('id')},
 					function(data){
-						$('#fonte .options ul#dogrupo-'+id).append('<li class="sg">'+sg+'</li>');
+						//$('#fonte .options ul#dogrupo-'+id).append('<li class="sg">'+sg+'</li>');
 						$(data).each(function(i, param){
-							$('#fonte .options ul#dogrupo-'+id).append('<li id="'+param.id+'">'+param.name+'</li>');
+                                                                                                                  //console.log(param);
+							//$('#fonte .options ul#dogrupo-'+id).append('<li id="'+param.id+'">'+param.name+'</li>');
+                                                                                                                    $('#fonte .model ul#fonte_grupo_'+id).append("<li id='"+param.id+"'>"+param.name+"</li>").hide();
 						});
-						$('#fonte .options ul#dogrupo-'+id).append('<li id="all">Todos</li>');
+						//$('#fonte .options ul#dogrupo-'+id).append('<li id="all">Todos</li>');
 					});
 			});
 		});
 	
 	$.getJSON('../datacenter/param', {type: "Variety"},//, id: null},
 		function(data){
-			$(data).each(function(i, param){
+			$(data).each(function(i, param){                                                                    
 				$('#variedade .model ul').append('<li id="'+param.id+'">'+param.name+'</li>').hide();
 			});
 		});
@@ -176,17 +177,17 @@ $(document).ready(function(){
 	/* Quando clica em um grupo exibe o subgrupo e a fonte */
 	$('#grupo .options ul li').live('click', function(){                                    
 		$('#subgrupo .options ul').hide();
-		$('#fonte .options ul').hide();
+		//$('#fonte .options ul').hide();
 		$('#grupo .options ul li.sel').each(function(){
 			$('#subgrupo .options ul#dogrupo-'+$(this).attr('id')).show();
-			$('#fonte .options ul#dogrupo-'+$(this).attr('id')).show();
+			//$('#fonte .options ul#dogrupo-'+$(this).attr('id')).show();
 		});
 		
 		if ($(this).hasClass('sel')) {
-			$('#origem .options').append($('#origem .model ul').clone().attr('id', 'ordogrupo-'+$(this).attr('id')).
-			prepend('<li class="sg" grupo="'+$(this).html()+'">'+$(this).html()+'</li>').show());
-			$('#destino .options').append($('#destino .model ul').clone().attr('id', 'dedogrupo-'+$(this).attr('id')).
-			prepend('<li class="sg" grupo="'+$(this).html()+'">'+$(this).html()+'</li>').show());
+			//$('#origem .options').append($('#origem .model ul').clone().attr('id', 'ordogrupo-'+$(this).attr('id')).
+			//prepend('<li class="sg" grupo="'+$(this).html()+'">'+$(this).html()+'</li>').show());
+			//$('#destino .options').append($('#destino .model ul').clone().attr('id', 'dedogrupo-'+$(this).attr('id')).
+			//prepend('<li class="sg" grupo="'+$(this).html()+'">'+$(this).html()+'</li>').show());
 		} else {
 			$('#origem #ordogrupo-'+$(this).attr('id')).remove();
 			$('#destino #dedogrupo-'+$(this).attr('id')).remove();
@@ -201,38 +202,32 @@ $(document).ready(function(){
 		}
 	});
 	
-	$('#subgrupo .options ul li').live('click', function(){                                    
+	$('#subgrupo .options ul li').live('click', function(){    
 		if ($(this).hasClass('sel')) {
+                                                var idLista = $(this).parent("ul").attr("id");
+                                                var indexOf = idLista.indexOf("-")+1;
+                                                var idDoGrupo = idLista.substring(indexOf, idLista.length);                                               
+                                                var grupoName =     $("#grupo .options").children("ul").children("li#"+idDoGrupo).html();                                              
+                                                
+                                                $('#origem .options').append($('#origem .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
+			prepend('<li class="sg" grupo="'+grupoName+'">'+$(this).html()+'</li>').show());
+                    
+                                                $('#destino .options').append($('#destino .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
+			prepend('<li class="sg" grupo="'+grupoName+'">'+$(this).html()+'</li>').show());
+                    
 			$('#variedade .options').append($('#variedade .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg">'+$(this).html()+'</li>').show());
 			$('#tipo .options').append($('#tipo .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg">'+$(this).html()+'</li>').show());
-                                                      if($("#grupo .options ul li.sel").length > 1){
-                                                          var thisGroup = $(this).parent().children("li.sg").html();
-                                                          var thisName = $(this).html();
-                                                          $("#origem .options ul li.sg").each(function(i, li){
-                                                              //alert($(li).html());
-                                                              if($(li).html() == thisGroup || $(li).attr('grupo') == thisGroup){                                                                  
-                                                                  $(li).html(thisName);
-                                                                  $(li).attr("grupo", thisGroup);
-                                                              }
-                                                          });
-                                                          $("#destino .options ul li.sg").each(function(i,li){
-                                                                if($(li).html() == thisGroup || $(li).attr('grupo') == thisGroup){
-                                                                    $(li).html(thisName);
-                                                                    $(li).attr('grupo', thisGroup);
-                                                                }
-                                                          });
-                                                          $("#fonte .options ul li.sg").each(function(i,li){
-                                                              if($(li).html() == thisGroup || $(li).attr('grupo') == thisGroup){
-                                                                  $(li).html(thisName);
-                                                                  $(li).attr('grupo',thisGroup);
-                                                              }
-                                                          });
-                                                      }
-		} else {
-			$('#variedade #dosubgrupo-'+$(this).attr('id')).remove();
-			$('#tipo #dosubgrupo-'+$(this).attr('id')).remove();
+                                                       
+                                                $('#fonte .options').append($('#fonte .model ul#fonte_grupo_'+idDoGrupo).clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
+			prepend('<li class="sg">'+$(this).html()+'</li>').show());
+		} else {                                                			
+                                                $('#origem #dosubgrupo-'+$(this).attr('id')).remove();
+                                                $('#destino #dosubgrupo-'+$(this).attr('id')).remove();
+                                                $('#variedade #dosubgrupo-'+$(this).attr('id')).remove();
+                                                $('#tipo #dosubgrupo-'+$(this).attr('id')).remove();
+                                                $('#fonte #dosubgrupo-'+$(this).attr('id')).remove();
 		}
 	});
 	
@@ -488,7 +483,7 @@ $(document).ready(function(){
 						data.fonte.push($(this).attr('id'));
 					}
 				});
-				
+				                                                                
 				if (data.subgrupo.length == 1) data.subgrupo = data.subgrupo[0];
 				else if (data.subgrupo.length == 0) data.subgrupo = 0;
 				if (data.tipo.length == 1) data.tipo = data.tipo[0];
@@ -537,7 +532,7 @@ $(document).ready(function(){
 				
 			});
 			
-			if (error) { return false; }
+			if (error) {return false;}
 			
 			data = {"0": datas[0], "1": datas[1], "ano": [$('#de').val(), $('#ate').val()]};
 			
@@ -548,7 +543,7 @@ $(document).ready(function(){
 		$('.tabcontent').html('');                
 		
 		if ($('#tab-1.sel').length == 1) {
-                        tableDiv();
+                                    tableDiv();
 			// Tabela
 			$.getJSON('../datacenter/table', data,
 				function(tables){

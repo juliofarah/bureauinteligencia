@@ -149,6 +149,16 @@ if(!Session::isLogged()){
 	
 	<div id="fonte" class="selector">
 		<div class="header">Fonte</div>
+		<div class="model" style="display:none;">
+                                        <ul id="fonte_grupo_1">				
+                                        </ul>
+                                        <ul id="fonte_grupo_2">                                            
+                                        </ul>
+                                        <ul id="fonte_grupo_3">                                            
+                                        </ul>
+                                        <ul id="fonte_grupo_4">                                            
+                                        </ul>                    
+		</div>                
 		<div class="options">
 			
 		</div>
