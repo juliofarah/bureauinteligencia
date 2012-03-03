@@ -39,12 +39,12 @@ $(document).ready(function(){
 	// Esconde o conteúdo das abas
 	$('.tabcontent').hide();
         
-        // Pequeno evento de load - temporário
-        $('body').ajaxStart(function(){
-            $(this).css("cursor","wait");
-        }).ajaxStop(function(){
-            $(this).css("cursor","default");
-        });
+    // Pequeno evento de load - temporário
+    $('body').ajaxStart(function(){
+        $(this).css("cursor","wait");
+    }).ajaxStop(function(){
+        $(this).css("cursor","default");
+    });
 	
 	$.getJSON('../datacenter/param', {type: "Groups"},//, id: null},
 		function(data){
@@ -94,7 +94,8 @@ $(document).ready(function(){
 					});
 			});
 		});
-	
+
+	//CARREGANDO OS VALORES PARA OS CAMPOS variedade, tipo, origem, destino e fonte
 	$.getJSON('../datacenter/param', {type: "Variety"},//, id: null},
 		function(data){
 			$(data).each(function(i, param){                                                                    
@@ -139,7 +140,7 @@ $(document).ready(function(){
 							selectedDate, instance.settings );
 					dates.not( this ).datepicker( "option", option, date );
 				}
-			});*/
+			});*/	
 	
 	year = new Date();
 	for (i = 1980; i <= year.getFullYear(); i++) {
@@ -219,6 +220,7 @@ $(document).ready(function(){
                     
 			$('#variedade .options').append($('#variedade .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg">'+$(this).html()+'</li>').show());
+			
 			$('#tipo .options').append($('#tipo .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg">'+$(this).html()+'</li>').show());
                                                        
@@ -277,6 +279,13 @@ $(document).ready(function(){
 		}
 	});
 	
+	$("#tipo .options ul li").live('click', function(){
+		//alert($(this).html());
+		if($(this).html() != 'Verde'){
+		//para casos de restrições de variedades em relação ao tipo			
+		}
+	});
+
 	/*$('#variedade .options ul li').live('click', function(){
 		if ($(this).hasClass('sel')) {
 			$('#tipo .options').append($('#tipo .model ul').clone().attr('id', 'devariedade-'+$(this).attr('id')).
@@ -285,7 +294,7 @@ $(document).ready(function(){
 			$('#devariedade-'+$(this).attr('id')).remove();
 		}
 	});*/
-	
+
 	$("#tabs ul li").click(function(){
 		$("#tabs ul li").removeClass('sel');
 		$(this).addClass('sel');

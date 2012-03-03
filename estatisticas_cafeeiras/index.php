@@ -7,7 +7,6 @@
 if(!Session::isLogged()){
     Session::login(new User("teste","teste"));
     //session_destroy();
-    echo "login";
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -91,20 +90,6 @@ if(!Session::isLogged()){
 		</div>
 	</div>
 	
-	<div id="variedade" class="selector">
-		<div class="header">Variedade</div>
-		<div class="model" style="display:none;">
-			<ul>
-				
-			</ul>
-		</div>
-		<div class="options">
-			<ul>
-				
-			</ul>
-		</div>
-	</div>
-	
 	<div id="tipo" class="selector">
 		<div class="header">Tipo</div>
 		<div class="model" style="display:none;">
@@ -118,7 +103,21 @@ if(!Session::isLogged()){
 			</ul>
 		</div>
 	</div>
-	
+
+	<div id="variedade" class="selector">
+		<div class="header">Variedade</div>
+		<div class="model" style="display:none;">
+			<ul>
+				
+			</ul>
+		</div>
+		<div class="options">
+			<ul>
+				
+			</ul>
+		</div>
+	</div>
+
 	<div id="origem" class="selector">
 		<div class="header">Origem</div>
 		<div class="model" style="display:none;">
