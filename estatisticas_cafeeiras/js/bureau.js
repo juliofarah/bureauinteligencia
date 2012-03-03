@@ -219,7 +219,7 @@ $(document).ready(function(){
 			prepend('<li class="sg" grupo="'+grupoName+'">'+$(this).html()+'</li>').show());
                     
 			$('#variedade .options').append($('#variedade .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
-			prepend('<li class="sg">'+$(this).html()+'</li>').show());
+			prepend('<li class="sg">'+$(this).html()+'</li>'));//.show());
 			
 			$('#tipo .options').append($('#tipo .model ul').clone().attr('id', 'dosubgrupo-'+$(this).attr('id')).
 			prepend('<li class="sg">'+$(this).html()+'</li>').show());
@@ -279,10 +279,24 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("#tipo .options ul li").live('click', function(){
-		//alert($(this).html());
-		if($(this).html() != 'Verde'){
+	$("#tipo .options ul li").live('click', function(){		
 		//para casos de restrições de variedades em relação ao tipo			
+		var thisGroup = $(this).parent("ul").attr("id");
+		if($(this).hasClass('sel')){			
+			if($(this).html() == 'Verde'){
+				$("#variedade .options ul#"+thisGroup).show();
+			}
+		}else{
+			if($(this).html() == 'Verde'){
+				var $listVarieties = $("#variedade .options ul#"+thisGroup);
+				$listVarieties.children('li').each(function(i, li){					
+					if($(li).hasClass("sel")){
+						$(this).css('background', 'none');
+					 	$(li).removeClass("sel");
+					 }
+				});
+				$("#variedade .options ul#"+thisGroup).hide();
+			}
 		}
 	});
 
