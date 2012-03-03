@@ -17,7 +17,7 @@ abstract class TableBuilder implements Builder{
     }
     
     protected function setTitles(array $years){
-        $this->setDefinedTitles(array("Variedade", "Tipo", "Origem", "Destino", "Fonte"), $years);
+        $this->setDefinedTitles(array("Tipo", "Variedade", "Origem", "Destino", "Fonte"), $years);
     }
     
     protected abstract function setDefinedTitles(array $definedTitles, array $years = null);    

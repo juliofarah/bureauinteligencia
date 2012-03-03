@@ -18,8 +18,8 @@ class TableStatisticsJsonBuilder extends TableJsonBuilder{
     
     protected function setTitles(array $years){
         $this->setDefinedTitles(array(
-                    "Variedade", 
                     "Tipo", 
+                    "Variedade",             
                     "Origem", 
                     "Destino",
                     "Fonte",

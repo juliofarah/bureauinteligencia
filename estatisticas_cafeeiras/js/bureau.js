@@ -652,9 +652,10 @@ function montaTabela(json, i) {
 	 
 	$(json.tbody).each(function(i, column){
 		table += '            <tr>'; 
-		table += '                <td>'+column.variety+'</td>';
 		
 		table += '                <td>'+column.type+'</td>';
+		
+		table += '                <td>'+column.variety+'</td>';
 		
 		table += '                <td>'+column.origin+'</td>';
 		

@@ -87,8 +87,8 @@ class TableExcelBuilder extends TableBuilder{
     }
     
     protected function setProperties(ArrayObject $group, Data $data, array $years) {
-        array_push($this->valuesOfARow, utf8_encode($data->getVarietyName()));
         array_push($this->valuesOfARow, $data->getTypeName());
+        array_push($this->valuesOfARow, utf8_encode($data->getVarietyName()));        
         array_push($this->valuesOfARow, $data->getOriginName());
         array_push($this->valuesOfARow, $data->getDestinyName());
         array_push($this->valuesOfARow, $data->getFontName());
