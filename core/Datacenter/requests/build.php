@@ -1,39 +1,27 @@
-<?php     
-    $superDirectory = '';
-    if(isset($_POST['fromAdmin'])) $superDirectory = '../';  
-    
-    $baseFileUrlDatacenter = $superDirectory . 'core/Datacenter/';
-    $baseFileUrlGenerics = $superDirectory . 'core/generics/';
-    require_once $baseFileUrlDatacenter . 'DatacenterDao.php';
-    require_once $baseFileUrlDatacenter . 'DatacenterService.php';
-    require_once $baseFileUrlDatacenter . 'DataGrouper.php';
-    require_once $baseFileUrlDatacenter . 'Data.php';
-    require_once $baseFileUrlDatacenter . 'BuilderFactory.php';
-    require_once $baseFileUrlDatacenter . 'Builder.php';
-        
-    require_once $baseFileUrlDatacenter . 'Statistic/Statistic.php';    
-    
-    require_once $baseFileUrlGenerics . 'Param.php';
-    require_once $baseFileUrlGenerics . 'datacenter/Subgroup.php';
-    require_once $baseFileUrlGenerics . 'datacenter/Font.php';
-    require_once $baseFileUrlGenerics . 'datacenter/Variety.php';
-    require_once $baseFileUrlGenerics . 'datacenter/CoffeType.php';
-    require_once $baseFileUrlGenerics . 'datacenter/Country.php';    
-    
-    require_once $baseFileUrlDatacenter . 'DataParam.php';
-    require_once $baseFileUrlDatacenter . 'DatacenterController.php';
-    
-    require_once $baseFileUrlDatacenter . '/ControllerBehavior/Report.php';
-?>
 <?
     if(!isset($_POST['fromAdmin'])){
         $repository = new DatacenterDao(Connection::connect());
         $service = new DatacenterService($repository);
         $statistic = new Statistic();
-        $jsonResponse = new JsonResponse();
+        
         $grouper = new DataGrouper();
-        $factory = new BuilderFactory();        
-        $controller = new DatacenterController($service, $statistic, $jsonResponse, $grouper, $factory);         
+
+        $controller = new DatacenterController($service, $statistic, $jsonResponse, $grouper, $factory);    
+        $controller->setReport($report);
+        
+        $years = $_GET["ano"];
+        if(isset($_GET[0]) && isset($_GET[1])){
+            $g1 = $g2 = null;
+            $dataParam = fillParams($_GET[0], $subgroup, $font, $type, $variety, $origin, $destiny, $g1);    
+            $dataParam2 = fillParams($_GET[1], $subgroup, $font, $type, $variety, $origin, $destiny, $g2);
+            $json = $controller->getDistinctGroupReport($dataParam,$dataParam2, $years);
+            echo $json;
+        }else{
+            $subgroup = $font = $type = $variety = $origin = $destiny = null;
+            $dataParam = fillParams($_GET, $subgroup, $font, $type, $variety, $origin, $destiny);
+            $json = $controller->getReport($dataParam, $years);
+            echo $json;
+        }
     }
 ?>
 <?
@@ -44,8 +32,6 @@ function fillParams($param, &$subgroup, &$font, &$type, &$variety, &$origin, &$d
         $variety = $param['variedade']; 
         $origin = $param['origem'];
         $destiny = $param['destino'];         
-        //if(!is_null($array_group))
-        //$array = null;
         $array = array("subgroup"=>$subgroup,"font"=>$font,"type"=>$type,"variety"=>$variety,"origin"=>$origin,"destiny"=>$destiny);
         $dataParam = new DataParam();
         $dataParam->setParams($array);
