@@ -13,12 +13,12 @@
                 <select id="subgroups" type="select-one" disabled="disabled">
                     <option value=""></option>
                 </select>
-                <label>Variedade</label>
-                <select id="variety" type="select-one">
-                    <option value=""></option>
-                </select>
                 <label>Tipo</label>
                 <select id="coffetype" type="select-one">
+                    <option value=""></option>
+                </select>
+                <label>Variedade</label>
+                <select id="variety" type="select-one">
                     <option value=""></option>
                 </select>
                 <label>Destino</label>

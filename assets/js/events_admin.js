@@ -160,7 +160,7 @@ function listValuesToDatacenterSelects(){
     var url = "../../datacenter/param";
     var data = {'id': null, 'no-must-online': true};
     listGroupsToDatacenter(request,url,data,$("select#groups"));
-    listVarietiesToDatacenter(request, url, data,$("select#variety"));
+    listVarietiesToDatacenter(request, url, data,$("select#variety"));    
     listCoffeTypeToDatacenter(request, url, data,$("select#coffetype"));
     listDestiniesToDatacenter(request, url, data, $("select#destiny"));
 }
@@ -211,13 +211,32 @@ function listVarietiesToDatacenter(request, url, data, $select){
     if($select.html() != null){
         data.type = "Variety";
         request.list_to_select(url,$select, data);
+        $select.ajaxStop(function(){
+            $(this).attr("disabled","disabled");
+            $(this).append('<option value="0"></option>').val(0);
+        });
     }
 }
 function listCoffeTypeToDatacenter(request,url,data,$select){
     if($select.html() != null){
         data.type = "CoffeType";
-        request.list_to_select(url, $select, data);
+        request.list_to_select(url, $select, data);        
+        $select.ajaxStop(function(){
+            eventChangeToCoffeType();
+        }); 
     }
+}
+function eventChangeToCoffeType(){
+    $("#coffetype").live('change', function(){
+        var option = $(this).children("option:selected").text();
+        if(option == 'Verde'){
+            $("#variety option[value='0']").remove();        
+            $("#variety").removeAttr("disabled").val('');
+        }else{
+            $("#variety").attr("disabled", "disabled");
+            $("#variety").append('<option value="0"></option>').val(0);
+        }
+    });
 }
 function listDestiniesToDatacenter(request,url,data,$select){
     if($select.html() != null){
