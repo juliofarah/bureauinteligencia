@@ -213,7 +213,7 @@ function listVarietiesToDatacenter(request, url, data, $select){
         request.list_to_select(url,$select, data);
         $select.ajaxStop(function(){
             $(this).attr("disabled","disabled");
-            $(this).append('<option value="0"></option>').val(0);
+            $(this).append('<option value="none"></option>').val('none');
         });
     }
 }
@@ -230,11 +230,11 @@ function eventChangeToCoffeType(){
     $("#coffetype").live('change', function(){
         var option = $(this).children("option:selected").text();
         if(option == 'Verde'){
-            $("#variety option[value='0']").remove();        
+            $("#variety option[value='none']").remove();
             $("#variety").removeAttr("disabled").val('');
         }else{
             $("#variety").attr("disabled", "disabled");
-            $("#variety").append('<option value="0"></option>').val(0);
+            $("#variety").append('<option value="none"></option>').val('none');
         }
     });
 }
