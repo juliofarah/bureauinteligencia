@@ -31,13 +31,10 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $this->populatesDatabase();//Insert values on Database in the first test
         $subgroup = $variety = $type = $origin = $destiny = $font = 1;
         $dataParam = new DataParam($subgroup,$font,$type,$variety,$origin,$destiny);
-        echo "\n\nrepository\n\n";
-        echo $dataParam->getSubgroup();
         $values = $this->daoRepository->getValuesWithSimpleFilter($dataParam, array(1989,19091));
         $this->assertEquals(2, $values->count());
         $this->assertTrue($values->offsetGet(0) instanceof Data && $values->offsetGet(0) instanceof Data);
         $this->assertEquals(150, $values->offsetGet(0)->getValue());        
-        echo "\\n\n------\n\n";   
     }
 
     private function persistDataForTest() {
@@ -136,7 +133,6 @@ class DaoRepositoryTest extends PHPUnit_Framework_TestCase {
         $list->append($this->newData(1991, 232));
         $list->append($this->newData(1992, 458));
         $this->daoRepository->save($list);
-        echo "\n\n------------teste insert\n\n";
         $dataParam = new DataParam(1, 1, 1, 1, 1, 1);
         $values = $this->daoRepository->getValuesWithSimpleFilter($dataParam);
         $this->assertEquals(3,$values->count());

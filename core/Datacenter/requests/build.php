@@ -22,6 +22,8 @@
     
     require_once $baseFileUrlDatacenter . 'DataParam.php';
     require_once $baseFileUrlDatacenter . 'DatacenterController.php';
+    
+    require_once $baseFileUrlDatacenter . '/ControllerBehavior/Report.php';
 ?>
 <?
     if(!isset($_POST['fromAdmin'])){

@@ -42,6 +42,11 @@ class DatacenterController {
     
     private $chartType;
     
+    /**
+     * @var Report
+     */
+    private $report;
+    
     public function DatacenterController(DatacenterService $service, Statistic $statistic, 
             JsonResponse $jsonResponse, DataGrouper $grouper, BuilderFactory $factory){
         $this->datacenterService = $service;
@@ -49,6 +54,12 @@ class DatacenterController {
         $this->jsonResponse = $jsonResponse;
         $this->grouper = $grouper;        
         $this->builderFactory = $factory;
+        
+        //$this->report = $report;
+    }
+    
+    public function setReport(Report $report){
+        $this->report = $report;
     }
     
     private function getBuilder($type) {
@@ -59,75 +70,21 @@ class DatacenterController {
         $this->asJson = true;
     }
     
-    //GET ://datacenter/chart
-    public function getChart(DataParam $dataParam, array $years){
-        $xmlChart = $this->buildChart($dataParam, $years);
-        return $this->buildChartJsonResponse($xmlChart);
+    public function getReport(DataParam $dataParam, array $years){
+        $asJson = $this->asJson;
+        $this->asJson = false;
+        $values = $this->getValues($dataParam,$years);
+        $this->asJson = $asJson;
+        return $this->report->getReport($values, $years, $this->grouper);
     }
     
-    private function buildChartJsonResponse($xmlChart){
-        $xmlChart = str_replace("\"", "'", trim($xmlChart));
-        $this->jsonResponse->response(true, null)->addValue("chart", trim($xmlChart));
-        $this->jsonResponse->addValue("typeChart", $this->chartType);
-        return $this->jsonResponse->withoutHeader()->serialize();        
-    }
-    
-    public function getDistinctGroupChart($g1, $g2, array $years){
-        $xmlChart = $this->buildChartSearchingDistinctGroups($g1, $g2, $years);
-        return $this->buildChartJsonResponse($xmlChart);
-    }
-    
-    //GET ://datacenter/table
-    public function getTable(DataParam $params, array $years){
-        $jsonTable = $this->buildTableAsJson($params, $years);
-        return $this->buildTableJsonResponse($jsonTable);                
-    }
-
-    private function buildTableJsonResponse($jsonTable){
-        $jsonTable = utf8_encode($jsonTable);
-        $jsonTable = json_decode($jsonTable);
-        return $this->jsonResponse->response(true, null)->addValue("tabela",$jsonTable)->withoutHeader()->serialize();        
-    }
-    
-    public function getDistinctGroupsTable($g1,$g2,array $years){
-        $jsonTable = $this->buildTableSearchingDistinctGroups($g1, $g2, $years);
-        return $this->buildTableJsonResponse($jsonTable);
-    }
-    
-    // table statistics
-    public function getStatisticTable(DataParam $params, array $years){
-        $jsonTable = $this->buildStatisticTable($params, $years);
-        return $this->buildTableJsonResponse($jsonTable);
-    }
-    
-    public function getDistinctStatisticTable($g1, $g2, array $years){
-        $jsonTable = $this->buildStatisticTableSearchingDistinctGroups($g1, $g2, $years);
-        return $this->buildTableJsonResponse($jsonTable);
-    }
-    
-    //GET ://datacenter/spreadsheet    
-    public function getDistinctGroupsExcelTable($g1, $g2, array $years){
-        $spreadSheetName = $this->buildExcelTableSearchingDistinctGroups($g1, $g2, $years);
-        $path = LinkController::getBaseURL() . "/" . $spreadSheetName;        
-        return $this->jsonResponse->response(true, null)
-                                  ->addValue("planilha",$path)
-                                  //->addValue("asHtml", $this->buildExcelHTML($spreadsheetName))
-                                  ->withoutHeader()->serialize();
-    }
-    
-    public function getExcelTable(DataParam $params, array $years){
-        $spreadsheetName = $this->buildExcelTable($params, $years);
-        $path = LinkController::getBaseURL() . "/" . $spreadsheetName;
-        return $this->jsonResponse->response(true, null)
-                                  ->addValue("planilha",$path)
-                                  //->addValue("asHtml", $this->buildExcelHTML($spreadsheetName))
-                                  ->withoutHeader()->serialize();
-    }    
-    
-    private function buildExcelHTML($spreadsheetFile){        
-        $data = new Spreadsheet_Excel_Reader($spreadsheetFile);
-        return $data->dump(true, true);
-    }
+    public function getDistinctGroupReport($g1, $g2, array $years){
+        $values1 = $this->getValues($g1,$years);
+        $values2 = $this->getValues($g2,$years);
+        $values1 = $this->getListAsAnArrayObject($values1);
+        $values2 = $this->getListAsAnArrayObject($values2);
+        return $this->report->getDistinctGroupsReport($values1, $values2,$years,$this->grouper);
+    }           
     
     //POST ://datacenter/save
     public function saveValues(ExcelInputFile $excelInputFile, $subgroup, $font, $destiny, $coffeType, $variety, $typeCountry = null){
@@ -145,84 +102,6 @@ class DatacenterController {
         }else{
             throw new LoginException();
         }
-    }
-        
-    /**actions**/
-    //chart
-    public function buildChart(DataParam $params, array $years){
-        return $this->buildAnything("chart", $params, $years);
-    }
-    
-    public function buildStatisticTable(DataParam $params,array $years = null){
-        return $this->buildAnything("statistic", $params, $years);
-    }
-    
-    public function buildTableAsJson(DataParam $params, array $years) {
-        return $this->buildAnything("table", $params, $years);
-    }
-    
-    public function buildExcelTable(DataParam $param, array $years){
-        return $this->buildAnything("spreadsheet", $param, $years);
-    }
-
-    public function buildTableSearchingDistinctGroups(DataParam $g1, DataParam $g2, $years) {
-        $groups = array($g1,$g2);
-        return $this->generalBuilderForTwoDifferentGroupsSelected("table", $groups, $years);
-    }
-    
-    public function buildStatisticTableSearchingDistinctGroups($paramsGroup1, $paramsGroup2, $years) {
-        $groups = array($paramsGroup1,$paramsGroup2);
-        return $this->generalBuilderForTwoDifferentGroupsSelected("statistic", $groups, $years);        
-    }
-
-    public function buildChartSearchingDistinctGroups($g1, $g2, $years) {        
-        $groups = array($g1,$g2);
-        return $this->generalBuilderForTwoDifferentGroupsSelected("chart",$groups,$years);
-    }
-
-    public function buildExcelTableSearchingDistinctGroups(DataParam $g1, DataParam $g2, $years){
-        $groups = array($g1, $g2);
-        return $this->generalBuilderForTwoDifferentGroupsSelected("spreadsheet", $groups, $years);
-    }
-    
-    private function generalBuilderForTwoDifferentGroupsSelected($builderType, array $groups, $years){
-        $array_groups = array();
-        foreach($groups as $params){
-            $group_values = $this->getValues($params, $years);
-            $group = $this->grouper->groupDataValues($this->getListAsAnArrayObject($group_values));
-            array_push($array_groups, $group);
-        }
-        return $this->buildForGroupedData($builderType, $array_groups, $years);        
-    }
-    
-    private function buildAnything($builderType, DataParam $params ,array $years = null){        
-        $asJson = $this->asJson;
-        $this->asJson = false;
-        $values = $this->getValues($params,$years);
-        $this->asJson = $asJson;
-        if($values instanceof HashMap){
-            $listValues = $values->values();
-            $group1 = $this->grouper->groupDataValues($this->getListAsAnArrayObject($listValues->offsetGet(0)));
-            $group2 = $this->grouper->groupDataValues($this->getListAsAnArrayObject($listValues->offsetGet(1)));
-            return $this->buildForGroupedData($builderType, array($group1, $group2), $years);
-        }else{
-            $groupedValues = $this->grouper->groupDataValues($this->getListAsAnArrayObject($values));
-            return $this->buildForGroupedData($builderType, $groupedValues, $years);   
-        }
-    }
-    
-    private function buildForGroupedData($builderType, $groupedValues, array $years){
-        if(is_array($groupedValues)){
-            if($builderType == 'chart'){
-                if($groupedValues[0]->values()->count() > 0 && $groupedValues[1]->values()->count() > 0)
-                    $this->chartType = "MSColumn3DLineDY.swf";
-                else
-                    $this->chartType = "MSLine.swf";
-            }
-        }else{
-            $this->chartType = "MSLine.swf";
-        }
-        return $this->getBuilder($builderType)->build($groupedValues, $years);
     }
     
     private function getListAsAnArrayObject($list){

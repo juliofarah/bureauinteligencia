@@ -544,7 +544,7 @@ $(document).ready(function(){
 		$('.tabcontent').html('');                
 		
 		if ($('#tab-1.sel').length == 1) {
-                                    tableDiv();
+            tableDiv();
 			// Tabela
 			$.getJSON('../datacenter/table', data,
 				function(tables){

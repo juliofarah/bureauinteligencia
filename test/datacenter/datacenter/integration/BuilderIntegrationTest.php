@@ -89,14 +89,10 @@ class BuilderIntegrationTest extends PHPUnit_Framework_TestCase{
         
         $sg = 1; $font = array(1,2); $type = array(1,3); $variety = array(1,2); $origin = 1; $years = array(1990,1991);
         //$destiny = DatacenterRepository::ALL;
-        $destiny = array(1,2,3);
-        echo "\n\nTESTANDO SUM \n\n";                      
+        $destiny = array(1,2,3);        
         $destiny = DatacenterRepository::ALL;
-        echo "\n";
         $dataParam = new DataParam($sg,$font,$type,$variety,$origin,$destiny);
         $tableJson = $this->controller->buildTableAsJson($dataParam, $years);        
-        
-        echo "\n\nfim teste sum\n\n";
         
         $this->assertEquals($this->tableForOptionAll(), $tableJson);
     }
