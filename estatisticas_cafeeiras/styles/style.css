@@ -56,7 +56,7 @@
 	padding: 0;
 	text-align: center;
 	/*color: #888;*/
-	color: #333;
+	color: #FFF;
 	/*background: #ECF1F2;*/
 	/*background: #D2D2D2;*/
 	background: #ADCE7C;
@@ -301,4 +301,5 @@ a.spreadsheet-link{
 	-webkit-box-shadow: 0 0 5px #888;
 	box-shadow: 0 0 5px #888;
 	display: none;
+	z-index: 100;
 }
