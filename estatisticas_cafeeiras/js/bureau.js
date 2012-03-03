@@ -90,6 +90,7 @@ $(document).ready(function(){
                             $('#fonte .model ul#fonte_grupo_'+id).append("<li id='"+param.id+"'>"+param.name+"</li>").hide();
 						});
 						//$('#fonte .options ul#dogrupo-'+id).append('<li id="all">Todos</li>');
+						$('#fonte .model ul#fonte_grupo_'+id).append("<li id='all'>Todos</li>").hide();
 					});
 			});
 		});
