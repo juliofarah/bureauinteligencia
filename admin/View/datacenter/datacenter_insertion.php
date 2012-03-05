@@ -32,9 +32,11 @@
             </div>
             <div class="country_radios" style="display: none; margin: 30px 0 10px;">
                 <strong>Selecione o grupo de países que os dados da planilha pertence:</strong><br /><br />
-                <input type="radio" class="country_group" name="country_group" value="destiny" /> <label>EUA, França, Alemanha, Canadá, Itália, Japão, etc.</label>
+                <input id="country_group_1" type="radio" class="country_group" name="country_group" value="destiny" /> 
+                <label for="country_group_1">EUA, França, Alemanha, Canadá, Itália, Japão, etc.</label>
                 <br />
-                <input type="radio" class="country_group" name="country_group" value="origin" /> <label>Brasil, Colômbia, Vietnã, Guatemala, Peru, Quênia</label>
+                <input id="country_group_2" type="radio" class="country_group" name="country_group" value="origin" /> 
+                <label for="country_group_2">Brasil, Colômbia, Vietnã, Guatemala, Peru, Quênia</label>
                 <br /><br />
             </div>
             <div class="field">
