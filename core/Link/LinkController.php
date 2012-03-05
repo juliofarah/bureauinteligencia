@@ -141,15 +141,32 @@ class LinkController {
         
         self::$map_admin_pages->put("datacenter", "View/datacenter/datacenter.php");
         self::$map_admin_pages->put("datacenter/inserir", "View/datacenter/datacenter_insertion.php");
+        self::$map_admin_pages->put("datacenter/list/:page", "View/datacenter/datacenter_list.php");
+        self::$map_admin_pages->put("datacenter/list", "View/datacenter/datacenter_list.php");
         
         self::$map_admin_pages->put("logoutAdmin", "logout_admin.php");
     }       
 
+    private static function datacenterListParser(){
+        $link = explode("datacenter/list/", self::link());
+        if(sizeof($link) == 2 && is_numeric($link[1])){
+            $_REQUEST['page'] = $link[1];
+            return "datacenter/list/:page";
+        }else{
+            if(sizeof($link) == 2 && $link[1] == ''){
+                $_REQUEST['page'] = 1;
+                return "datacenter/list/:page";
+            }
+        }
+        return self::link();
+    }
+    
     public static function routeAdminPage(){
         self::initAdminPages();
         $link = self::link();
         /**/        
-        if(SessionAdmin::isLogged()){            
+        if(SessionAdmin::isLogged()){
+            $link = self::datacenterListParser();
             if(self::$map_admin_pages->containsKey($link)){
                 if(file_exists(self::$map_admin_pages->get($link))){
                     return self::$map_admin_pages->get($link);
@@ -158,7 +175,7 @@ class LinkController {
                 }
             }else{
                 $linkCategory = explode("/", $link);
-                $linkPages = explode("artigos/list/", $link);                
+                $linkPages = explode("artigos/list/", $link);
                 if(sizeof($linkCategory) == 3){
                     if(sizeof($linkPages) == 2 && $linkPages[1] != null && is_numeric($linkPages[1])){
                         $_GET['page'] = $linkPages[1];                     

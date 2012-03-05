@@ -6,6 +6,9 @@
 interface DatacenterRepository {
 
     const ALL = "all";
+
+    public function totalValues();
+    
     /**
      * @return ArrayIterator
      */
@@ -28,7 +31,11 @@ interface DatacenterRepository {
      * @return ArrayIterator
      */
     public function getValuesFromAGroup($group);
-    
+
+    /**,
+     * @return ArrayObject
+     */
+    public function getAllValues($underLimit, $maxValues) ;
 }
 
 ?>

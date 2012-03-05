@@ -103,18 +103,26 @@ class DatacenterDao implements DatacenterRepository{
             $subgroup = new Subgroup($value['subgroup']);
                         
             $type = new CoffeType($value['type']);
-            $variety = new Variety($value['variety']);
-            
+            if($value['variety'] != null)
+                $variety = new Variety($value['variety']);
+            else
+                $variety = new Variety('-');            
             if(isset($value['font']))
                 $font = new Font($value['font']);
             else
                 $font = new Font("Todas");            
             if(isset($value['origin']))
-                $origin = new Country($value['origin']);
+                if($value['origin'] != null)
+                    $origin = new Country($value['origin']);
+                else
+                    $origin = new Country("-");
             else
                 $origin = new Country("Todos");
             if(isset($value['destiny']))
-                $destiny = new Country($value['destiny']);
+                if($value['destiny'] != null)
+                    $destiny = new Country($value['destiny']);
+                else
+                    $destiny = new Country('-');
             else
                 $destiny = new Country("Todos");
             
@@ -176,7 +184,7 @@ class DatacenterDao implements DatacenterRepository{
         $sql .= $this->orderBy($paramsToGroup);
         $query = $this->session->prepare($sql);
         $query->execute();
-        return ($this->buildSimpleObjects($query->fetchAll(PDO::FETCH_ASSOC)));        
+        return ($this->buildSimpleObjects($query->fetchAll(PDO::FETCH_ASSOC)));
     }
     
     private function selectForSumQuery(array $params){
@@ -276,6 +284,27 @@ class DatacenterDao implements DatacenterRepository{
     public function getValuesFromAGroup($group) {
         
     }
+
+    public function getAllValues($underLimit, $maxValues) {
+        $limit = $underLimit . ", ".$maxValues;
+        $sql = "SELECT ".$this->allParams();
+        $sql .= "FROM data value ";
+        $sql .= $this->leftOuterJoin();
+        $sql .= " ORDER BY value.id DESC, origin, destiny, variety, type, font, subgroup, ano ASC";
+        $sql .= " LIMIT ".$limit;
+        $query = $this->session->prepare($sql);
+        $query->execute();
+        return ($this->buildSimpleObjects($query->fetchAll(PDO::FETCH_ASSOC)));
+    }
+
+    public function totalValues() {
+        $statement = "SELECT COUNT(*) AS total FROM data";
+        
+        $query = $this->session->prepare($statement);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];                
+    }        
 }
 
 ?>

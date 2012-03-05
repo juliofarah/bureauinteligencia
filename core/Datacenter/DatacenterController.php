@@ -47,6 +47,8 @@ class DatacenterController {
      */
     private $report;
     
+    public static $LIMIT_PER_PAGE = 15;
+    
     public function DatacenterController(DatacenterService $service, Statistic $statistic, 
             JsonResponse $jsonResponse, DataGrouper $grouper, BuilderFactory $factory){
         $this->datacenterService = $service;
@@ -102,6 +104,19 @@ class DatacenterController {
         }else{
             throw new LoginException();
         }
+    }
+    
+    public function listData($page) {
+        return $this->datacenterService->getAllValues($this->calculateLimits($page), self::$LIMIT_PER_PAGE);
+    }
+    
+    public function total(){
+        return $this->datacenterService->gelTotalValues();
+    }
+    
+    private function calculateLimits($page){
+       $underLimit =  (self::$LIMIT_PER_PAGE*$page) - self::$LIMIT_PER_PAGE;
+       return $underLimit;
     }
     
     private function getListAsAnArrayObject($list){

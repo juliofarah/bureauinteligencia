@@ -137,5 +137,13 @@ class DatacenterService {
             return $listValues;           
         }        
     }
+
+    public function getAllValues($underLimit, $upperLimit) {
+        return $this->repository->getAllValues($underLimit, $upperLimit);
+    }
+    
+    public function gelTotalValues(){
+        return $this->repository->totalValues();
+    }
 }
 ?>
