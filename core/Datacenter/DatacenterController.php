@@ -92,6 +92,14 @@ class DatacenterController {
     public function saveValues(ExcelInputFile $excelInputFile, $subgroup, $font, $destiny, $coffeType, $variety, $typeCountry = null){
         if(SessionAdmin::isLogged()){
             try{
+                if(!is_null($typeCountry)){
+                    $countries = $excelInputFile->getValuesOfColumn(1);
+                    if(!$this->countriesSelectedAreCorrect($typeCountry, $countries)){
+                        $nameCountries = $this->countriesAsString($countries);                        
+                        $message = "Os países presentes na planilha ($nameCountries) não correspondem ao tipo que você selecionou";
+                        throw new WrongFormatException($message);
+                    }
+                }
                 if($this->datacenterService->insertValues($excelInputFile, $subgroup, $destiny, $coffeType, $variety, $font,$typeCountry)){
                     return $this->jsonResponse->response(true, "Dados inseridos com sucesso!")->serialize();
                 }else{
@@ -104,6 +112,38 @@ class DatacenterController {
         }else{
             throw new LoginException();
         }
+    }
+    
+    private function countriesAsString(array $countries){
+        $string = "";
+        foreach($countries as $i => $country){
+            if($i > 0){
+                $string .= ", ";
+            }
+            $string .= $country;
+        }
+        return $string;
+    }
+    
+    private function countriesSelectedAreCorrect($typeCountry, $countries){
+        return sizeof(array_diff($countries, $this->getCountriesSelected($typeCountry))) == 0;
+    }
+    
+    private function getCountriesSelected($typeCountry){
+        if($typeCountry == 'destiny')
+            return $this->destinyCountries ();
+        elseif($typeCountry == 'origin')
+            return $this->originCountries ();
+    }
+    
+    private function originCountries(){
+        $countries = array("Brasil", "Colômbia", "Colombia", "Vietnã", "Vietna", "Guatemala", "Peru", "Quênia", "Quenia", "Outros");
+        return $countries;
+    }
+    
+    private function destinyCountries(){
+        $countries = array("EUA", "França", "Franca", "Alemanha", "Canadá", "Canada", "Itália", "Italia", "Japão", "Japao", "Outros");
+        return $countries;
     }
     
     public function listData($page) {

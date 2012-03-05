@@ -22,7 +22,7 @@ class SpreadsheetValidator {
         
     public function firstLinePatternIsCorrect() {        
         $firstLine = $this->excelInputFile->firstRow();
-        if(utf8_encode($firstLine[1]) != 'Países') return false;        
+        if(utf8_encode($firstLine[1]) != 'Países' && $firstLine[1] != 'Paises') return false;        
         return $this->lineNumberPatterns($firstLine);
     }
 
