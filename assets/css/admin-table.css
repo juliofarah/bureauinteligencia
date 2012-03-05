@@ -38,6 +38,10 @@ table.list-publications tbody tr{
     cursor: pointer;
 }
 
+table.list-publications tbody tr:hover{
+    background-color: #FED;
+}
+
 table.list-publications tbody tr td{
     padding: 10px;
     border-bottom: 1px solid #EEE;
