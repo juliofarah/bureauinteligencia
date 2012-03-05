@@ -149,7 +149,7 @@ class LinkController {
 
     private static function datacenterListParser(){
         $link = explode("datacenter/list/", self::link());
-        if(sizeof($link) == 2 && is_numeric($link[1])){
+        if(sizeof($link) == 2 && is_numeric($link[1]) && $link[1] > 0){            
             $_REQUEST['page'] = $link[1];
             return "datacenter/list/:page";
         }else{
