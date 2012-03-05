@@ -397,6 +397,9 @@ $(document).ready(function(){
 				});
 			} else {
 				data.variedade = $('#variedade .options li.sel').attr('id');
+				if(data.variedade == undefined){
+					data.variedade = 0;
+				}
 			}
 
 			if ($('#origem .options li.sel').length > 1) {
@@ -425,26 +428,45 @@ $(document).ready(function(){
 
 			data.ano = [$('#de').val(), $('#ate').val()];
 
-			if (data.subgrupo == undefined
-				|| data.tipo == undefined
-				|| data.variedade == undefined
-				|| data.fonte == undefined
-				|| data.ano == undefined) {
-
-				advise('É necessário selecionar os campos corretamente.');
-				return false;
-			} else {
-				
-				if ($('#grupo .options ul li.sel').html() == 'Comércio Internacional'
-					&& (data.origem == undefined || data.destino == undefined)) {
-						advise('É necessário selecionar os campos de Origem e Destino');
-						return false;
-				} else if (data.origem == undefined && data.destino == undefined) {
-					advise('É necessário selecionar um valor em Origem ou Destino');
+			if($.inArray("1", data.tipo) != -1){
+				if (data.subgrupo == undefined
+					|| data.tipo == undefined
+					|| data.variedade == undefined
+					|| data.fonte == undefined
+					|| data.ano == undefined) {
+					advise('É necessário selecionar os campos corretamente.');
 					return false;
+				} else {
+					
+					if ($('#grupo .options ul li.sel').html() == 'Comércio Internacional'
+						&& (data.origem == undefined || data.destino == undefined)) {
+							advise('É necessário selecionar os campos de Origem e Destino');
+							return false;
+					} else if (data.origem == undefined && data.destino == undefined) {
+						advise('É necessário selecionar um valor em Origem ou Destino');
+						return false;
+					}					
 				}
-				
+			}else{
+				if (data.subgrupo == undefined
+					|| data.tipo == undefined					
+					|| data.fonte == undefined
+					|| data.ano == undefined) {
+					advise('É necessário selecionar os campos corretamente.');
+					return false;
+				} else {
+					
+					if ($('#grupo .options ul li.sel').html() == 'Comércio Internacional'
+						&& (data.origem == undefined || data.destino == undefined)) {
+							advise('É necessário selecionar os campos de Origem e Destino');
+							return false;
+					} else if (data.origem == undefined && data.destino == undefined) {
+						advise('É necessário selecionar um valor em Origem ou Destino');
+						return false;
+					}				
+				}
 			}
+
                         
 			if($("#grupo .options ul li.sel").html() != 'Comércio Internacional'){
 		  		if (data.origem == undefined || data.origem.length == 0) data.origem = 0;
@@ -508,7 +530,7 @@ $(document).ready(function(){
 						data.fonte.push($(this).attr('id'));
 					}
 				});
-				                                                                
+				
 				if (data.subgrupo.length == 1) data.subgrupo = data.subgrupo[0];
 				else if (data.subgrupo.length == 0) data.subgrupo = 0;
 				if (data.tipo.length == 1) data.tipo = data.tipo[0];
