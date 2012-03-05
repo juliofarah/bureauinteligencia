@@ -123,15 +123,19 @@ class LinkController {
         self::$map_admin_pages = new HashMap();
         self::$map_admin_pages->put("main", "View/main.php");
         self::$map_admin_pages->put("videos", "View/video/videos.php");
+        self::$map_admin_pages->put("videos/", "View/video/videos.php");
         self::$map_admin_pages->put("videos/list", "View/video/video_list.php");
         self::$map_admin_pages->put("videos/list/", "View/video/video_list.php");
         self::$map_admin_pages->put("videos/inserir", "View/video/video_insertion.php");
 
         self::$map_admin_pages->put("noticias", "View/news/news.php");
+        self::$map_admin_pages->put("noticias/", "View/news/news.php");
         self::$map_admin_pages->put("noticias/list", "View/news/news_list.php");
         self::$map_admin_pages->put("noticias/inserir", "View/news/news_insertion.php");
 
         self::$map_admin_pages->put("publicacoes", "View/publication/publications.php");
+        self::$map_admin_pages->put("publicacoes/", "View/publication/publications.php");
+        
         self::$map_admin_pages->put("artigos/list", "View/publication/publication_list.php");
         self::$map_admin_pages->put("artigos/list/", "View/publication/publication_list.php");
         self::$map_admin_pages->put("artigo/inserir", "View/publication/publication_insertion.php");
@@ -140,6 +144,7 @@ class LinkController {
         self::$map_admin_pages->put("analise/list/", "View/publication/analysis_list.php");       
         
         self::$map_admin_pages->put("datacenter", "View/datacenter/datacenter.php");
+        self::$map_admin_pages->put("datacenter/", "View/datacenter/datacenter.php");
         self::$map_admin_pages->put("datacenter/inserir", "View/datacenter/datacenter_insertion.php");
         self::$map_admin_pages->put("datacenter/list/:page", "View/datacenter/datacenter_list.php");
         self::$map_admin_pages->put("datacenter/list", "View/datacenter/datacenter_list.php");
