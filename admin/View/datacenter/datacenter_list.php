@@ -47,7 +47,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                <td><?DatacenterHelper::pageIndex($page, DatacenterController::$LIMIT_PER_PAGE, $total)?></td>
             </tr>
         </tfoot>
         <tbody>
