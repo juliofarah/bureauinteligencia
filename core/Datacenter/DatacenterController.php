@@ -96,7 +96,7 @@ class DatacenterController {
                     $countries = $excelInputFile->getValuesOfColumn(1);
                     if(!$this->countriesSelectedAreCorrect($typeCountry, $countries)){
                         $nameCountries = $this->countriesAsString($countries);                        
-                        $message = "Os países presentes na planilha ($nameCountries) não correspondem ao tipo que você selecionou";
+                        $message = "Os países presentes na planilha ($nameCountries) não correspondem ao grupo que você selecionou";
                         throw new WrongFormatException($message);
                     }
                 }
