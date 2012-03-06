@@ -20,9 +20,11 @@
     $data_values = $controller->listData($page);
     $total = $controller->total();
 ?>
+<?if($data_values->count()>0):?>
 <div class="pagination">
     <?DatacenterHelper::pagination($page, DatacenterController::$LIMIT_PER_PAGE, $total);?>
 </div>
+<?endif;?>
 <div id="list-results">
     <?if($data_values->count() > 0):?>
     <table class="list-publications">
@@ -66,8 +68,12 @@
             <?endforeach;?>
         </tbody>
     </table>
+    <?else:?>
+    <strong>Ainda não existem informações armazenadas no Banco de Dados</strong>
     <?endif;?>
 </div>
+<?if($data_values->count() > 0):?>
 <div class="pagination">
     <?DatacenterHelper::pagination($page, DatacenterController::$LIMIT_PER_PAGE, $total);?>
 </div>
+<?endif;?>
