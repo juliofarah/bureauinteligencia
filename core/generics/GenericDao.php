@@ -76,6 +76,46 @@ class GenericDao {
         return $this->getObject("country", true, "type_country", "destiny");
     }
     
+    private function countryExists(Country $country, $typeCountry){
+        $query = $this->session->prepare("SELECT * FROM country WHERE name = :name AND type_country = :type");
+        $query->bindParam(":name", $country->name());
+        $query->bindParam(":type", $typeCountry);
+        $query->execute();        
+        return $query->rowCount() > 0;
+    }
+    
+    public function createCountry(Country $country, $typeCountry){
+        if($this->countryExists($country, $typeCountry))
+                throw new Exception("O país ".$country->name ()." já existe!");
+        $sql = "INSERT INTO country (name, type_country) VALUES (:name, :type)";
+        $query = $this->session->prepare($sql);
+        $query->bindParam(":name", utf8_decode($country->name()));
+        $query->bindParam(":type", $typeCountry);
+        $query->execute();
+        return $query->rowCount() > 0;        
+    }
+    
+    public function editCountry(Country $country) {
+        $sql = "UPDATE country SET name = :name WHERE id = :id LIMIT 1";
+        $query = $this->session->prepare($sql);
+        $query->bindParam(":name", utf8_decode($country->name()));
+        $query->bindParam(":id", $country->id());
+        
+        $query->execute();
+        return $query->rowCount() > 0;
+    }
+    
+    public function getCountry($id){
+        $sql = "SELECT * FROM country WHERE id = :id LIMIT 1";
+        $query = $this->session->prepare($sql);
+        $query->bindParam(":id", $id);
+        $query->execute();
+        $country = $query->fetch(PDO::FETCH_ASSOC);
+        if($query->rowCount() > 0){
+           return new Country($country['name'], $country['id']);
+        }
+        return null;
+    }
     public function getFonts() {
         return $this->getObject("font");
     }
@@ -147,6 +187,6 @@ class GenericDao {
             case "country": return new Country($object['name'], $object['id']); break;
             case "font": return new Font($object['name'], $object['id']); break;
         }
-    }    
+    }
 }
 ?>

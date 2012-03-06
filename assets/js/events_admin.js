@@ -47,7 +47,7 @@ function eventDelete(){
 }
 
 function eventInsert(){    
-    $(".button-insert, .button-insert-analysis").click(function(){                        
+    $(".button-edit, .button-insert, .button-insert-analysis").click(function(){                        
         var $form = $(this).parents("form");
         var isValid = valid($form);        
         removeErrors($form);
@@ -99,12 +99,21 @@ var errorsMessages = function(type){
 
 function submitIfIsValid($form, isValid){
     if(isValid.valid){
-        var data = {
-            'link': $("#link").val(),
-            'title': $("#title").val(),
-            'state': $("#state").val(), 
-            'type_event': $("input[name=type_event]:checked").val()
-        }
+        var data = {};
+        if($form.attr("title") == 'country'){
+            data = {
+                'id': $("#country-id").val(),
+                'name':$('#name').val(),
+                'type': $('#type_country').val()
+            }
+        }else{
+            data = {
+                'link': $("#link").val(),
+                'title': $("#title").val(),
+                'state': $("#state").val(), 
+                'type_event': $("input[name=type_event]:checked").val()
+            }            
+        }        
         if($form.attr("id") != 'form-news'){            
             data.subarea = $("select#subarea").val();
         }

@@ -87,7 +87,31 @@ class Controller {
         $coffeTypes = $this->dao->getCoffeTypes();
         return $this->returnJson($coffeTypes);
     }
+    
+    public function getCountry($country_id) {
+        return $this->dao->getCountry($country_id);
+    }
 
+    public function editCountry(Country $object) {
+        return $this->dao->editCountry($object);
+    }
+    
+    public function listOrigins(){
+      return $this->dao->getOriginCountries();  
+    }
+    
+    public function listDestinies(){
+        return $this->dao->getDestinyCountries();
+    }
+
+    public function createNewOriginCountry(Country $country){
+        return $this->dao->createCountry($country, "origin");
+    }
+    
+    public function createNewDestinyCountry(Country $country){
+        return $this->dao->createCountry($country, "destiny");
+    }
+        
     public function origincountries() {
         $countries = $this->dao->getOriginCountries();
         return $this->returnJson($countries);

@@ -115,7 +115,11 @@ class LinkController {
         self::$map_requests->put("datacenter/spreadsheet", "core/Datacenter/requests/buildExcel.php");
         self::$map_requests->put("datacenter/statistics", "core/Datacenter/requests/buildStatisticTable.php");
         self::$map_requests->put("datacenter/param", "core/generics/datacenter/getParam.php");
-        self::$map_requests->put("datacenter/insert", "../core/Datacenter/requests/insert_values.php");        
+        self::$map_requests->put("datacenter/insert", "../core/Datacenter/requests/insert_values.php");
+        self::$map_requests->put("datacenter/country", "../core/Datacenter/requests/country_insert.php");
+        self::$map_requests->put("datacenter/country/delete", "../core/Datacenter/requests/country_delete.php");
+        self::$map_requests->put("datacenter/country/update/:id",  "../core/Datacenter/requests/country_edit.php");
+        ///datacenter/country/update/
         //self::$map_requests->put("datacenterAdmin/param", "../core/generics/datacenter/getParam.php");
     }
 
@@ -148,13 +152,17 @@ class LinkController {
         self::$map_admin_pages->put("datacenter/inserir", "View/datacenter/datacenter_insertion.php");
         self::$map_admin_pages->put("datacenter/list/:page", "View/datacenter/datacenter_list.php");
         self::$map_admin_pages->put("datacenter/list", "View/datacenter/datacenter_list.php");
+        self::$map_admin_pages->put("datacenter/paises", "View/datacenter/datacenter_country_insertion.php");
+        self::$map_admin_pages->put("datacenter/paises/destino/:page", "View/datacenter/datacenter_country_list.php");
+        self::$map_admin_pages->put("datacenter/paises/origem/:page",  "View/datacenter/datacenter_country_list.php");
+        self::$map_admin_pages->put("datacenter/country/edit/:id",  "View/datacenter/datacenter_country_edition.php");
         
         self::$map_admin_pages->put("logoutAdmin", "logout_admin.php");
-    }       
+    }
 
     private static function datacenterListParser(){
         $link = explode("datacenter/list/", self::link());
-        if(sizeof($link) == 2 && is_numeric($link[1]) && $link[1] > 0){            
+        if(sizeof($link) == 2 && is_numeric($link[1]) && $link[1] > 0){
             $_REQUEST['page'] = $link[1];
             return "datacenter/list/:page";
         }else{
@@ -166,12 +174,55 @@ class LinkController {
         return self::link();
     }
     
+    private static function datacenterListCountry($LINK){
+        $link = explode("datacenter/paises/destino", $LINK);
+        if(sizeof($link) == 2){
+            if(is_numeric($link[1]) && $link[1] > 0){
+                $_REQUEST['page'] = $link[1];
+                $_REQUEST['type_country'] = "destiny";
+                return "datacenter/paises/destino/:page";
+            }
+            else{
+                if($link[1] == ''){
+                    $_REQUEST['page'] = 1;
+                    $_REQUEST['type_country'] = "destiny";
+                    return "datacenter/paises/destino/:page";
+                }
+            }
+        }else{
+            $link = explode("datacenter/paises/origem", $LINK);
+            if(sizeof($link) == 2 && is_numeric($link[1]) && $link[1] > 0){
+                $_REQUEST['page'] = $link[1];
+                $_REQUEST['type_country'] = "origin";
+                return "datacenter/paises/origem/:page";
+            }else{
+                if(sizeof($link) == 2 && $link[1] == ''){
+                    $_REQUEST['page'] = 1;
+                    $_REQUEST['type_country'] = "origin";
+                    return "datacenter/paises/origem/:page";
+                }
+            }
+        }
+        return $LINK;
+    }
+    
+    private static function editACountry($LINK){
+        $link = explode("datacenter/country/edit/", $LINK);
+        if(sizeof($link) == 2 && is_numeric($link[1])){
+            $_REQUEST['country'] = $link[1];
+            return "datacenter/country/edit/:id";
+        }
+        return $LINK;
+    }
+    
     public static function routeAdminPage(){
         self::initAdminPages();
         $link = self::link();
         /**/        
         if(SessionAdmin::isLogged()){
             $link = self::datacenterListParser();
+            $link = self::datacenterListCountry($link);
+            $link = self::editACountry($link);
             if(self::$map_admin_pages->containsKey($link)){
                 if(file_exists(self::$map_admin_pages->get($link))){
                     return self::$map_admin_pages->get($link);
@@ -250,12 +301,22 @@ class LinkController {
         return self::link() == "publication/insert";
     }
 
+    private static function restCountryEdition($LINK){
+        $link = explode("datacenter/country/update/", $LINK);
+        if(sizeof($link) == 2 && is_numeric($link[1])){
+            $_REQUEST['country'] = $link[1];
+            return "datacenter/country/update/:id";
+        }
+        return $LINK;
+    }
+    
     public static function restAdmin(){
-        self::initRequests();        
+        self::initRequests();
         if(strpos(self::link(), "?") !== false)
             $link = substr(self::link(), 0, strpos(self::link(), "?"));
         else
-            $link = self::link();        
+            $link = self::link();
+        $link = self::restCountryEdition($link);
         if(SessionAdmin::isLogged() || $link == 'login' || isset ($_REQUEST['no-must-online'])){ 
             if(self::$map_requests->containsKey($link)){                
                 if(file_exists(self::$map_requests->get($link))){     
