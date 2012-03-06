@@ -22,9 +22,9 @@ class AdminLogin {
         return false;
     }
 
-    public function logout(AdminUser $admin){        
+    public function logout(AdminUser $admin){     
         $admin->logout();
-        header("Location: ".LinkController::getBaseURL()."/admin");
+        header("Location: ".LinkController::getBaseURL()."/admin");        
     }
 }
 ?>

@@ -3,6 +3,5 @@
 
     $loginController = new AdminLogin();
     $loginController->logout(SessionAdmin::getLoggedUser());
-
-    
+   
 ?>
