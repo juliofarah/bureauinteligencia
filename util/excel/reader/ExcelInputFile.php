@@ -128,7 +128,7 @@ class ExcelInputFile {
     
     public function allTheLinesButTheFirst(){
         $lines = $this->lines();
-        array_shift($lines);        
+        array_shift($lines);
         return $lines;
     }
     

@@ -59,10 +59,11 @@ class DatacenterService {
         $valuesFromACountry = $inputFile->getValuesFromACountry($country);
         foreach($years as $year){
             $value = $valuesFromACountry[$country][$year];
+            $value = (float) str_replace(",","",$value);
             $data = $this->buildDataToInsert($year, $subgroup, $font, $type, $variety, $origin, $destiny);
             $data->setValue($value);
             $dataToInsert->append($data);
-        } 
+        }
     }
  
     private function buildDataToInsert($year, $subgroupId, $fontId, $typeId, $varietyId, $originId, $destinyId){        
